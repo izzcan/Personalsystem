@@ -63,7 +63,7 @@ namespace Personalsystem.Models
         public int CompanyId { get; set; }
         public virtual Company Company { get; set; }
         [ForeignKey("Creator")]
-        public Guid CreatorId { get; set; }
+        public string CreatorId { get; set; }
         public virtual ApplicationUser Creator { get; set; }
     }
     public class Vacancy
@@ -77,7 +77,7 @@ namespace Personalsystem.Models
         public int CompanyId { get; set; }
         public virtual Company Company { get; set; }
         [ForeignKey("Creator")]
-        public Guid CreatorId { get; set; }
+        public string CreatorId { get; set; }
         public virtual ApplicationUser Creator { get; set; }
         public virtual ICollection<Application> Applications { get; set; } 
     }
@@ -87,11 +87,11 @@ namespace Personalsystem.Models
         public int Id { get; set; }
         public string Content { get; set; }
         [ForeignKey("Applicant")]
-        public Guid ApplicantId { get; set; }
+        public string ApplicantId { get; set; }
         public virtual ApplicationUser Applicant { get; set; }
         [ForeignKey("Vacancy")]
         public int VacancyId { get; set; }
-        public virtual Vacancy Vacancies { get; set; }
+        public virtual Vacancy Vacancy { get; set; }
         public virtual ICollection<Interview> Interviews { get; set; }
     }
     public class Interview
@@ -100,10 +100,10 @@ namespace Personalsystem.Models
         public int Id { get; set; }
         public string Description { get; set; }
         [ForeignKey("Applicant")]
-        public Guid ApplicantId { get; set; }
+        public string ApplicantId { get; set; }
         public virtual ApplicationUser Applicant { get; set; }
         [ForeignKey("Interviewer")]
-        public Guid InterviewerId { get; set; }
+        public string InterviewerId { get; set; }
         public virtual ApplicationUser Interviewer { get; set; }
     }
 }
