@@ -1,5 +1,8 @@
 namespace Personalsystem.Migrations
 {
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Personalsystem.Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -26,6 +29,43 @@ namespace Personalsystem.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+
+            //Add roles
+            context.Roles.AddOrUpdate(
+                q => q.Name,
+                new IdentityRole() { Name = "SuperAdmin" },
+                new IdentityRole() { Name = "Admin" },
+                new IdentityRole() { Name = "Boss" },
+                new IdentityRole() { Name = "Employee" },
+                new IdentityRole() { Name = "Unemployed" }
+                );
+
+
+            //Add users
+            var hasher = new PasswordHasher();
+            string password = hasher.HashPassword("password");
+
+            var adminUser = new ApplicationUser
+            {
+                UserName = "Admin",
+                Email = "admin@admin.admin",
+                PasswordHash = password,
+                SecurityStamp = "UnchangedPassword"
+            };
+
+            context.Users.AddOrUpdate(
+                u => u.UserName,
+                    adminUser
+                );
+            context.SaveChanges();
+
+            //Add roles to users
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+
+            if (!userManager.IsInRole(adminUser.Id, "SuperAdmin"))
+            {
+                userManager.AddToRole(adminUser.Id, "SuperAdmin");
+            }
         }
     }
 }
