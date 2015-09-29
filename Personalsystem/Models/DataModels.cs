@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,6 +15,8 @@ namespace Personalsystem.Models
         public string Name { get; set; }
         public virtual ICollection<Department> Departments { get; set; }
         public virtual ICollection<NewsItem> NewsItems { get; set; }
+
+        public virtual ICollection<CompanyUserRole> CompanyUserRoles { get; set; }
     }
     public class Department
     {
@@ -105,5 +108,24 @@ namespace Personalsystem.Models
         [ForeignKey("Interviewer")]
         public string InterviewerId { get; set; }
         public virtual ApplicationUser Interviewer { get; set; }
+    }
+
+    public class CompanyUserRole
+    {
+        [Key]
+        [Column(Order = 1)]
+        [ForeignKey("Company")]
+        public int CompanyId { get; set; }
+        public virtual Company Company { get; set; }
+        [Key]
+        [Column(Order = 2)]
+        [ForeignKey("User")]
+        public string UserId { get; set; }
+        public virtual ApplicationUser User { get; set; }
+        [Key]
+        [Column(Order = 3)]
+        [ForeignKey("Role")]
+        public string RoleId { get; set; }
+        public virtual IdentityRole Role { get; set; }
     }
 }
