@@ -16,7 +16,9 @@ namespace Personalsystem.Models
         public virtual ICollection<Department> Departments { get; set; }
         public virtual ICollection<NewsItem> NewsItems { get; set; }
 
-        public virtual ICollection<CompanyUserRole> CompanyUserRoles { get; set; }
+        //public virtual ICollection<CompanyUserRole> CompanyUserRoles { get; set; }
+
+        public virtual ICollection<ApplicationUser> Admins { get; set; }
     }
     public class Department
     {
@@ -110,22 +112,22 @@ namespace Personalsystem.Models
         public virtual ApplicationUser Interviewer { get; set; }
     }
 
-    public class CompanyUserRole
-    {
-        [Key]
-        [Column(Order = 1)]
-        [ForeignKey("Company")]
-        public int CompanyId { get; set; }
-        public virtual Company Company { get; set; }
-        [Key]
-        [Column(Order = 2)]
-        [ForeignKey("User")]
-        public string UserId { get; set; }
-        public virtual ApplicationUser User { get; set; }
-        [Key]
-        [Column(Order = 3)]
-        [ForeignKey("Role")]
-        public string RoleId { get; set; }
-        public virtual IdentityRole Role { get; set; }
-    }
+    //public class CompanyUserRole
+    //{
+    //    [Key]
+    //    [Column(Order = 1)]
+    //    [ForeignKey("Company")]
+    //    public int CompanyId { get; set; }
+    //    public virtual Company Company { get; set; }
+    //    [Key]
+    //    [Column(Order = 2)]
+    //    [ForeignKey("User")]
+    //    public string UserId { get; set; }
+    //    public virtual ApplicationUser User { get; set; }
+    //    [Key]
+    //    [Column(Order = 3)]
+    //    [ForeignKey("Role")]
+    //    public string RoleId { get; set; }
+    //    public virtual IdentityRole Role { get; set; }
+    //}
 }
