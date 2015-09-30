@@ -8,17 +8,19 @@
 
 @{string newsClass = Model.NewsItems.Count >= 3 ? "col-md-4" : Model.NewsItems.Count == 2 ? "col-md-6" : "col-md-12"; }
 
-<a class="btn btn-default">Create newsitem</a><br />
-@foreach (var item in Model.NewsItems)
-{ 
-    <div class="@newsClass" style="background-color:yellow;">
-        <h4>@Html.ActionLink(item.Title, "Details", "NewsItems", new { item.Id }, null)</h4>
-        <span>@item.Created</span>
-        <p>@item.Content</p>
-    </div>
-}
+@Html.ActionLink("Create Newsitem", "Create", "NewsItems", new { Model.Id }, new { @class = "btn btn-default" })<br />
+<div class="row">
+    @foreach (var item in Model.NewsItems)
+    {
+        <div class="@newsClass" style="background-color:yellow;">
+            <h4>@Html.ActionLink(item.Title, "Details", "NewsItems", new { item.Id }, null)</h4>
+            <span>@item.Created</span>
+            <p>@item.Content</p>
+        </div>
+    }
+</div>
+@Html.ActionLink("Create Department", "Create", "Departments", new { Model.Id }, new { @class = "btn btn-default" })<br />
 
-<a class="btn btn-default">Create department</a><br />
 <ul>
     @foreach (var item in Model.Departments)
     {
