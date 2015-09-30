@@ -7,12 +7,14 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Personalsystem.Models;
+using Personalsystem.Repositories;
 
 namespace Personalsystem.Controllers
 {
     public class CompaniesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        //private GenericRepository<Company> rep = new GenericRepository<Company>(new ApplicationDbContext());
 
         // GET: Companies
         public ActionResult Index()
