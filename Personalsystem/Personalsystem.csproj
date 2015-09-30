@@ -239,6 +239,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="Models\CompanyViewmodels.cs" />
     <Compile Include="Models\DataModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -361,6 +362,7 @@
     <Content Include="Views\Interviews\Details.cshtml" />
     <Content Include="Views\Interviews\Edit.cshtml" />
     <Content Include="Views\Interviews\Index.cshtml" />
+    <Content Include="Views\Companies\Info.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

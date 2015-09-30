@@ -64,7 +64,7 @@ namespace Personalsystem.Migrations
             //};
             ApplicationUser adminUser = new ApplicationUser
             {
-                UserName = "Admin",
+                UserName = "admin@admin.admin",
                 Email = "admin@admin.admin"
             };
 
@@ -91,6 +91,9 @@ namespace Personalsystem.Migrations
             {
                 userManager.AddToRole(adminUser.Id, "SuperAdmin");
             }
+            context.SaveChanges();
+
+
 
         }
     }
