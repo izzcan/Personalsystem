@@ -37,10 +37,10 @@ namespace Personalsystem.Controllers
         }
 
         // GET: Applications/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
             ViewBag.ApplicantId = new SelectList(db.Users, "Id", "Email");
-            ViewBag.VacancyId = new SelectList(db.Vacancies, "Id", "Title");
+            ViewBag.VacancyId = new SelectList(db.Vacancies, "Id", "Title", id);
             return View();
         }
 
