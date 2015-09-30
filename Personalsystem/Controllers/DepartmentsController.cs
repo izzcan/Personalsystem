@@ -37,9 +37,9 @@ namespace Personalsystem.Controllers
         }
 
         // GET: Departments/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name");
+            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name",id);
             return View();
         }
 
@@ -54,7 +54,8 @@ namespace Personalsystem.Controllers
             {
                 db.Departments.Add(department);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                //return RedirectToAction("Index");
+                return RedirectToAction("Info", "Companies", new { id = department.CompanyId });
             }
 
             ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", department.CompanyId);

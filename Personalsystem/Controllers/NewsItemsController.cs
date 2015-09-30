@@ -37,9 +37,9 @@ namespace Personalsystem.Controllers
         }
 
         // GET: NewsItems/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name");
+            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name",id);
             ViewBag.CreatorId = new SelectList(db.Users, "Id", "Email");
             return View();
         }
@@ -55,7 +55,8 @@ namespace Personalsystem.Controllers
             {
                 db.NewsItems.Add(newsItem);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                //return RedirectToAction("Index");
+                return RedirectToAction("Info", "Companies", new { id = newsItem.CompanyId });
             }
 
             ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", newsItem.CompanyId);

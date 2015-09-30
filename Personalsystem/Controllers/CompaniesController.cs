@@ -11,6 +11,7 @@ using Personalsystem.Repositories;
 
 namespace Personalsystem.Controllers
 {
+    [Authorize]
     public class CompaniesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -20,6 +21,22 @@ namespace Personalsystem.Controllers
         public ActionResult Index()
         {
             return View(db.Companies.ToList());
+        }
+
+        // GET: Companies/Details/5
+        public ActionResult Info(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Company company = db.Companies.Find(id);
+            var model = new CompanyProfileViewmodel(company);
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
+            return View(model);
         }
 
         // GET: Companies/Details/5
