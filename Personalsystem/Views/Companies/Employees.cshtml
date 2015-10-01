@@ -22,6 +22,7 @@
         </ul>
     </div>
     <div style="border:solid black 2px;background-color:pink; padding:10px; margin:5px;" class="row">
+        <a class="btn btn-default" style="float:right;" href="/Departments/Create/@Model.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Department</a>
         <h5>Departments</h5>
         @foreach (var item in Model.Departments)
         {
@@ -40,6 +41,7 @@
                         </ul>
                     </div>
                     <div style="border:solid black 2px;background-color:lightgreen; padding:10px; margin:5px;">
+                        <a class="btn btn-default" style="float:right;" href="/DepartmentGroups/Create/@item.Id" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Add Group</a>
                         <h5>Groups</h5>
                         @foreach (var group in item.Groups)
                         {

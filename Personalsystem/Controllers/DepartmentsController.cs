@@ -45,6 +45,25 @@ namespace Personalsystem.Controllers
             return View();
         }
 
+        // POST: Departments/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "Id,Name,CompanyId")] Department department)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Departments.Add(department);
+                db.SaveChanges();
+                //return RedirectToAction("Index");
+                return RedirectToAction("Info", "Companies", new { id = department.CompanyId });
+            }
+
+            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", department.CompanyId);
+            return View(department);
+        }
+
         // GET: Companies/AddBoss/5
         public ActionResult AddBoss(int? id)
         {
@@ -103,24 +122,6 @@ namespace Personalsystem.Controllers
             }
         }
 
-        // POST: Departments/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,CompanyId")] Department department)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Departments.Add(department);
-                db.SaveChanges();
-                //return RedirectToAction("Index");
-                return RedirectToAction("Info", "Companies", new { id = department.CompanyId });
-            }
-
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", department.CompanyId);
-            return View(department);
-        }
 
         // GET: Departments/Edit/5
         public ActionResult Edit(int? id)

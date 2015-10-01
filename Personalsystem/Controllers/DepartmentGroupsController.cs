@@ -38,6 +38,31 @@ namespace Personalsystem.Controllers
             return View(departmentGroup);
         }
 
+        // GET: DepartmentGroups/Create
+        public ActionResult Create(int? id)
+        {
+            ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name",id);
+            return View();
+        }
+
+        // POST: DepartmentGroups/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "Id,Name,DepartmentId")] DepartmentGroup departmentGroup)
+        {
+            if (ModelState.IsValid)
+            {
+                db.DepartmentGroups.Add(departmentGroup);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name", departmentGroup.DepartmentId);
+            return View(departmentGroup);
+        }
+
         // GET: Companies/AddEmployee/5
         public ActionResult AddEmployee(int? id)
         {
@@ -94,31 +119,6 @@ namespace Personalsystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
-        }
-
-        // GET: DepartmentGroups/Create
-        public ActionResult Create()
-        {
-            ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name");
-            return View();
-        }
-
-        // POST: DepartmentGroups/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,DepartmentId")] DepartmentGroup departmentGroup)
-        {
-            if (ModelState.IsValid)
-            {
-                db.DepartmentGroups.Add(departmentGroup);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name", departmentGroup.DepartmentId);
-            return View(departmentGroup);
         }
 
         // GET: DepartmentGroups/Edit/5
