@@ -10,9 +10,10 @@
     <h4>Employees</h4>
     <hr />
     <div style="border:solid black 2px; background-color:yellow; padding:10px; margin:5px;">
-        <h5>Administrators</h5>
         @*@Html.ActionLink("Add Admin", "AddAdmin", new { Model.Id }, new { @class = "btn btn-default", disabled = ""  })*@
-        <a class="btn btn-default" href="/Companies/AddAdmin/@Model.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Admin</a>
+        <a class="btn btn-default" style="float:right;" href="/Companies/AddAdmin/@Model.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Admin</a>
+        <h5>Administrators</h5>
+
         <ul>
             @foreach (var item in Model.Admins)
             {
@@ -28,9 +29,9 @@
                 <div style="border:solid black 2px;background-color:orange; padding:10px; margin:5px;">
                     <h6>@item.Name</h6>
                     <div style="border:solid black 2px;background-color:cyan; padding:10px; margin:5px;">
-                        <h5>Bosses</h5>
                         @*@Html.ActionLink("Add Boss", "AddBoss", "Departments", new { item.Id }, new { @class = "btn btn-default" })*@
-                        <a class="btn btn-default" href="/Departments/AddBoss/@item.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Boss</a>
+                        <a class="btn btn-default" style="float:right;" href="/Departments/AddBoss/@item.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Boss</a>
+                        <h5>Bosses</h5>
                         <ul>
                             @foreach (var boss in item.Bosses)
                             {
@@ -45,9 +46,9 @@
                             <div style="border:solid black 2px;background-color:lime; padding:10px; margin:5px;">
                                 <h6>@group.Name</h6>
                                 <div style="border:solid black 2px;background-color:aquamarine; padding:10px; margin:5px;">
-                                    <h5>Employees</h5>
                                     @*@Html.ActionLink("Add Employee", "AddEmployee", "DepartmentGroups", new { group.Id }, new { @class = "btn btn-default" })*@
-                                    <a class="btn btn-default" href="/DepartmentGroups/AddEmployee/@group.Id" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Add Employee</a>
+                                    <a class="btn btn-default" style="float:right;" href="/DepartmentGroups/AddEmployee/@group.Id" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Add Employee</a>
+                                    <h5>Employees</h5>
                                     <ul>
                                         @foreach (var employee in group.Employees)
                                         {
