@@ -6,7 +6,8 @@
 
 <h2>@Model.Name</h2>
 
-@{string newsClass = Model.NewsItems.Count >= 3 ? "col-md-4" : Model.NewsItems.Count == 2 ? "col-md-6" : "col-md-12"; }
+@*@{string newsClass = Model.NewsItems.Count >= 3 ? "col-md-4" : Model.NewsItems.Count == 2 ? "col-md-6" : "col-md-12"; }*@ 
+@{string newsClass = "col-md-4 col-sm-6";}
 
 @Html.ActionLink("Create Newsitem", "Create", "NewsItems", new { Model.Id }, new { @class = "btn btn-default" })<br />
 <div class="row">
