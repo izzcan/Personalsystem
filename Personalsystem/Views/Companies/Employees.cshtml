@@ -9,7 +9,7 @@
 <div>
     <h4>Employees</h4>
     <hr />
-    <div style="border:solid black 2px; background-color:yellow;">
+    <div style="border:solid black 2px; background-color:yellow; padding:10px; margin:5px;">
         <h5>Administrators</h5>
         <ul>
             @foreach (var item in Model.Admins)
@@ -18,12 +18,12 @@
             }
         </ul>
     </div>
-    <div style="border:solid black 2px;background-color:pink;">
+    <div style="border:solid black 2px;background-color:pink; padding:10px; margin:5px;">
         <h5>Departments</h5>
         @foreach (var item in Model.Departments)
         {
             <h6>@item.Name</h6>
-            <div style="border:solid black 2px;background-color:cyan;">
+            <div style="border:solid black 2px;background-color:cyan; padding:10px; margin:5px;">
                 <h5>Bosses</h5>
                 <ul>
                     @foreach (var boss in item.Bosses)
@@ -32,12 +32,12 @@
                     }
                 </ul>
             </div>
-            <div style="border:solid black 2px;background-color:lightgreen;">
+            <div style="border:solid black 2px;background-color:lightgreen; padding:10px; margin:5px;">
                 <h5>Groups</h5>
                 @foreach (var group in item.Groups)
                 {
                     <h6>@group.Name</h6>
-                    <div style="border:solid black 2px;background-color:aquamarine;">
+                    <div style="border:solid black 2px;background-color:aquamarine; padding:10px; margin:5px;">
                         <h5>Employees</h5>
                         <ul>
                             @foreach (var employee in group.Employees)
