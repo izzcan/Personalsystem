@@ -26,7 +26,7 @@ namespace Personalsystem.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public virtual ICollection<DepartmentGroup> Groups { get; set; }
-        public virtual ICollection<ApplicationUser> Users { get; set; }
+        public virtual ICollection<ApplicationUser> Bosses { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }
         [ForeignKey("Company")]
         public int CompanyId { get; set; }
@@ -38,7 +38,7 @@ namespace Personalsystem.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }
-        public virtual ICollection<ApplicationUser> Users { get; set; }
+        public virtual ICollection<ApplicationUser> Employees { get; set; }
         [ForeignKey("Department")]
         public int DepartmentId { get; set; }
         public virtual Department Department { get; set; }

@@ -1,0 +1,50 @@
+﻿@model Personalsystem.Models.CompanyUsersViewmodel
+
+@{
+    ViewBag.Title = "Users";
+}
+
+<h2>@Model.Name</h2>
+
+<div>
+    <h4>Admins</h4>
+    <table>
+        @foreach (var item in Model.Admins)
+        { 
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+            </tr>
+        }
+
+    </table>
+    <h4>Bosses</h4>
+    <table>
+        @foreach (var item in Model.Bosses)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+            </tr>
+        }
+
+    </table>
+    <h4>Employees</h4>
+    <table>
+        @foreach (var item in Model.Employees)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

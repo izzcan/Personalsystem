@@ -33,3 +33,8 @@
     @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+<p>
+    @Html.ActionLink("Show Employees", "Employees", new { Model.Id }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Add Admin", "AddAdmin", new { Model.Id }, new { @class = "btn btn-default" })
+</p>

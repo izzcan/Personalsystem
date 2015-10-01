@@ -367,6 +367,9 @@
     <Content Include="Views\Interviews\Edit.cshtml" />
     <Content Include="Views\Interviews\Index.cshtml" />
     <Content Include="Views\Companies\Info.cshtml" />
+    <Content Include="Views\Companies\Users.cshtml" />
+    <Content Include="Views\Companies\AddAdmin.cshtml" />
+    <Content Include="Views\Companies\Employees.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
