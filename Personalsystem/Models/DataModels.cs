@@ -59,15 +59,32 @@ namespace Personalsystem.Models
         [Key]
         public int Id { get; set; }
         public DateTime StartTime { get; set; }
-        public DateTime EndTime{ get; set; }
-        public virtual ICollection<ApplicationUser> Users { get; set; }
+        public DateTime? EndTime{ get; set; }
+        //public virtual ICollection<ApplicationUser> Users { get; set; }
+
         [ForeignKey("Department")]
         public int DepartmentId { get; set; }
         public virtual Department Department { get; set; }
+
         [ForeignKey("Group")]
-        public int GroupId { get; set; }
+        public int? GroupId { get; set; }
         public virtual DepartmentGroup Group { get; set; }
+
+        public virtual ICollection<ScheduleItem> ScheduleItems { get; set; }
     }
+
+    public class ScheduleItem
+    {
+        [Key]
+        public int Id { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+
+        [ForeignKey("Schedule")]
+        public int ScheduleId { get; set; }
+        public virtual Schedule Schedule { get; set; }
+    }
+
     public class NewsItem
     {
         [Key]
