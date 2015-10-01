@@ -28,6 +28,7 @@
         {
             <div class="@(Model.Departments.Count >= 3 ? "col-md-4" : Model.Departments.Count == 2 ? "col-md-6" : "col-md-12")">
                 <div style="border:solid black 2px;background-color:orange; padding:10px; margin:5px;">
+                    <a class="btn btn-default" style="float:right;" href="#" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Manage Schedule(todo)</a>
                     <h6>@item.Name</h6>
                     <div style="border:solid black 2px;background-color:cyan; padding:10px; margin:5px;">
                         @*@Html.ActionLink("Add Boss", "AddBoss", "Departments", new { item.Id }, new { @class = "btn btn-default" })*@
@@ -46,6 +47,7 @@
                         @foreach (var group in item.Groups)
                         {
                             <div style="border:solid black 2px;background-color:lime; padding:10px; margin:5px;">
+                                <a class="btn btn-default" style="float:right;" href="#" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Manage Schedule(todo)</a>
                                 <h6>@group.Name</h6>
                                 <div style="border:solid black 2px;background-color:aquamarine; padding:10px; margin:5px;">
                                     @*@Html.ActionLink("Add Employee", "AddEmployee", "DepartmentGroups", new { group.Id }, new { @class = "btn btn-default" })*@
