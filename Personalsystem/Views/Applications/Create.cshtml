@@ -7,7 +7,7 @@
 <h2>Ansök</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create", "Applications", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     
@@ -18,35 +18,42 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Content, new { htmlAttributes = new { @class = "form-control"} })
+                @Html.TextAreaFor(model => model.Content, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.ApplicantId, "ApplicantId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ApplicantId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ApplicantId, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
-
-
-        <input type="hidden" name="id" value="@ViewBag.VacancyId" />
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.VacancyId, "VacancyId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("VacancyId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.VacancyId, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
-
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+            <label class="control-label col-md-2">Ladda upp CV</label>
+            <div class="col-md-10">
+                <input type="file" name="fileuploadPdf" id="CvUploadFile" />
             </div>
         </div>
-    </div>
+                
+            <div class="form-group">
+                @Html.LabelFor(model => model.ApplicantId, "ApplicantId", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("ApplicantId", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ApplicantId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <input type="hidden" name="VacancyId" value="@ViewBag.VacancyId" />
+            @*<div class="form-group">
+                @Html.LabelFor(model => model.VacancyId, "VacancyId", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("VacancyId", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.VacancyId, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
 }
 
 <div>
