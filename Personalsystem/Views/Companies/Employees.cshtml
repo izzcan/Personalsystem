@@ -24,40 +24,42 @@
         <h5>Departments</h5>
         @foreach (var item in Model.Departments)
         {
-            <h6>@item.Name</h6>
-            <div style="border:solid black 2px;background-color:cyan; padding:10px; margin:5px;">
-                <h5>Bosses</h5>
-                @*@Html.ActionLink("Add Boss", "AddBoss", "Departments", new { item.Id }, new { @class = "btn btn-default" })*@
-                <a class="btn btn-default" href="/Departments/AddBoss/@item.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Boss</a>
-                <ul>
-                    @foreach (var boss in item.Bosses)
+            <div style="border:solid black 2px;background-color:orange; padding:10px; margin:5px;">
+                <h6>@item.Name</h6>
+                <div style="border:solid black 2px;background-color:cyan; padding:10px; margin:5px;">
+                    <h5>Bosses</h5>
+                    @*@Html.ActionLink("Add Boss", "AddBoss", "Departments", new { item.Id }, new { @class = "btn btn-default" })*@
+                    <a class="btn btn-default" href="/Departments/AddBoss/@item.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Boss</a>
+                    <ul>
+                        @foreach (var boss in item.Bosses)
+                        {
+                            <li>@boss.Name</li>
+                        }
+                    </ul>
+                </div>
+                <div style="border:solid black 2px;background-color:lightgreen; padding:10px; margin:5px;">
+                    <h5>Groups</h5>
+                    @foreach (var group in item.Groups)
                     {
-                        <li>@boss.Name</li>
+                        <div style="border:solid black 2px;background-color:lime; padding:10px; margin:5px;">
+                            <h6>@group.Name</h6>
+                            <div style="border:solid black 2px;background-color:aquamarine; padding:10px; margin:5px;">
+                                <h5>Employees</h5>
+                                @*@Html.ActionLink("Add Employee", "AddEmployee", "DepartmentGroups", new { group.Id }, new { @class = "btn btn-default" })*@
+                                <a class="btn btn-default" href="/DepartmentGroups/AddEmployee/@group.Id" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Add Employee</a>
+                                <ul>
+                                    @foreach (var employee in group.Employees)
+                                    {
+                                        <li>@employee.Name</li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
                     }
-                </ul>
-            </div>
-            <div style="border:solid black 2px;background-color:lightgreen; padding:10px; margin:5px;">
-                <h5>Groups</h5>
-                @foreach (var group in item.Groups)
-                {
-                    <h6>@group.Name</h6>
-                    <div style="border:solid black 2px;background-color:aquamarine; padding:10px; margin:5px;">
-                        <h5>Employees</h5>
-                        @*@Html.ActionLink("Add Employee", "AddEmployee", "DepartmentGroups", new { group.Id }, new { @class = "btn btn-default" })*@
-                        <a class="btn btn-default" href="/DepartmentGroups/AddEmployee/@group.Id" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true  ? "" : "disabled")>Add Employee</a>
-                        <ul>
-                            @foreach (var employee in group.Employees)
-                            {
-                                <li>@employee.Name</li>
-                            }
-                        </ul>
-                    </div>
-                }
+                </div>
             </div>
         }
-
     </div>
-
 </div>
 
 
