@@ -54,6 +54,31 @@ namespace Personalsystem.Controllers
                 return HttpNotFound();
             }
             var model = new CompanyUsersViewmodel(company);
+            //Disable unauthorized buttons
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var currentUser = userManager.FindById(User.Identity.GetUserId());
+            if (company.Admins.Contains(currentUser))
+            {
+                ViewBag.IsAdmin = true;
+            }
+            else
+            {
+                ViewBag.IsAdmin = false;
+            }
+            var isBossFor = new Dictionary<int, bool>();
+            foreach (var department in company.Departments)
+            {
+                if (department.Bosses.Contains(currentUser))
+                {
+                    isBossFor[department.Id] = true;
+                }
+                else
+                {
+                    isBossFor[department.Id] = false;
+                }
+            }
+            
+            ViewBag.IsBossFor = isBossFor;
             return View(model);
         }
 
@@ -75,8 +100,6 @@ namespace Personalsystem.Controllers
         }
 
         // POST: Companies/AddAdmins/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddAdmin(int? id, string userId)

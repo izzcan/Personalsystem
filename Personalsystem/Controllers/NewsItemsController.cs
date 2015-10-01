@@ -37,7 +37,7 @@ namespace Personalsystem.Controllers
             }
             return View(newsItem);
         }
-
+        
         // GET: NewsItems/Create
         public ActionResult Create(int? id)
         {

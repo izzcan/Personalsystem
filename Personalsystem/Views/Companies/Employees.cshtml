@@ -11,7 +11,8 @@
     <hr />
     <div style="border:solid black 2px; background-color:yellow; padding:10px; margin:5px;">
         <h5>Administrators</h5>
-        @Html.ActionLink("Add Admin", "AddAdmin", new { Model.Id }, new { @class = "btn btn-default" })
+        @*@Html.ActionLink("Add Admin", "AddAdmin", new { Model.Id }, new { @class = "btn btn-default", disabled = ""  })*@
+        <a class="btn btn-default" href="/Companies/AddAdmin/@Model.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Admin</a>
         <ul>
             @foreach (var item in Model.Admins)
             {
@@ -25,8 +26,9 @@
         {
             <h6>@item.Name</h6>
             <div style="border:solid black 2px;background-color:cyan; padding:10px; margin:5px;">
-                <h5>Bosses</h5>                
-                @Html.ActionLink("Add Boss", "AddBoss", "Departments", new { item.Id }, new { @class = "btn btn-default" })
+                <h5>Bosses</h5>
+                @*@Html.ActionLink("Add Boss", "AddBoss", "Departments", new { item.Id }, new { @class = "btn btn-default" })*@
+                <a class="btn btn-default" href="/Departments/AddBoss/@item.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Boss</a>
                 <ul>
                     @foreach (var boss in item.Bosses)
                     {
@@ -41,7 +43,8 @@
                     <h6>@group.Name</h6>
                     <div style="border:solid black 2px;background-color:aquamarine; padding:10px; margin:5px;">
                         <h5>Employees</h5>
-                        @Html.ActionLink("Add Employee", "AddEmployee", "DepartmentGroups", new { group.Id }, new { @class = "btn btn-default" })
+                        @*@Html.ActionLink("Add Employee", "AddEmployee", "DepartmentGroups", new { group.Id }, new { @class = "btn btn-default" })*@
+                        <a class="btn btn-default" href="/DepartmentGroups/AddEmployee/@group.Id" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true  ? "" : "disabled")>Add Employee</a>
                         <ul>
                             @foreach (var employee in group.Employees)
                             {
