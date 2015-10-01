@@ -15,7 +15,7 @@
     {
         <div class="@newsClass" style="background-color:yellow;">
             <h4>@Html.ActionLink(item.Title, "Details", "NewsItems", new { item.Id }, null)</h4>
-            <span>@item.Created</span>
+            <span>@item.Created - @item.CreatorName</span>
             <p>@item.Content</p>
         </div>
     }

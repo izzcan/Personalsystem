@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Personalsystem.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Personalsystem.Controllers
 {
@@ -40,7 +42,6 @@ namespace Personalsystem.Controllers
         public ActionResult Create(int? id)
         {
             ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name",id);
-            ViewBag.CreatorId = new SelectList(db.Users, "Id", "Email");
             return View();
         }
 
@@ -49,18 +50,41 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Content,Created,CompanyId,CreatorId")] NewsItem newsItem)
+        public ActionResult Create([Bind(Include = "Id,Title,Content,CompanyId")] NewsItem newsItem)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && User.Identity.IsAuthenticated)
             {
-                db.NewsItems.Add(newsItem);
-                db.SaveChanges();
-                //return RedirectToAction("Index");
-                return RedirectToAction("Info", "Companies", new { id = newsItem.CompanyId });
+                    if (newsItem.CompanyId == 0)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Company company = db.Companies.Find(newsItem.CompanyId);
+                    if (company == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+
+                    var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                    var currentUser = userManager.FindById(User.Identity.GetUserId());
+                    if (company.Bosses.Contains(currentUser) ||  company.Admins.Contains(currentUser))
+                    {
+                        newsItem.Created = DateTime.Now;
+                        newsItem.Creator = currentUser;
+                        db.NewsItems.Add(newsItem);
+                        db.SaveChanges();
+
+                        return RedirectToAction("Info", "Companies", new { id = newsItem.CompanyId });
+                    }
+                    else
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                    }
+
+
             }
 
             ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", newsItem.CompanyId);
-            ViewBag.CreatorId = new SelectList(db.Users, "Id", "Email", newsItem.CreatorId);
             return View(newsItem);
         }
 

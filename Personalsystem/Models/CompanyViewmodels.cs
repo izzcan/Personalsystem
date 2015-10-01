@@ -24,7 +24,7 @@ namespace Personalsystem.Models
             this.Id = that.Id;
             this.Name = that.Name;
             this.Departments = that.Departments.Select(q => new DepartmentListitemViewmodel() { Id = q.Id, Name = q.Name }).ToList();
-            this.NewsItems = that.NewsItems.OrderByDescending(q => q.Created).Take(6).Select(q => new NewsListitemViewmodel() { Id = q.Id, Title = q.Title, Content = q.Content, Created = q.Created }).ToList();
+            this.NewsItems = that.NewsItems.OrderByDescending(q => q.Created).Take(6).Select(q => new NewsListitemViewmodel() { Id = q.Id, Title = q.Title, Content = q.Content, Created = q.Created, CreatorName = q.Creator.UserName }).ToList();
         }
     }
 
@@ -40,6 +40,7 @@ namespace Personalsystem.Models
         public string Title { get; set; }
         public string Content { get; set; }
         public DateTime Created { get; set; }
+        public string CreatorName { get; set; }
     }
 
 

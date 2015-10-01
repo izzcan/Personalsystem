@@ -19,6 +19,17 @@ namespace Personalsystem.Models
         //public virtual ICollection<CompanyUserRole> CompanyUserRoles { get; set; }
 
         public virtual ICollection<ApplicationUser> Admins { get; set; }
+
+        [NotMapped]
+        public virtual ICollection<ApplicationUser> Bosses { 
+        get { 
+            var bosses = new List<ApplicationUser>();
+            foreach (var department in Departments)
+            {
+                bosses.Concat(department.Bosses);
+            }
+            return bosses;
+        }}
     }
     public class Department
     {
