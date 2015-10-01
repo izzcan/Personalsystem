@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Personalsystem.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Personalsystem.Controllers
 {
@@ -41,6 +43,64 @@ namespace Personalsystem.Controllers
         {
             ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name",id);
             return View();
+        }
+
+        // GET: Companies/AddBoss/5
+        public ActionResult AddBoss(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Department department = db.Departments.Find(id);
+            if (department == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.userId = new SelectList(db.Users, "Id", "Email");
+            return View(department);
+        }
+
+        // POST: Companies/AddBoss/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddBoss(int? id, string userId)
+        {
+            if (id == null || userId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Department department = db.Departments.Find(id);
+            ApplicationUser user = db.Users.Find(userId);
+            if (department == null || user == null)
+            {
+                return HttpNotFound();
+            }
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (department.Company.Admins.Contains(currentUser))
+                {
+                    //Add new user to bosses
+                    department.Bosses.Add(user);
+                    db.Entry(department).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return RedirectToAction("Info", "Companies", new { id = department.CompanyId });
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
         }
 
         // POST: Departments/Create

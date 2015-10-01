@@ -11,6 +11,7 @@
     <hr />
     <div style="border:solid black 2px; background-color:yellow; padding:10px; margin:5px;">
         <h5>Administrators</h5>
+        @Html.ActionLink("Add Admin", "AddAdmin", new { Model.Id }, new { @class = "btn btn-default" })
         <ul>
             @foreach (var item in Model.Admins)
             {
@@ -24,7 +25,8 @@
         {
             <h6>@item.Name</h6>
             <div style="border:solid black 2px;background-color:cyan; padding:10px; margin:5px;">
-                <h5>Bosses</h5>
+                <h5>Bosses</h5>                
+                @Html.ActionLink("Add Boss", "AddBoss", "Departments", new { item.Id }, new { @class = "btn btn-default" })
                 <ul>
                     @foreach (var boss in item.Bosses)
                     {
@@ -39,6 +41,7 @@
                     <h6>@group.Name</h6>
                     <div style="border:solid black 2px;background-color:aquamarine; padding:10px; margin:5px;">
                         <h5>Employees</h5>
+                        @Html.ActionLink("Add Employee", "AddEmployee", "DepartmentGroups", new { group.Id }, new { @class = "btn btn-default" })
                         <ul>
                             @foreach (var employee in group.Employees)
                             {
