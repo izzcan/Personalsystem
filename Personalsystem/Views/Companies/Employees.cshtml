@@ -17,7 +17,10 @@
         <ul>
             @foreach (var item in Model.Admins)
             {
-                <li>@item.Name</li>
+                <li>
+                    @item.Name
+                    <a href="/Companies/RemoveAdmin/@(Model.Id)?userId=@(item.Id)" @(ViewBag.IsAdmin ? "" : "disabled")>Remove Admin</a>
+                </li>
             }
         </ul>
     </div>
@@ -37,7 +40,10 @@
                         <ul>
                             @foreach (var boss in item.Bosses)
                             {
-                                <li>@boss.Name</li>
+                                <li>
+                                    @boss.Name
+                                    <a href="/Departments/RemoveBoss/@(item.Id)?userId=@(boss.Id)" @(ViewBag.IsAdmin ? "" : "disabled")>Remove Boss</a>
+                                </li>
                             }
                         </ul>
                     </div>
@@ -56,7 +62,10 @@
                                     <ul>
                                         @foreach (var employee in group.Employees)
                                         {
-                                            <li>@employee.Name</li>
+                                            <li>
+                                                @employee.Name
+                                                <a href="/DepartmentGroups/RemoveEmployee/@(group.Id)?userId=@(employee.Id)" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Remove Employee</a>
+                                            </li>
                                         }
                                     </ul>
                                 </div>
@@ -68,8 +77,6 @@
         }
     </div>
 </div>
-
-
 
 <p>
     @Html.ActionLink("Back to Info", "Info", new { Model.Id })

@@ -24,3 +24,14 @@ select {
 textarea{
     width: 500px;
 }
+
+a.disabled, a[disabled] {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.65;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    text-decoration: line-through;
+}
+

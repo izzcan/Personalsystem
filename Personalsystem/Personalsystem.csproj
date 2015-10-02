@@ -377,6 +377,9 @@
     <Content Include="Views\Companies\Employees.cshtml" />
     <Content Include="Views\Departments\AddBoss.cshtml" />
     <Content Include="Views\DepartmentGroups\AddEmployee.cshtml" />
+    <Content Include="Views\Companies\RemoveAdmin.cshtml" />
+    <Content Include="Views\Departments\RemoveBoss.cshtml" />
+    <Content Include="Views\DepartmentGroups\RemoveEmployee.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Pdf\" />
