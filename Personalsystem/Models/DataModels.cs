@@ -17,8 +17,10 @@ namespace Personalsystem.Models
         public virtual ICollection<NewsItem> NewsItems { get; set; }
 
         //public virtual ICollection<CompanyUserRole> CompanyUserRoles { get; set; }
-
+        [InverseProperty("AdminForCompanies")]
         public virtual ICollection<ApplicationUser> Admins { get; set; }
+        [InverseProperty("LeaderForCompanies")]
+        public virtual ICollection<ApplicationUser> Leadership { get; set; }
 
         [NotMapped]
         public virtual ICollection<ApplicationUser> Bosses { 
