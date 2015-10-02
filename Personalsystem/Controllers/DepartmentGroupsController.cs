@@ -39,29 +39,70 @@ namespace Personalsystem.Controllers
         }
 
         // GET: DepartmentGroups/Create
+        [Authorize]
         public ActionResult Create(int? id)
-        {
-            ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name",id);
-            return View();
+        {  //
+            Department department = db.Departments.Find(id);
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (department == null || department.Company.Admins.Contains(currentUser) || department.Bosses.Contains(currentUser))
+                {
+                    ViewBag.DepartmentId = new SelectList(db.Departments.ToList().Where(q => q.Bosses.Contains(currentUser) || q.Company.Admins.Contains(currentUser)).ToList(), "Id", "Name", id);
+                    return View();
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
+
         }
 
         // POST: DepartmentGroups/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,DepartmentId")] DepartmentGroup departmentGroup)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && User.Identity.IsAuthenticated)
             {
-                db.DepartmentGroups.Add(departmentGroup);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                if (departmentGroup.DepartmentId == 0)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Department department = db.Departments.Find(departmentGroup.DepartmentId);
+                if (department == null)
+                {
+                    return HttpNotFound();
+                }
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (department.Company.Admins.Contains(currentUser) || department.Bosses.Contains(currentUser)) //Current logged in user must be admin for the company or boss for the department that the group is being added to
+                {
+                    db.DepartmentGroups.Add(departmentGroup);
+                    db.SaveChanges();
 
-            ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name", departmentGroup.DepartmentId);
+                    return RedirectToAction("Details", "Companies", new { id = department.CompanyId });
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+            }
+            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", departmentGroup.DepartmentId);
             return View(departmentGroup);
         }
+
 
         // GET: Companies/AddEmployee/5
         public ActionResult AddEmployee(int? id)
@@ -102,12 +143,71 @@ namespace Personalsystem.Controllers
                 var currentUser = userManager.FindById(User.Identity.GetUserId());
                 if (departmentGroup.Department.Bosses.Contains(currentUser) || departmentGroup.Department.Company.Admins.Contains(currentUser))
                 {
-                    //Add new user to bosses
+                    //Add new user to employees
                     departmentGroup.Employees.Add(user);
                     db.Entry(departmentGroup).State = EntityState.Modified;
                     db.SaveChanges();
 
-                    return RedirectToAction("Info", "Companies", new { id = departmentGroup.Department.CompanyId });
+                    return RedirectToAction("Details", "Companies", new { id = departmentGroup.Department.CompanyId });
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
+        }
+
+        // GET: Companies/RemoveEmployee/5
+        public ActionResult RemoveEmployee(int? id, string userId)
+        {
+            if (id == null || userId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            DepartmentGroup departmentGroup = db.DepartmentGroups.Find(id);
+            ApplicationUser user = db.Users.Find(userId);
+            if (departmentGroup == null || user == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.userId = new SelectList(departmentGroup.Employees, "Id", "Email", userId);
+            return View(departmentGroup);
+        }
+
+        // POST: Companies/RemoveEmployee/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RemoveEmployee(int id, string userId)
+        {
+            if (id == 0 || userId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            DepartmentGroup departmentGroup = db.DepartmentGroups.Find(id);
+            ApplicationUser user = db.Users.Find(userId);
+            if (departmentGroup == null || user == null)
+            {
+                return HttpNotFound();
+            }
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (departmentGroup.Department.Bosses.Contains(currentUser) || departmentGroup.Department.Company.Admins.Contains(currentUser))
+                {
+                    //Remove user from employees
+                    departmentGroup.Employees.Remove(user);
+                    db.Entry(departmentGroup).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return RedirectToAction("Details", "Companies", new { id = departmentGroup.Department.CompanyId });
                 }
                 else
                 {

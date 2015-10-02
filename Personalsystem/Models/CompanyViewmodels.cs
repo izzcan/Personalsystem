@@ -5,6 +5,7 @@ using System.Web;
 
 namespace Personalsystem.Models
 {
+    //Ta bort?
     public class CompanyProfileViewmodel
     {
         public int Id { get; set; }
@@ -28,6 +29,7 @@ namespace Personalsystem.Models
         }
     }
 
+    //Ta bort?
     public class DepartmentListitemViewmodel
     {
         public int Id { get; set; }
@@ -44,27 +46,31 @@ namespace Personalsystem.Models
     }
 
 
-    public class CompanyUsersViewmodel
+    public class CompanyDetailsViewmodel
     {
         public int Id { get; set; }
         public string Name { get; set; }
 
         public ICollection<UserListitemViewmodel> Admins { get; set; }
+        public ICollection<UserListitemViewmodel> Leadership { get; set; }
         public ICollection<CompanyDepartmentListitemViewmodel> Departments { get; set; }
+        public ICollection<NewsListitemViewmodel> NewsItems { get; set; }
 
-        public CompanyUsersViewmodel()
+        public CompanyDetailsViewmodel()
         {
-            Admins = new List<UserListitemViewmodel>();
-            Departments = new List<CompanyDepartmentListitemViewmodel>();
+            //Admins = new List<UserListitemViewmodel>();
+            //Departments = new List<CompanyDepartmentListitemViewmodel>();
         }
 
-        public CompanyUsersViewmodel(Company that)
+        public CompanyDetailsViewmodel(Company that)
         {
             this.Id = that.Id;
             this.Name = that.Name;
             this.Admins = that.Admins.Select(q => new UserListitemViewmodel() { Id = q.Id, Name = q.UserName }).ToList();
+            this.Leadership = that.Leadership.Select(q => new UserListitemViewmodel() { Id = q.Id, Name = q.UserName }).ToList();
 
             this.Departments = that.Departments.Select(q => new CompanyDepartmentListitemViewmodel(q)).ToList();
+            this.NewsItems = that.NewsItems.OrderByDescending(q => q.Created).Take(6).Select(q => new NewsListitemViewmodel() { Id = q.Id, Title = q.Title, Content = q.Content, Created = q.Created, CreatorName = q.Creator.UserName }).ToList();
         }
     }
 

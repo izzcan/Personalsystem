@@ -101,8 +101,10 @@ namespace Personalsystem.Migrations
                 AddUser(context, user);
             }
 
-            var company = new Company() { Name = "The Company", Admins = new List<ApplicationUser>(), Departments = new List<Department>() };
-            context.Companies.Add(company);
+            var company = new Company() { Name = "The Best Company", Admins = new List<ApplicationUser>(), Departments = new List<Department>() };
+            context.Companies.AddOrUpdate(q => q.Name,
+                    company
+                );
             context.SaveChanges();
 
             var hr = new Department() { Name = "HR", Bosses = new List<ApplicationUser>(), Groups = new List<DepartmentGroup>() };
