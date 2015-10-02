@@ -50,6 +50,7 @@ namespace Personalsystem.Models
         public string Name { get; set; }
 
         public ICollection<UserListitemViewmodel> Admins { get; set; }
+        public ICollection<UserListitemViewmodel> Leadership { get; set; }
         public ICollection<CompanyDepartmentListitemViewmodel> Departments { get; set; }
 
         public CompanyUsersViewmodel()
@@ -63,6 +64,7 @@ namespace Personalsystem.Models
             this.Id = that.Id;
             this.Name = that.Name;
             this.Admins = that.Admins.Select(q => new UserListitemViewmodel() { Id = q.Id, Name = q.UserName }).ToList();
+            this.Leadership = that.Leadership.Select(q => new UserListitemViewmodel() { Id = q.Id, Name = q.UserName }).ToList();
 
             this.Departments = that.Departments.Select(q => new CompanyDepartmentListitemViewmodel(q)).ToList();
         }

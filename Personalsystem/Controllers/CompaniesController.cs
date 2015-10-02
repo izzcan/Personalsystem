@@ -199,6 +199,123 @@ namespace Personalsystem.Controllers
         }
 
 
+        // GET: Companies/AddLeader/5
+        public ActionResult AddLeader(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Company company = db.Companies.Find(id);
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
+            //var model = db.Users.Select(q => new CompanyUserRoleListitemViewmodel() { Id = q.Id, Name = q.UserName, HasRole = company.Admins.Contains(q) }).ToList();
+            ViewBag.userId = new SelectList(db.Users, "Id", "Email");
+            return View(company);
+        }
+
+        // POST: Companies/AddLeader/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddLeader(int? id, string userId)
+        {
+            if (id == null || userId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Company company = db.Companies.Find(id);
+            ApplicationUser user = db.Users.Find(userId);
+            if (company == null || user == null)
+            {
+                return HttpNotFound();
+            }
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (company.Admins.Contains(currentUser))
+                {
+                    //Add user to leadership
+                    company.Leadership.Add(user);
+                    db.Entry(company).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return RedirectToAction("Employees", "Companies", new { id = id });
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
+
+        }
+
+        // GET: Companies/RemoveLeader/5
+        public ActionResult RemoveLeader(int? id, string userId)
+        {
+            if (id == null || userId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Company company = db.Companies.Find(id);
+            ApplicationUser user = db.Users.Find(userId);
+            if (company == null || user == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.userId = new SelectList(company.Leadership, "Id", "Email", userId);
+            return View(company);
+        }
+
+        // POST: Companies/RemoveLeader/5
+        [HttpPost, ActionName("RemoveLeader")]
+        [ValidateAntiForgeryToken]
+        public ActionResult RemoveLeader(int id, string userId)
+        {
+
+            if (id == 0 || userId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Company company = db.Companies.Find(id);
+            ApplicationUser user = db.Users.Find(userId);
+            if (company == null || user == null)
+            {
+                return HttpNotFound();
+            }
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (company.Admins.Contains(currentUser))
+                {
+                    //Remove user from leadership
+                    company.Leadership.Remove(user);
+                    db.Entry(company).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return RedirectToAction("Employees", "Companies", new { id = id });
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
+        }
+
+
         // GET: Companies/Details/5
         public ActionResult Details(int? id)
         {
