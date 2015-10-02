@@ -74,7 +74,7 @@ namespace Personalsystem.Controllers
                         db.NewsItems.Add(newsItem);
                         db.SaveChanges();
 
-                        return RedirectToAction("Info", "Companies", new { id = newsItem.CompanyId });
+                        return RedirectToAction("Details", "Companies", new { id = newsItem.CompanyId });
                     }
                     else
                     {

@@ -92,7 +92,7 @@ namespace Personalsystem.Controllers
                     db.DepartmentGroups.Add(departmentGroup);
                     db.SaveChanges();
 
-                    return RedirectToAction("Employees", "Companies", new { id = department.CompanyId });
+                    return RedirectToAction("Details", "Companies", new { id = department.CompanyId });
                 }
                 else
                 {
@@ -148,7 +148,7 @@ namespace Personalsystem.Controllers
                     db.Entry(departmentGroup).State = EntityState.Modified;
                     db.SaveChanges();
 
-                    return RedirectToAction("Employees", "Companies", new { id = departmentGroup.Department.CompanyId });
+                    return RedirectToAction("Details", "Companies", new { id = departmentGroup.Department.CompanyId });
                 }
                 else
                 {
@@ -207,7 +207,7 @@ namespace Personalsystem.Controllers
                     db.Entry(departmentGroup).State = EntityState.Modified;
                     db.SaveChanges();
 
-                    return RedirectToAction("Employees", "Companies", new { id = departmentGroup.Department.CompanyId });
+                    return RedirectToAction("Details", "Companies", new { id = departmentGroup.Department.CompanyId });
                 }
                 else
                 {

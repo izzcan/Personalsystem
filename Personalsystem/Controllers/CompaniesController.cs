@@ -41,46 +41,46 @@ namespace Personalsystem.Controllers
             return View(model);
         }
 
-        //// GET: Companies/Users/5
-        public ActionResult Employees(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Company company = db.Companies.Find(id);
-            if (company == null)
-            {
-                return HttpNotFound();
-            }
-            var model = new CompanyUsersViewmodel(company);
-            //Disable unauthorized buttons
-            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-            var currentUser = userManager.FindById(User.Identity.GetUserId());
-            if (company.Admins.Contains(currentUser))
-            {
-                ViewBag.IsAdmin = true;
-            }
-            else
-            {
-                ViewBag.IsAdmin = false;
-            }
-            var isBossFor = new Dictionary<int, bool>();
-            foreach (var department in company.Departments)
-            {
-                if (department.Bosses.Contains(currentUser))
-                {
-                    isBossFor[department.Id] = true;
-                }
-                else
-                {
-                    isBossFor[department.Id] = false;
-                }
-            }
+        ////// GET: Companies/Users/5
+        //public ActionResult Employees(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Company company = db.Companies.Find(id);
+        //    if (company == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    var model = new CompanyUsersViewmodel(company);
+        //    //Disable unauthorized buttons
+        //    var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+        //    var currentUser = userManager.FindById(User.Identity.GetUserId());
+        //    if (company.Admins.Contains(currentUser))
+        //    {
+        //        ViewBag.IsAdmin = true;
+        //    }
+        //    else
+        //    {
+        //        ViewBag.IsAdmin = false;
+        //    }
+        //    var isBossFor = new Dictionary<int, bool>();
+        //    foreach (var department in company.Departments)
+        //    {
+        //        if (department.Bosses.Contains(currentUser))
+        //        {
+        //            isBossFor[department.Id] = true;
+        //        }
+        //        else
+        //        {
+        //            isBossFor[department.Id] = false;
+        //        }
+        //    }
             
-            ViewBag.IsBossFor = isBossFor;
-            return View(model);
-        }
+        //    ViewBag.IsBossFor = isBossFor;
+        //    return View(model);
+        //}
 
         // GET: Companies/AddAdmins/5
         public ActionResult AddAdmin(int? id)
@@ -125,7 +125,7 @@ namespace Personalsystem.Controllers
                     db.Entry(company).State = EntityState.Modified;
                     db.SaveChanges();
 
-                    return RedirectToAction("Employees", "Companies", new { id = id });
+                    return RedirectToAction("Details", "Companies", new { id = id });
                 }
                 else
                 {
@@ -184,7 +184,7 @@ namespace Personalsystem.Controllers
                     db.Entry(company).State = EntityState.Modified;
                     db.SaveChanges();
 
-                    return RedirectToAction("Employees", "Companies", new { id = id });
+                    return RedirectToAction("Details", "Companies", new { id = id });
                 }
                 else
                 {
@@ -242,7 +242,7 @@ namespace Personalsystem.Controllers
                     db.Entry(company).State = EntityState.Modified;
                     db.SaveChanges();
 
-                    return RedirectToAction("Employees", "Companies", new { id = id });
+                    return RedirectToAction("Details", "Companies", new { id = id });
                 }
                 else
                 {
@@ -301,7 +301,7 @@ namespace Personalsystem.Controllers
                     db.Entry(company).State = EntityState.Modified;
                     db.SaveChanges();
 
-                    return RedirectToAction("Employees", "Companies", new { id = id });
+                    return RedirectToAction("Details", "Companies", new { id = id });
                 }
                 else
                 {
@@ -328,7 +328,29 @@ namespace Personalsystem.Controllers
             {
                 return HttpNotFound();
             }
-            return View(company);
+            var model = new CompanyDetailsViewmodel(company);
+            //Disable unauthorized buttons
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var currentUser = userManager.FindById(User.Identity.GetUserId());
+
+            ViewBag.IsAdmin = company.Admins.Contains(currentUser);
+            ViewBag.IsBoss = company.Bosses.Contains(currentUser);
+
+            var isBossFor = new Dictionary<int, bool>();
+            foreach (var department in company.Departments)
+            {
+                if (department.Bosses.Contains(currentUser))
+                {
+                    isBossFor[department.Id] = true;
+                }
+                else
+                {
+                    isBossFor[department.Id] = false;
+                }
+            }
+
+            ViewBag.IsBossFor = isBossFor;
+            return View(model);
         }
 
         // GET: Companies/Create
