@@ -1,0 +1,76 @@
+﻿@model Personalsystem.Models.CompanyUsersViewmodel
+
+@{
+    ViewBag.Title = "Employees";
+}
+
+<h2>@Model.Name</h2>
+
+<div>
+    <h4>Employees</h4>
+    <hr />
+    <div style="border:solid black 2px; background-color:yellow; padding:10px; margin:5px;">
+        @*@Html.ActionLink("Add Admin", "AddAdmin", new { Model.Id }, new { @class = "btn btn-default", disabled = ""  })*@
+        <a class="btn btn-default" style="float:right;" href="/Companies/AddAdmin/@Model.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Admin</a>
+        <h5>Administrators</h5>
+
+        <ul>
+            @foreach (var item in Model.Admins)
+            {
+                <li>@item.Name</li>
+            }
+        </ul>
+    </div>
+    <div style="border:solid black 2px;background-color:pink; padding:10px; margin:5px;" class="row">
+        <a class="btn btn-default" style="float:right;" href="/Departments/Create/@Model.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Department</a>
+        <h5>Departments</h5>
+        @foreach (var item in Model.Departments)
+        {
+            <div class="@(Model.Departments.Count >= 3 ? "col-md-4" : Model.Departments.Count == 2 ? "col-md-6" : "col-md-12")">
+                <div style="border:solid black 2px;background-color:orange; padding:10px; margin:5px;">
+                    <a class="btn btn-default" style="float:right;" href="#" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Manage Schedule(todo)</a>
+                    <h6>@item.Name</h6>
+                    <div style="border:solid black 2px;background-color:cyan; padding:10px; margin:5px;">
+                        @*@Html.ActionLink("Add Boss", "AddBoss", "Departments", new { item.Id }, new { @class = "btn btn-default" })*@
+                        <a class="btn btn-default" style="float:right;" href="/Departments/AddBoss/@item.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Boss</a>
+                        <h5>Bosses</h5>
+                        <ul>
+                            @foreach (var boss in item.Bosses)
+                            {
+                                <li>@boss.Name</li>
+                            }
+                        </ul>
+                    </div>
+                    <div style="border:solid black 2px;background-color:lightgreen; padding:10px; margin:5px;">
+                        <a class="btn btn-default" style="float:right;" href="/DepartmentGroups/Create/@item.Id" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Add Group</a>
+                        <h5>Groups</h5>
+                        @foreach (var group in item.Groups)
+                        {
+                            <div style="border:solid black 2px;background-color:lime; padding:10px; margin:5px;">
+                                <a class="btn btn-default" style="float:right;" href="#" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Manage Schedule(todo)</a>
+                                <h6>@group.Name</h6>
+                                <div style="border:solid black 2px;background-color:aquamarine; padding:10px; margin:5px;">
+                                    @*@Html.ActionLink("Add Employee", "AddEmployee", "DepartmentGroups", new { group.Id }, new { @class = "btn btn-default" })*@
+                                    <a class="btn btn-default" style="float:right;" href="/DepartmentGroups/AddEmployee/@group.Id" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Add Employee</a>
+                                    <h5>Employees</h5>
+                                    <ul>
+                                        @foreach (var employee in group.Employees)
+                                        {
+                                            <li>@employee.Name</li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+<p>
+    @Html.ActionLink("Back to Info", "Info", new { Model.Id })
+</p>

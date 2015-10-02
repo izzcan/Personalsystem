@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using Personalsystem.Models;
 using Personalsystem.Repositories;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Personalsystem.Controllers
 {
@@ -23,7 +25,7 @@ namespace Personalsystem.Controllers
             return View(db.Companies.ToList());
         }
 
-        // GET: Companies/Details/5
+        // GET: Companies/Info/5
         public ActionResult Info(int? id)
         {
             if (id == null)
@@ -31,12 +33,110 @@ namespace Personalsystem.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Company company = db.Companies.Find(id);
-            var model = new CompanyProfileViewmodel(company);
             if (company == null)
             {
                 return HttpNotFound();
             }
+            var model = new CompanyProfileViewmodel(company);
             return View(model);
+        }
+
+        //// GET: Companies/Users/5
+        public ActionResult Employees(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Company company = db.Companies.Find(id);
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
+            var model = new CompanyUsersViewmodel(company);
+            //Disable unauthorized buttons
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var currentUser = userManager.FindById(User.Identity.GetUserId());
+            if (company.Admins.Contains(currentUser))
+            {
+                ViewBag.IsAdmin = true;
+            }
+            else
+            {
+                ViewBag.IsAdmin = false;
+            }
+            var isBossFor = new Dictionary<int, bool>();
+            foreach (var department in company.Departments)
+            {
+                if (department.Bosses.Contains(currentUser))
+                {
+                    isBossFor[department.Id] = true;
+                }
+                else
+                {
+                    isBossFor[department.Id] = false;
+                }
+            }
+            
+            ViewBag.IsBossFor = isBossFor;
+            return View(model);
+        }
+
+        // GET: Companies/AddAdmins/5
+        public ActionResult AddAdmin(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Company company = db.Companies.Find(id);
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
+            //var model = db.Users.Select(q => new CompanyUserRoleListitemViewmodel() { Id = q.Id, Name = q.UserName, HasRole = company.Admins.Contains(q) }).ToList();
+            ViewBag.userId = new SelectList(db.Users, "Id", "Email");
+            return View(company);
+        }
+
+        // POST: Companies/AddAdmins/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddAdmin(int? id, string userId)
+        {
+            if (id == null || userId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Company company = db.Companies.Find(id);
+            ApplicationUser user = db.Users.Find(userId);
+            if (company == null || user == null)
+            {
+                return HttpNotFound();
+            }
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (company.Admins.Contains(currentUser))
+                {
+                    //Add new user to admin
+                    company.Admins.Add(user);
+                    db.Entry(company).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return RedirectToAction("Info", "Companies", new { id = id });
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
         }
 
         // GET: Companies/Details/5
@@ -69,6 +169,12 @@ namespace Personalsystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                //Add new user to admin
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                company.Admins = new List<ApplicationUser>();
+                company.Admins.Add(currentUser);
+
                 db.Companies.Add(company);
                 db.SaveChanges();
                 return RedirectToAction("Index");

@@ -6,7 +6,8 @@
 
 <h2>@Model.Name</h2>
 
-@{string newsClass = Model.NewsItems.Count >= 3 ? "col-md-4" : Model.NewsItems.Count == 2 ? "col-md-6" : "col-md-12"; }
+@*@{string newsClass = Model.NewsItems.Count >= 3 ? "col-md-4" : Model.NewsItems.Count == 2 ? "col-md-6" : "col-md-12"; }*@ 
+@{string newsClass = "col-md-4 col-sm-6";}
 
 @Html.ActionLink("Create Newsitem", "Create", "NewsItems", new { Model.Id }, new { @class = "btn btn-default" })<br />
 <div class="row">
@@ -14,7 +15,7 @@
     {
         <div class="@newsClass" style="background-color:yellow;">
             <h4>@Html.ActionLink(item.Title, "Details", "NewsItems", new { item.Id }, null)</h4>
-            <span>@item.Created</span>
+            <span>@item.Created - @item.CreatorName</span>
             <p>@item.Content</p>
         </div>
     }
@@ -32,4 +33,9 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
+</p>
+
+<p>
+    @Html.ActionLink("Show Employees", "Employees", new { Model.Id }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Add Admin", "AddAdmin", new { Model.Id }, new { @class = "btn btn-default" })
 </p>

@@ -19,6 +19,17 @@ namespace Personalsystem.Models
         //public virtual ICollection<CompanyUserRole> CompanyUserRoles { get; set; }
 
         public virtual ICollection<ApplicationUser> Admins { get; set; }
+
+        [NotMapped]
+        public virtual ICollection<ApplicationUser> Bosses { 
+        get { 
+            var bosses = new List<ApplicationUser>();
+            foreach (var department in Departments)
+            {
+                bosses.Concat(department.Bosses);
+            }
+            return bosses;
+        }}
     }
     public class Department
     {
@@ -26,7 +37,7 @@ namespace Personalsystem.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public virtual ICollection<DepartmentGroup> Groups { get; set; }
-        public virtual ICollection<ApplicationUser> Users { get; set; }
+        public virtual ICollection<ApplicationUser> Bosses { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }
         [ForeignKey("Company")]
         public int CompanyId { get; set; }
@@ -38,7 +49,7 @@ namespace Personalsystem.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }
-        public virtual ICollection<ApplicationUser> Users { get; set; }
+        public virtual ICollection<ApplicationUser> Employees { get; set; }
         [ForeignKey("Department")]
         public int DepartmentId { get; set; }
         public virtual Department Department { get; set; }
@@ -48,15 +59,32 @@ namespace Personalsystem.Models
         [Key]
         public int Id { get; set; }
         public DateTime StartTime { get; set; }
-        public DateTime EndTime{ get; set; }
-        public virtual ICollection<ApplicationUser> Users { get; set; }
+        public DateTime? EndTime{ get; set; }
+        //public virtual ICollection<ApplicationUser> Users { get; set; }
+
         [ForeignKey("Department")]
         public int DepartmentId { get; set; }
         public virtual Department Department { get; set; }
+
         [ForeignKey("Group")]
-        public int GroupId { get; set; }
+        public int? GroupId { get; set; }
         public virtual DepartmentGroup Group { get; set; }
+
+        public virtual ICollection<ScheduleItem> ScheduleItems { get; set; }
     }
+
+    public class ScheduleItem
+    {
+        [Key]
+        public int Id { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+
+        [ForeignKey("Schedule")]
+        public int ScheduleId { get; set; }
+        public virtual Schedule Schedule { get; set; }
+    }
+
     public class NewsItem
     {
         [Key]

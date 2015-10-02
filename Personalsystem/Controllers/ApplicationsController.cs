@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Personalsystem.Models;
+using System.Threading.Tasks;
+using System.IO;
 
 namespace Personalsystem.Controllers
 {
@@ -37,10 +39,12 @@ namespace Personalsystem.Controllers
         }
 
         // GET: Applications/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
             ViewBag.ApplicantId = new SelectList(db.Users, "Id", "Email");
-            ViewBag.VacancyId = new SelectList(db.Vacancies, "Id", "Title");
+            //ViewBag.VacancyId = new SelectList(db.Vacancies, "Id", "Title", id);
+            ViewBag.VacancyId = id;
+            ViewBag.VacancyTitle = db.Vacancies.Find(id).Title;
             return View();
         }
 
@@ -49,10 +53,17 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Content,ApplicantId,VacancyId")] Application application)
+        public ActionResult Create([Bind(Include = "Id,Content,ApplicantId,VacancyId,fileuploadPdf")] Application application)
         {
+            HttpPostedFileBase file = Request.Files["fileuploadPdf"];
+
+            // Sparar filen till angiven sökväg
+            string uploadPath = Server.MapPath("~/App_Data/Pdf/");
+            file.SaveAs(uploadPath + file.FileName);
+
             if (ModelState.IsValid)
             {
+                
                 db.Applications.Add(application);
                 db.SaveChanges();
                 return RedirectToAction("Index");

@@ -1,10 +1,10 @@
 ﻿@model Personalsystem.Models.Vacancy
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detaljer " + (Model.Title);
 }
 
-<h2>Details</h2>
+<h2>Detaljer @Model.Title</h2>
 
 <div>
     <h4>Vacancy</h4>
@@ -18,13 +18,6 @@
             @Html.DisplayFor(model => model.Company.Name)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Creator.Email)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Creator.Email)
-        </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.Title)
@@ -50,9 +43,17 @@
             @Html.DisplayFor(model => model.Created)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.Creator.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Creator.Email)
+        </dd>
     </dl>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index") |
+    @Html.ActionLink("Ansök", "Create", "Applications", new { id = Model.Id }, null)
 </p>
