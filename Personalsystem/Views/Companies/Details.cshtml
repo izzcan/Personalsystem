@@ -10,7 +10,9 @@
     <div style="border:solid black 2px; background-color:aquamarine; padding:10px;">
 
         <div class="row">
-            <a class="btn btn-default" style="float:right;" href="/NewsItems/Create/" @(ViewBag.IsAdmin || ViewBag.IsBoss ? "" : "disabled")>Add News</a>
+            <div class="col-md-12">
+                <a class="btn btn-default" style="float:right;" href="/NewsItems/Create/" @(ViewBag.IsAdmin || ViewBag.IsBoss ? "" : "disabled")>Add News</a>
+            </div>
         </div>
         <div class="row">
             @foreach (var item in Model.NewsItems)

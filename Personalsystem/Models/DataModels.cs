@@ -16,7 +16,6 @@ namespace Personalsystem.Models
         public virtual ICollection<Department> Departments { get; set; }
         public virtual ICollection<NewsItem> NewsItems { get; set; }
 
-        //public virtual ICollection<CompanyUserRole> CompanyUserRoles { get; set; }
         [InverseProperty("AdminForCompanies")]
         public virtual ICollection<ApplicationUser> Admins { get; set; }
         [InverseProperty("LeaderForCompanies")]
@@ -62,7 +61,6 @@ namespace Personalsystem.Models
         public int Id { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime? EndTime{ get; set; }
-        //public virtual ICollection<ApplicationUser> Users { get; set; }
 
         [ForeignKey("Department")]
         public int DepartmentId { get; set; }
@@ -94,6 +92,7 @@ namespace Personalsystem.Models
         public string Title { get; set; }
         public string Content { get; set; }
         public DateTime Created { get; set; }
+        //public bool IsPublic { get; set; }
         [ForeignKey("Company")]
         public int CompanyId { get; set; }
         public virtual Company Company { get; set; }
