@@ -1,4 +1,4 @@
 Företagshantering:
-  * Edit/delet funktioner
+  * Edit/delete funktioner
 Börja schemaläggning
 Färdigställa CV funktion/Personligt brev
