@@ -24,7 +24,7 @@ namespace Personalsystem.Controllers
             return View(db.Companies.ToList());
         }
 
-
+       
         // GET: Companies/Details/5
         public ActionResult Details(int? id)
         {
@@ -44,21 +44,22 @@ namespace Personalsystem.Controllers
 
             ViewBag.IsAdmin = company.Admins.Contains(currentUser);
             ViewBag.IsBoss = company.Bosses.Contains(currentUser);
+            
 
             var isBossFor = new Dictionary<int, bool>();
             foreach (var department in company.Departments)
             {
-                if (department.Bosses.Contains(currentUser))
-                {
-                    isBossFor[department.Id] = true;
-                }
-                else
-                {
-                    isBossFor[department.Id] = false;
-                }
+                isBossFor[department.Id] =department.Bosses.Contains(currentUser);
             }
-
             ViewBag.IsBossFor = isBossFor;
+
+            var isCreatorFor = new Dictionary<int, bool>();
+            foreach (var newsItem in company.NewsItems)
+            {
+                isCreatorFor[newsItem.Id] = newsItem.CreatorId == currentUser.Id;
+            }
+            ViewBag.IsCreatorFor = isCreatorFor;
+
             return View(model);
         }
 

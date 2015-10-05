@@ -19,6 +19,8 @@
             {
                 <div class="@(Model.NewsItems.Count >= 3 ? "col-md-4" : Model.NewsItems.Count == 2 ? "col-md-6" : "col-md-12")">
                     <div class="company-box company-box-secondary">
+                        <a class="btn btn-default todo" href="#" @(ViewBag.IsAdmin || ViewBag.IsCreatorFor[item.Id] == true ? "" : "disabled")>Edit</a>
+                        <a class="btn btn-default todo" href="#" @(ViewBag.IsAdmin || ViewBag.IsCreatorFor[item.Id] == true ? "" : "disabled")>Delete</a>
                         <h4>@Html.ActionLink(item.Title, "Details", "NewsItems", new { item.Id }, null)</h4>
                         <span>@item.Created - @item.CreatorName</span>
                         <p>@item.Content</p>
@@ -79,6 +81,7 @@
                     <div class="company-box company-box-secondary">
                         <a class="btn btn-default todo" href="#" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Schedule</a>
                         <a class="btn btn-default todo" href="#" @(ViewBag.IsAdmin ? "" : "disabled")>Edit</a>
+                        <a class="btn btn-default todo" href="#" @(ViewBag.IsAdmin ? "" : "disabled")>Delete</a>
                         <h4>@item.Name</h4>
                         <div class="company-box">
                             <a class="btn btn-default" href="/Departments/AddBoss/@item.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Boss</a>
@@ -101,6 +104,7 @@
                                 <div class="company-box company-box-secondary">
                                     <a class="btn btn-default todo" href="#" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Schedule</a>
                                     <a class="btn btn-default todo" href="#" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Edit</a>
+                                    <a class="btn btn-default todo" href="#" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Delete</a>
                                     <h4>@group.Name</h4>
                                     <div class="company-box">
                                         <a class="btn btn-default" href="/DepartmentGroups/AddEmployee/@group.Id" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Add Employee</a>
