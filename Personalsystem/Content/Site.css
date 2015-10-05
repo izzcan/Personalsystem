@@ -42,6 +42,7 @@ a.disabled, a[disabled] {
     padding:2px;
     border-radius:10px;
     margin:5px;
+    position:relative;
 }
 
 .company-box-secondary
@@ -73,4 +74,15 @@ a.disabled, a[disabled] {
 .company-box a:not(.btn) {
     color:#033c73;
     text-decoration:underline;
+}
+
+.todo::before
+{
+    content:"TODO";
+    position:absolute;
+    top: 0px;
+
+    font-weight:900;
+    color:red;
+    font-size:10px;
 }

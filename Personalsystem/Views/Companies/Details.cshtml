@@ -77,8 +77,8 @@
             {
                 <div class="@(Model.Departments.Count >= 3 ? "col-lg-4" : "col-lg-12") @(Model.Departments.Count >= 2 ? "col-md-6" : "col-md-12")">
                     <div class="company-box company-box-secondary">
-                        <a class="btn btn-default" href="#" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Schedule(todo)</a>
-                        <a class="btn btn-default" href="#" @(ViewBag.IsAdmin ? "" : "disabled")>Edit(todo)</a>
+                        <a class="btn btn-default todo" href="#" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Schedule</a>
+                        <a class="btn btn-default todo" href="#" @(ViewBag.IsAdmin ? "" : "disabled")>Edit</a>
                         <h4>@item.Name</h4>
                         <div class="company-box">
                             <a class="btn btn-default" href="/Departments/AddBoss/@item.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Boss</a>
@@ -99,8 +99,8 @@
                             @foreach (var group in item.Groups)
                             {
                                 <div class="company-box company-box-secondary">
-                                    <a class="btn btn-default" href="#" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Schedule(todo)</a>
-                                    <a class="btn btn-default" href="#" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Edit(todo)</a>
+                                    <a class="btn btn-default todo" href="#" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Schedule</a>
+                                    <a class="btn btn-default todo" href="#" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Edit</a>
                                     <h4>@group.Name</h4>
                                     <div class="company-box">
                                         <a class="btn btn-default" href="/DepartmentGroups/AddEmployee/@group.Id" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Add Employee</a>
