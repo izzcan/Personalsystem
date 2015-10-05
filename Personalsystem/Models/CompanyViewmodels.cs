@@ -5,47 +5,6 @@ using System.Web;
 
 namespace Personalsystem.Models
 {
-    //Ta bort?
-    public class CompanyProfileViewmodel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-
-        public ICollection<DepartmentListitemViewmodel> Departments { get; set; }
-        public ICollection<NewsListitemViewmodel> NewsItems { get; set; }
-
-        public CompanyProfileViewmodel()
-        {
-            Departments = new List<DepartmentListitemViewmodel>();
-            NewsItems = new List<NewsListitemViewmodel>();
-        }
-
-        public CompanyProfileViewmodel(Company that)
-        {
-            this.Id = that.Id;
-            this.Name = that.Name;
-            this.Departments = that.Departments.Select(q => new DepartmentListitemViewmodel() { Id = q.Id, Name = q.Name }).ToList();
-            this.NewsItems = that.NewsItems.OrderByDescending(q => q.Created).Take(6).Select(q => new NewsListitemViewmodel() { Id = q.Id, Title = q.Title, Content = q.Content, Created = q.Created, CreatorName = q.Creator.UserName }).ToList();
-        }
-    }
-
-    //Ta bort?
-    public class DepartmentListitemViewmodel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
-
-    public class NewsListitemViewmodel
-    {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string Content { get; set; }
-        public DateTime Created { get; set; }
-        public string CreatorName { get; set; }
-    }
-
-
     public class CompanyDetailsViewmodel
     {
         public int Id { get; set; }
@@ -56,11 +15,7 @@ namespace Personalsystem.Models
         public ICollection<CompanyDepartmentListitemViewmodel> Departments { get; set; }
         public ICollection<NewsListitemViewmodel> NewsItems { get; set; }
 
-        public CompanyDetailsViewmodel()
-        {
-            //Admins = new List<UserListitemViewmodel>();
-            //Departments = new List<CompanyDepartmentListitemViewmodel>();
-        }
+        public CompanyDetailsViewmodel() { }
 
         public CompanyDetailsViewmodel(Company that)
         {
@@ -72,6 +27,15 @@ namespace Personalsystem.Models
             this.Departments = that.Departments.Select(q => new CompanyDepartmentListitemViewmodel(q)).ToList();
             this.NewsItems = that.NewsItems.OrderByDescending(q => q.Created).Take(6).Select(q => new NewsListitemViewmodel() { Id = q.Id, Title = q.Title, Content = q.Content, Created = q.Created, CreatorName = q.Creator.UserName }).ToList();
         }
+    }
+
+    public class NewsListitemViewmodel
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public DateTime Created { get; set; }
+        public string CreatorName { get; set; }
     }
 
     public class CompanyDepartmentListitemViewmodel

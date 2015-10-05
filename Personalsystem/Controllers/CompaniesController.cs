@@ -17,7 +17,6 @@ namespace Personalsystem.Controllers
     public class CompaniesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        //private GenericRepository<Company> rep = new GenericRepository<Company>(new ApplicationDbContext());
 
         // GET: Companies
         public ActionResult Index()
@@ -25,8 +24,9 @@ namespace Personalsystem.Controllers
             return View(db.Companies.ToList());
         }
 
-        // GET: Companies/Info/5
-        public ActionResult Info(int? id)
+
+        // GET: Companies/Details/5
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -37,50 +37,30 @@ namespace Personalsystem.Controllers
             {
                 return HttpNotFound();
             }
-            var model = new CompanyProfileViewmodel(company);
+            var model = new CompanyDetailsViewmodel(company);
+            //Disable unauthorized buttons
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var currentUser = userManager.FindById(User.Identity.GetUserId());
+
+            ViewBag.IsAdmin = company.Admins.Contains(currentUser);
+            ViewBag.IsBoss = company.Bosses.Contains(currentUser);
+
+            var isBossFor = new Dictionary<int, bool>();
+            foreach (var department in company.Departments)
+            {
+                if (department.Bosses.Contains(currentUser))
+                {
+                    isBossFor[department.Id] = true;
+                }
+                else
+                {
+                    isBossFor[department.Id] = false;
+                }
+            }
+
+            ViewBag.IsBossFor = isBossFor;
             return View(model);
         }
-
-        ////// GET: Companies/Users/5
-        //public ActionResult Employees(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Company company = db.Companies.Find(id);
-        //    if (company == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    var model = new CompanyUsersViewmodel(company);
-        //    //Disable unauthorized buttons
-        //    var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-        //    var currentUser = userManager.FindById(User.Identity.GetUserId());
-        //    if (company.Admins.Contains(currentUser))
-        //    {
-        //        ViewBag.IsAdmin = true;
-        //    }
-        //    else
-        //    {
-        //        ViewBag.IsAdmin = false;
-        //    }
-        //    var isBossFor = new Dictionary<int, bool>();
-        //    foreach (var department in company.Departments)
-        //    {
-        //        if (department.Bosses.Contains(currentUser))
-        //        {
-        //            isBossFor[department.Id] = true;
-        //        }
-        //        else
-        //        {
-        //            isBossFor[department.Id] = false;
-        //        }
-        //    }
-            
-        //    ViewBag.IsBossFor = isBossFor;
-        //    return View(model);
-        //}
 
         // GET: Companies/AddAdmins/5
         public ActionResult AddAdmin(int? id)
@@ -316,42 +296,6 @@ namespace Personalsystem.Controllers
         }
 
 
-        // GET: Companies/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Company company = db.Companies.Find(id);
-            if (company == null)
-            {
-                return HttpNotFound();
-            }
-            var model = new CompanyDetailsViewmodel(company);
-            //Disable unauthorized buttons
-            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-            var currentUser = userManager.FindById(User.Identity.GetUserId());
-
-            ViewBag.IsAdmin = company.Admins.Contains(currentUser);
-            ViewBag.IsBoss = company.Bosses.Contains(currentUser);
-
-            var isBossFor = new Dictionary<int, bool>();
-            foreach (var department in company.Departments)
-            {
-                if (department.Bosses.Contains(currentUser))
-                {
-                    isBossFor[department.Id] = true;
-                }
-                else
-                {
-                    isBossFor[department.Id] = false;
-                }
-            }
-
-            ViewBag.IsBossFor = isBossFor;
-            return View(model);
-        }
 
         // GET: Companies/Create
         public ActionResult Create()

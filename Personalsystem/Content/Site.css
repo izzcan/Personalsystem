@@ -35,7 +35,54 @@ a.disabled, a[disabled] {
     text-decoration: line-through;
 }
 
-h3 {
-    margin-top: 0px;
-    margin-bottom: 0px;
+.company-box 
+{
+    /*border:solid #033c73 2px;*/
+    background-color: #2fa4e7;
+    padding:2px;
+    border-radius:10px;
+    margin:5px;
+    position:relative;
+}
+
+.company-box-secondary
+{
+    background-color: #178acc;
+    /*border-color:#022f5a;*/
+}
+.company-box h3, .company-box h4 {
+    margin:10px;
+}
+
+.company-box ul {
+    list-style:none;
+    padding:0px;
+}
+
+.company-box ul li{
+    background-color: white;
+    border-radius:5px;
+    margin:2px;
+    padding: 1px 3px 1px 3px;
+}
+
+.company-box a.btn.btn-default 
+{
+    float:right;
+}
+
+.company-box a:not(.btn) {
+    color:#033c73;
+    text-decoration:underline;
+}
+
+.todo::before
+{
+    content:"TODO";
+    position:absolute;
+    top: 0px;
+
+    font-weight:900;
+    color:red;
+    font-size:10px;
 }

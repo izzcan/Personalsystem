@@ -304,10 +304,7 @@
     <Content Include="Views\Interviews\Details.cshtml" />
     <Content Include="Views\Interviews\Edit.cshtml" />
     <Content Include="Views\Interviews\Index.cshtml" />
-    <Content Include="Views\Companies\Info.cshtml" />
-    <Content Include="Views\Companies\Users.cshtml" />
     <Content Include="Views\Companies\AddAdmin.cshtml" />
-    <Content Include="Views\Companies\Employees.cshtml" />
     <Content Include="Views\Departments\AddBoss.cshtml" />
     <Content Include="Views\DepartmentGroups\AddEmployee.cshtml" />
     <Content Include="Views\Companies\RemoveAdmin.cshtml" />
