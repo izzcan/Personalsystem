@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Personalsystem.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Personalsystem.Controllers
 {
@@ -39,8 +40,9 @@ namespace Personalsystem.Controllers
         // GET: Vacancies/Create
         public ActionResult Create()
         {
+            //Lägger till alla företag i en lista som läggs i Viewbaggen
             ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name");
-            ViewBag.CreatorId = new SelectList(db.Users, "Id", "Email");
+            //ViewBag.CreatorId = new SelectList(db.Users, "Id", "Email");
             return View();
         }
 
@@ -49,17 +51,21 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Content,Created,CompanyId,CreatorId")] Vacancy vacancy)
+        public ActionResult Create([Bind(Include = "Id,Title,Content,Expired,CompanyId")] Vacancy vacancy)
         {
             if (ModelState.IsValid)
             {
+                //Sätter dagens datum i kolumnen "Created" i objektet "vacancy"
+                db.Entry(vacancy).Property("Created").CurrentValue = DateTime.Now;
+                db.Entry(vacancy).Property("CreatorId").CurrentValue = User.Identity.GetUserId();
+                //db.Entry(vacancy).Property("CompanyId").CurrentValue = db.Companies.Single(c => c. == User.Identity.GetUserId());
                 db.Vacancies.Add(vacancy);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
             ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", vacancy.CompanyId);
-            ViewBag.CreatorId = new SelectList(db.Users, "Id", "Email", vacancy.CreatorId);
+            //ViewBag.CreatorId = new SelectList(db.Users, "Id", "Email", vacancy.CreatorId);
             return View(vacancy);
         }
 

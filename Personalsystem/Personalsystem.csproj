@@ -252,6 +252,10 @@
     <Compile Include="Migrations\201510061231204_CvPath.Designer.cs">
       <DependentUpon>201510061231204_CvPath.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510061244063_DisplayNames.cs" />
+    <Compile Include="Migrations\201510061244063_DisplayNames.Designer.cs">
+      <DependentUpon>201510061244063_DisplayNames.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -390,7 +394,7 @@
     <Content Include="Views\Companies\RemoveLeader.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\Pdf\" />
+    <Folder Include="App_Data\" />
     <Folder Include="CV\" />
   </ItemGroup>
   <ItemGroup>
@@ -418,6 +422,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510061231204_CvPath.resx">
       <DependentUpon>201510061231204_CvPath.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510061244063_DisplayNames.resx">
+      <DependentUpon>201510061244063_DisplayNames.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
