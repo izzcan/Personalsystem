@@ -251,6 +251,10 @@
     <Compile Include="Migrations\201510020838371_leadership.Designer.cs">
       <DependentUpon>201510020838371_leadership.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510061231204_CvPath.cs" />
+    <Compile Include="Migrations\201510061231204_CvPath.Designer.cs">
+      <DependentUpon>201510061231204_CvPath.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -414,6 +418,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510020838371_leadership.resx">
       <DependentUpon>201510020838371_leadership.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510061231204_CvPath.resx">
+      <DependentUpon>201510061231204_CvPath.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -127,6 +127,7 @@ namespace Personalsystem.Models
         public int VacancyId { get; set; }
         public virtual Vacancy Vacancy { get; set; }
         public virtual ICollection<Interview> Interviews { get; set; }
+        public string CvPath { get; set; }
     }
     public class Interview
     {
