@@ -387,6 +387,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Pdf\" />
+    <Folder Include="CV\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

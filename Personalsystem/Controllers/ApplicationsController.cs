@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Personalsystem.Models;
 using System.Threading.Tasks;
 using System.IO;
+using Microsoft.AspNet.Identity;
 
 namespace Personalsystem.Controllers
 {
@@ -53,17 +54,19 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Content,ApplicantId,VacancyId,fileuploadPdf")] Application application)
+        public ActionResult Create([Bind(Include = "Id,Content,VacancyId,fileuploadPdf")] Application application)
         {
             HttpPostedFileBase file = Request.Files["fileuploadPdf"];
-
+            Random rand = new Random();
+            int randomnumber = rand.Next();
             // Sparar filen till angiven sökväg
-            string uploadPath = Server.MapPath("~/App_Data/Pdf/");
-            file.SaveAs(uploadPath + file.FileName);
+            string uploadPath = Server.MapPath("~/CV/");
+            file.SaveAs(uploadPath + randomnumber + file.FileName);
 
             if (ModelState.IsValid)
             {
-                
+                db.Entry(application).Property("ApplicantId").CurrentValue = User.Identity.GetUserId();
+                db.Entry(application).Property("CvPath").CurrentValue = randomnumber + file.FileName;
                 db.Applications.Add(application);
                 db.SaveChanges();
                 return RedirectToAction("Index");
