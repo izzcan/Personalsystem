@@ -20,6 +20,7 @@ namespace Personalsystem.Controllers
         public ActionResult Index()
         {
             var departmentGroups = db.DepartmentGroups.Include(d => d.Department);
+            
             return View(departmentGroups.ToList());
         }
 
