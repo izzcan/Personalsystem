@@ -12,6 +12,7 @@ namespace Personalsystem.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name="Företag")]
         public string Name { get; set; }
         public virtual ICollection<Department> Departments { get; set; }
         public virtual ICollection<NewsItem> NewsItems { get; set; }
@@ -36,6 +37,7 @@ namespace Personalsystem.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name="Avdelning")]
         public string Name { get; set; }
         public virtual ICollection<DepartmentGroup> Groups { get; set; }
         public virtual ICollection<ApplicationUser> Bosses { get; set; }
@@ -48,9 +50,11 @@ namespace Personalsystem.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name="Grupp")]
         public string Name { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }
         public virtual ICollection<ApplicationUser> Employees { get; set; }
+        
         [ForeignKey("Department")]
         public int DepartmentId { get; set; }
         public virtual Department Department { get; set; }

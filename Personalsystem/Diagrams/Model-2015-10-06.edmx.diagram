@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="687dc57f17034180b646e8439e3f1e23" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.Applications" Width="1.5" PointX="5.25" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.AspNetRoles" Width="1.5" PointX="0.75" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.AspNetUserClaims" Width="1.5" PointX="5.25" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.AspNetUserLogins" Width="1.5" PointX="5.25" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.AspNetUsers" Width="1.5" PointX="3" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Companies" Width="1.5" PointX="5.25" PointY="15.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.DepartmentGroups" Width="1.5" PointX="9.75" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Departments" Width="1.5" PointX="7.5" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Interviews" Width="1.5" PointX="7.5" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.NewsItems" Width="1.5" PointX="10.5" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.ScheduleItems" Width="1.5" PointX="15.25" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Schedules" Width="1.5" PointX="13" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Vacancies" Width="1.5" PointX="7.5" PointY="15.375" IsExpanded="true" />
+        <AssociationConnector Association="Model.FK_dbo_Applications_dbo_AspNetUsers_ApplicantId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_Applications_dbo_Vacancies_VacancyId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_Interviews_dbo_Applications_Application_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_Interviews_dbo_AspNetUsers_ApplicantId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_Interviews_dbo_AspNetUsers_InterviewerId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_NewsItems_dbo_AspNetUsers_CreatorId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_Vacancies_dbo_AspNetUsers_CreatorId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_Departments_dbo_Companies_CompanyId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_NewsItems_dbo_Companies_CompanyId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_Vacancies_dbo_Companies_CompanyId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_DepartmentGroups_dbo_Departments_DepartmentId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_Schedules_dbo_DepartmentGroups_GroupId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_Schedules_dbo_Departments_DepartmentId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_ScheduleItems_dbo_Schedules_ScheduleId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.AspNetUserRoles" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.CompanyApplicationUser1" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.CompanyApplicationUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.DepartmentApplicationUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.DepartmentGroupApplicationUsers" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

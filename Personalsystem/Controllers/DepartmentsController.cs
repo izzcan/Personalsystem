@@ -43,6 +43,7 @@ namespace Personalsystem.Controllers
         public ActionResult Create(int? id)
         {
             Company company = db.Companies.Find(id);
+            DepartmentGroup dg = db.DepartmentGroups.Find(id);
 
             if (User.Identity.IsAuthenticated)
             {

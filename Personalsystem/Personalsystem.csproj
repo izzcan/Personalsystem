@@ -172,61 +172,58 @@
     <Compile Include="Controllers\SchedulesController.cs" />
     <Compile Include="Controllers\VacanciesController.cs" />
     <Compile Include="Diagrams\Applications.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
     </Compile>
     <Compile Include="Diagrams\AspNetRoles.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
     </Compile>
     <Compile Include="Diagrams\AspNetUserClaims.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
     </Compile>
     <Compile Include="Diagrams\AspNetUserLogins.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
     </Compile>
     <Compile Include="Diagrams\AspNetUsers.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
     </Compile>
     <Compile Include="Diagrams\Companies.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Diagrams\C__MigrationHistory.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
     </Compile>
     <Compile Include="Diagrams\DepartmentGroups.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
     </Compile>
     <Compile Include="Diagrams\Departments.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
     </Compile>
     <Compile Include="Diagrams\Interviews.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
     </Compile>
-    <Compile Include="Diagrams\Model1.Context.cs">
+    <Compile Include="Diagrams\Model-2015-10-06.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.Context.tt</DependentUpon>
+      <DependentUpon>Model-2015-10-06.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Diagrams\Model1.cs">
+    <Compile Include="Diagrams\Model-2015-10-06.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
     </Compile>
-    <Compile Include="Diagrams\Model1.Designer.cs">
+    <Compile Include="Diagrams\Model-2015-10-06.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.edmx</DependentUpon>
+      <DependentUpon>Model-2015-10-06.edmx</DependentUpon>
     </Compile>
     <Compile Include="Diagrams\NewsItems.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
     </Compile>
     <Compile Include="Diagrams\ScheduleItems.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
     </Compile>
     <Compile Include="Diagrams\Schedules.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
     </Compile>
     <Compile Include="Diagrams\Vacancies.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -278,22 +275,22 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Anteckningar\Projektupplägg.docx" />
-    <EntityDeploy Include="Diagrams\Model1.edmx">
+    <EntityDeploy Include="Diagrams\Model-2015-10-06.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+      <LastGenOutput>Model-2015-10-06.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Diagrams\Model1.Context.tt">
+    <Content Include="Diagrams\Model-2015-10-06.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model1.edmx</DependentUpon>
-      <LastGenOutput>Model1.Context.cs</LastGenOutput>
+      <DependentUpon>Model-2015-10-06.edmx</DependentUpon>
+      <LastGenOutput>Model-2015-10-06.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Diagrams\Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
+    <Content Include="Diagrams\Model-2015-10-06.edmx.diagram">
+      <DependentUpon>Model-2015-10-06.edmx</DependentUpon>
     </Content>
-    <Content Include="Diagrams\Model1.tt">
+    <Content Include="Diagrams\Model-2015-10-06.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model1.edmx</DependentUpon>
-      <LastGenOutput>Model1.cs</LastGenOutput>
+      <DependentUpon>Model-2015-10-06.edmx</DependentUpon>
+      <LastGenOutput>Model-2015-10-06.cs</LastGenOutput>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
