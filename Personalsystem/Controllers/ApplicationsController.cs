@@ -57,22 +57,25 @@ namespace Personalsystem.Controllers
         public ActionResult Create([Bind(Include = "Id,Content,VacancyId,fileuploadPdf")] Application application)
         {
             HttpPostedFileBase file = Request.Files["fileuploadPdf"];
+            //Generar ett unikt nummer till CV-filen
             Random rand = new Random();
             int randomnumber = rand.Next();
-            // Sparar filen till angiven sökväg
+            // Sparar CV-filen till angiven sökväg
             string uploadPath = Server.MapPath("~/CV/");
             file.SaveAs(uploadPath + randomnumber + file.FileName);
 
             if (ModelState.IsValid)
             {
+                ////Sätter in "ApplicantId" objektet "application"
                 db.Entry(application).Property("ApplicantId").CurrentValue = User.Identity.GetUserId();
+                ////Sätter in "CvPath" objektet "application"
                 db.Entry(application).Property("CvPath").CurrentValue = randomnumber + file.FileName;
                 db.Applications.Add(application);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ApplicantId = new SelectList(db.Users, "Id", "Email", application.ApplicantId);
+            //ViewBag.ApplicantId = new SelectList(db.Users, "Id", "Email", application.ApplicantId);
             ViewBag.VacancyId = new SelectList(db.Vacancies, "Id", "Title", application.VacancyId);
             return View(application);
         }

@@ -102,6 +102,7 @@ namespace Personalsystem.Models
         public int CompanyId { get; set; }
         public virtual Company Company { get; set; }
         [ForeignKey("Creator")]
+        [Display(Name = "Kontaktperson")]
         public string CreatorId { get; set; }
         public virtual ApplicationUser Creator { get; set; }
     }
@@ -109,13 +110,20 @@ namespace Personalsystem.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name = "Titel")]
         public string Title { get; set; }
+        [Display(Name = "Annonsbeskrivning")]
         public string Content { get; set; }
+        [Display(Name = "Publicerad")]
         public DateTime Created { get; set; }
+        [Display(Name = "Sista Ansökningsdatum")]
+        [DataType(DataType.Date)]
+        public DateTime Expired { get; set; }
         [ForeignKey("Company")]
         public int CompanyId { get; set; }
         public virtual Company Company { get; set; }
         [ForeignKey("Creator")]
+        [Display(Name = "Kontaktperson")]
         public string CreatorId { get; set; }
         public virtual ApplicationUser Creator { get; set; }
         public virtual ICollection<Application> Applications { get; set; } 
@@ -124,6 +132,7 @@ namespace Personalsystem.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name="Personligt Brev")]
         public string Content { get; set; }
         [ForeignKey("Applicant")]
         public string ApplicantId { get; set; }
