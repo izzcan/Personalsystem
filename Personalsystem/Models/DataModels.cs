@@ -58,7 +58,8 @@ namespace Personalsystem.Models
         [ForeignKey("Department")]
         public int DepartmentId { get; set; }
         public virtual Department Department { get; set; }
-    }
+
+     }
     public class Schedule
     {
         [Key]
