@@ -256,6 +256,18 @@
     <Compile Include="Migrations\201510061244063_DisplayNames.Designer.cs">
       <DependentUpon>201510061244063_DisplayNames.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510070813314_Interview.cs" />
+    <Compile Include="Migrations\201510070813314_Interview.Designer.cs">
+      <DependentUpon>201510070813314_Interview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510070846209_add_applicationID.cs" />
+    <Compile Include="Migrations\201510070846209_add_applicationID.Designer.cs">
+      <DependentUpon>201510070846209_add_applicationID.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510081144382_RemovedApplicantFromInterview.cs" />
+    <Compile Include="Migrations\201510081144382_RemovedApplicantFromInterview.Designer.cs">
+      <DependentUpon>201510081144382_RemovedApplicantFromInterview.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -297,9 +309,11 @@
       <LastGenOutput>Model-2015-10-06.cs</LastGenOutput>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\dropDown.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.11.3.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -425,6 +439,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510061244063_DisplayNames.resx">
       <DependentUpon>201510061244063_DisplayNames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510070813314_Interview.resx">
+      <DependentUpon>201510070813314_Interview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510070846209_add_applicationID.resx">
+      <DependentUpon>201510070846209_add_applicationID.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510081144382_RemovedApplicantFromInterview.resx">
+      <DependentUpon>201510081144382_RemovedApplicantFromInterview.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

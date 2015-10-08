@@ -109,7 +109,7 @@ namespace Personalsystem.Models
     {
         [Key]
         public int Id { get; set; }
-        [Display(Name = "Titel")]
+        [Display(Name = "Tjänst")]
         public string Title { get; set; }
         [Display(Name = "Annonsbeskrivning")]
         public string Content { get; set; }
@@ -146,13 +146,18 @@ namespace Personalsystem.Models
     {
         [Key]
         public int Id { get; set; }
-        public string Description { get; set; }
-        [ForeignKey("Applicant")]
-        public string ApplicantId { get; set; }
-        public virtual ApplicationUser Applicant { get; set; }
+        [Display(Name="Intervjudatum")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString="{0:yyyy/MM/dd HH:mm}", ApplyFormatInEditMode=true)]
+        public DateTime InterviewDate { get; set; } //Sätts
+        [Display(Name="Anteckningar")]
+        public string Description { get; set; } //Sätts
         [ForeignKey("Interviewer")]
-        public string InterviewerId { get; set; }
+        public string InterviewerId { get; set; } //Sätts automatiskt, inloggningsid
         public virtual ApplicationUser Interviewer { get; set; }
+        public int Application_Id { get; set; }
+        [ForeignKey("Application_Id")]
+        public virtual Application Applications { get; set; }
     }
 
     //public class CompanyUserRole
