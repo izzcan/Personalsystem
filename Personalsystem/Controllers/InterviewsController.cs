@@ -7,19 +7,38 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Personalsystem.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Personalsystem.Controllers
 {
     public class InterviewsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+       
 
         // GET: Interviews
         public ActionResult Index()
         {
-            var interviews = db.Interviews.Include(i => i.Applicant).Include(i => i.Interviewer);
+            var interviews = db.Interviews.Include(i => i.Applications).Include(i => i.Interviewer);
             return View(interviews.ToList());
         }
+
+       public ActionResult GetVacancies()
+        {
+            var vacancies = db.Vacancies
+                .Select(v => new { v.Id, v.Title })
+                .OrderBy(v => v.Title);
+            return Json(vacancies, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetApplicants(int vacId)
+       {
+           var applicants = db.Applications
+               .Where(a => a.VacancyId == vacId)
+               .Select(a => new { a.Id, a.Applicant.Email })
+               .OrderBy(a => a.Email);
+           return Json(applicants, JsonRequestBehavior.AllowGet);
+       }
 
         // GET: Interviews/Details/5
         public ActionResult Details(int? id)
@@ -38,10 +57,8 @@ namespace Personalsystem.Controllers
 
         // GET: Interviews/Create
         public ActionResult Create()
-        {
-            ViewBag.ApplicantId = new SelectList(db.Users, "Id", "Email");
-            ViewBag.InterviewerId = new SelectList(db.Users, "Id", "Email");
-            return View();
+        {            
+            return View();            
         }
 
         // POST: Interviews/Create
@@ -49,17 +66,16 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Description,ApplicantId,InterviewerId")] Interview interview)
+        public ActionResult Create([Bind(Include = "Id,Description,Application_Id,InterviewDate")] Interview interview)
         {
             if (ModelState.IsValid)
-            {
+            {               
+                db.Entry(interview).Property("InterviewerId").CurrentValue = User.Identity.GetUserId();
                 db.Interviews.Add(interview);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.ApplicantId = new SelectList(db.Users, "Id", "Email", interview.ApplicantId);
-            ViewBag.InterviewerId = new SelectList(db.Users, "Id", "Email", interview.InterviewerId);
+                       
             return View(interview);
         }
 
@@ -75,7 +91,7 @@ namespace Personalsystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ApplicantId = new SelectList(db.Users, "Id", "Email", interview.ApplicantId);
+            ViewBag.ApplicantId = new SelectList(db.Users, "Id", "Email", interview.Applications.ApplicantId);
             ViewBag.InterviewerId = new SelectList(db.Users, "Id", "Email", interview.InterviewerId);
             return View(interview);
         }
@@ -93,8 +109,8 @@ namespace Personalsystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ApplicantId = new SelectList(db.Users, "Id", "Email", interview.ApplicantId);
-            ViewBag.InterviewerId = new SelectList(db.Users, "Id", "Email", interview.InterviewerId);
+            ViewBag.ApplicantId = new SelectList(db.Users, "Id", "Email", interview.Applications.ApplicantId);
+            ViewBag.InterviewDate = new SelectList(db.Users, "Id", "Email", interview.InterviewerId);
             return View(interview);
         }
 

@@ -171,6 +171,60 @@
     <Compile Include="Controllers\NewsItemsController.cs" />
     <Compile Include="Controllers\SchedulesController.cs" />
     <Compile Include="Controllers\VacanciesController.cs" />
+    <Compile Include="Diagrams\Applications.cs">
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Diagrams\AspNetRoles.cs">
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Diagrams\AspNetUserClaims.cs">
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Diagrams\AspNetUserLogins.cs">
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Diagrams\AspNetUsers.cs">
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Diagrams\Companies.cs">
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Diagrams\DepartmentGroups.cs">
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Diagrams\Departments.cs">
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Diagrams\Interviews.cs">
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Diagrams\Model-2015-10-06.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model-2015-10-06.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Diagrams\Model-2015-10-06.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Diagrams\Model-2015-10-06.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model-2015-10-06.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Diagrams\NewsItems.cs">
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Diagrams\ScheduleItems.cs">
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Diagrams\Schedules.cs">
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Diagrams\Vacancies.cs">
+      <DependentUpon>Model-2015-10-06.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -193,6 +247,26 @@
     <Compile Include="Migrations\201510020838371_leadership.cs" />
     <Compile Include="Migrations\201510020838371_leadership.Designer.cs">
       <DependentUpon>201510020838371_leadership.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510061231204_CvPath.cs" />
+    <Compile Include="Migrations\201510061231204_CvPath.Designer.cs">
+      <DependentUpon>201510061231204_CvPath.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510061244063_DisplayNames.cs" />
+    <Compile Include="Migrations\201510061244063_DisplayNames.Designer.cs">
+      <DependentUpon>201510061244063_DisplayNames.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510070813314_Interview.cs" />
+    <Compile Include="Migrations\201510070813314_Interview.Designer.cs">
+      <DependentUpon>201510070813314_Interview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510070846209_add_applicationID.cs" />
+    <Compile Include="Migrations\201510070846209_add_applicationID.Designer.cs">
+      <DependentUpon>201510070846209_add_applicationID.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510081144382_RemovedApplicantFromInterview.cs" />
+    <Compile Include="Migrations\201510081144382_RemovedApplicantFromInterview.Designer.cs">
+      <DependentUpon>201510081144382_RemovedApplicantFromInterview.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -217,10 +291,29 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Anteckningar\Projektupplägg.docx" />
+    <EntityDeploy Include="Diagrams\Model-2015-10-06.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model-2015-10-06.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Diagrams\Model-2015-10-06.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model-2015-10-06.edmx</DependentUpon>
+      <LastGenOutput>Model-2015-10-06.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Diagrams\Model-2015-10-06.edmx.diagram">
+      <DependentUpon>Model-2015-10-06.edmx</DependentUpon>
+    </Content>
+    <Content Include="Diagrams\Model-2015-10-06.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model-2015-10-06.edmx</DependentUpon>
+      <LastGenOutput>Model-2015-10-06.cs</LastGenOutput>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\dropDown.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.11.3.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -315,8 +408,8 @@
     <Content Include="Views\Companies\RemoveLeader.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\Pdf\" />
-    <Folder Include="Diagrams\" />
+    <Folder Include="App_Data\" />
+    <Folder Include="CV\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -340,6 +433,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510020838371_leadership.resx">
       <DependentUpon>201510020838371_leadership.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510061231204_CvPath.resx">
+      <DependentUpon>201510061231204_CvPath.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510061244063_DisplayNames.resx">
+      <DependentUpon>201510061244063_DisplayNames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510070813314_Interview.resx">
+      <DependentUpon>201510070813314_Interview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510070846209_add_applicationID.resx">
+      <DependentUpon>201510070846209_add_applicationID.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510081144382_RemovedApplicantFromInterview.resx">
+      <DependentUpon>201510081144382_RemovedApplicantFromInterview.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

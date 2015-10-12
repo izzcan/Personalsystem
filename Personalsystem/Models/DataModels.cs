@@ -12,6 +12,7 @@ namespace Personalsystem.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name="Företag")]
         public string Name { get; set; }
         public virtual ICollection<Department> Departments { get; set; }
         public virtual ICollection<NewsItem> NewsItems { get; set; }
@@ -36,6 +37,7 @@ namespace Personalsystem.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name="Avdelning")]
         public string Name { get; set; }
         public virtual ICollection<DepartmentGroup> Groups { get; set; }
         public virtual ICollection<ApplicationUser> Bosses { get; set; }
@@ -48,13 +50,16 @@ namespace Personalsystem.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name="Grupp")]
         public string Name { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }
         public virtual ICollection<ApplicationUser> Employees { get; set; }
+        
         [ForeignKey("Department")]
         public int DepartmentId { get; set; }
         public virtual Department Department { get; set; }
-    }
+
+     }
     public class Schedule
     {
         [Key]
@@ -108,6 +113,7 @@ namespace Personalsystem.Models
         public int CompanyId { get; set; }
         public virtual Company Company { get; set; }
         [ForeignKey("Creator")]
+        [Display(Name = "Kontaktperson")]
         public string CreatorId { get; set; }
         public virtual ApplicationUser Creator { get; set; }
     }
@@ -115,13 +121,20 @@ namespace Personalsystem.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name = "Tjänst")]
         public string Title { get; set; }
+        [Display(Name = "Annonsbeskrivning")]
         public string Content { get; set; }
+        [Display(Name = "Publicerad")]
         public DateTime Created { get; set; }
+        [Display(Name = "Sista Ansökningsdatum")]
+        [DataType(DataType.Date)]
+        public DateTime Expired { get; set; }
         [ForeignKey("Company")]
         public int CompanyId { get; set; }
         public virtual Company Company { get; set; }
         [ForeignKey("Creator")]
+        [Display(Name = "Kontaktperson")]
         public string CreatorId { get; set; }
         public virtual ApplicationUser Creator { get; set; }
         public virtual ICollection<Application> Applications { get; set; } 
@@ -130,6 +143,7 @@ namespace Personalsystem.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name="Personligt Brev")]
         public string Content { get; set; }
         [ForeignKey("Applicant")]
         public string ApplicantId { get; set; }
@@ -138,18 +152,24 @@ namespace Personalsystem.Models
         public int VacancyId { get; set; }
         public virtual Vacancy Vacancy { get; set; }
         public virtual ICollection<Interview> Interviews { get; set; }
+        public string CvPath { get; set; }
     }
     public class Interview
     {
         [Key]
         public int Id { get; set; }
-        public string Description { get; set; }
-        [ForeignKey("Applicant")]
-        public string ApplicantId { get; set; }
-        public virtual ApplicationUser Applicant { get; set; }
+        [Display(Name="Intervjudatum")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString="{0:yyyy/MM/dd HH:mm}", ApplyFormatInEditMode=true)]
+        public DateTime InterviewDate { get; set; } //Sätts
+        [Display(Name="Anteckningar")]
+        public string Description { get; set; } //Sätts
         [ForeignKey("Interviewer")]
-        public string InterviewerId { get; set; }
+        public string InterviewerId { get; set; } //Sätts automatiskt, inloggningsid
         public virtual ApplicationUser Interviewer { get; set; }
+        public int Application_Id { get; set; }
+        [ForeignKey("Application_Id")]
+        public virtual Application Applications { get; set; }
     }
 
     //public class CompanyUserRole
