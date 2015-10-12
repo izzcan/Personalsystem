@@ -11,10 +11,14 @@ Startsida => Landningssidan
 
 Företagshantering:
   
-	* Edit/delete funktioner
-	* Schemaläggning
+	* Edit/delete funktioner (map resp. roll)
+	* Schemaläggning (usability)
 
 Rollhantering
 	*Vakanser
 	*Ansökningar
 	*Intervjuer
+
+	----
+	"Bättre en back i hallen - än ett hack i ballen" 
+	-- Okänd
