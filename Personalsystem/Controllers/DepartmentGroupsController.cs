@@ -236,8 +236,25 @@ namespace Personalsystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name", departmentGroup.DepartmentId);
-            return View(departmentGroup);
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (departmentGroup.Department.Company.Admins.Contains(currentUser) || departmentGroup.Department.Bosses.Contains(currentUser))
+                {
+                    return View(departmentGroup);
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
         }
 
         // POST: DepartmentGroups/Edit/5
@@ -245,15 +262,35 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,DepartmentId")] DepartmentGroup departmentGroup)
+        public ActionResult Edit([Bind(Include = "Id,Name")] DepartmentGroup departmentGroup)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && User.Identity.IsAuthenticated)
             {
-                db.Entry(departmentGroup).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (departmentGroup.Id == 0)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                DepartmentGroup dbDepartmentGroup = db.DepartmentGroups.Find(departmentGroup.Id);
+                if (dbDepartmentGroup == null)
+                {
+                    return HttpNotFound();
+                }
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (dbDepartmentGroup.Department.Bosses.Contains(currentUser) || dbDepartmentGroup.Department.Company.Admins.Contains(currentUser))
+                {
+                    dbDepartmentGroup.Name = departmentGroup.Name;
+
+                    db.Entry(dbDepartmentGroup).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return RedirectToAction("Details", "Companies", new { id = departmentGroup.Department.Company.Id });
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
             }
-            ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name", departmentGroup.DepartmentId);
             return View(departmentGroup);
         }
 
@@ -269,7 +306,21 @@ namespace Personalsystem.Controllers
             {
                 return HttpNotFound();
             }
-            return View(departmentGroup);
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (departmentGroup.Department.Bosses.Contains(currentUser) || departmentGroup.Department.Company.Admins.Contains(currentUser))
+                {
+                    return View(departmentGroup);
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
         }
 
         // POST: DepartmentGroups/Delete/5
@@ -277,10 +328,31 @@ namespace Personalsystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             DepartmentGroup departmentGroup = db.DepartmentGroups.Find(id);
-            db.DepartmentGroups.Remove(departmentGroup);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (departmentGroup == null)
+            {
+                return HttpNotFound();
+            }
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (departmentGroup.Department.Bosses.Contains(currentUser) || departmentGroup.Department.Company.Admins.Contains(currentUser))
+                {
+                    db.DepartmentGroups.Remove(departmentGroup);
+                    db.SaveChanges();
+                    return RedirectToAction("Details", "Companies", new { id = departmentGroup.Department.Company.Id });
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
         }
 
         protected override void Dispose(bool disposing)
