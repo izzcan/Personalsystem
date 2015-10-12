@@ -282,7 +282,7 @@ namespace Personalsystem.Controllers
                     db.Entry(dbDepartment).State = EntityState.Modified;
                     db.SaveChanges();
 
-                    return RedirectToAction("Details", "Companies", new { id = department.Company.Id });
+                    return RedirectToAction("Details", "Companies", new { id = dbDepartment.Company.Id });
                 }
                 else
                 {
@@ -341,9 +341,10 @@ namespace Personalsystem.Controllers
                 var currentUser = userManager.FindById(User.Identity.GetUserId());
                 if (department.Bosses.Contains(currentUser) || department.Company.Admins.Contains(currentUser))
                 {
+                    var companyId = department.Company.Id;
                     db.Departments.Remove(department);
                     db.SaveChanges();
-                    return RedirectToAction("Details", "Companies", new { id = department.Company.Id });
+                    return RedirectToAction("Details", "Companies", new { id = companyId });
                 }
                 else
                 {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Personalsystem.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +9,8 @@ namespace Personalsystem.Controllers
 {
     public class HomeController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         public ActionResult Index()
         {
             return View();
@@ -25,6 +28,13 @@ namespace Personalsystem.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public ActionResult Test()
+        {
+            //var group = db.DepartmentGroups.FirstOrDefault();
+            var group = db.DepartmentGroups.Find(1);
+            return Content("Test");
         }
     }
 }
