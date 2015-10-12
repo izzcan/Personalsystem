@@ -233,8 +233,26 @@ namespace Personalsystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", department.CompanyId);
-            return View(department);
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (department.Company.Admins.Contains(currentUser))
+                {
+                    return View(department);
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
+
         }
 
         // POST: Departments/Edit/5
@@ -242,15 +260,35 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,CompanyId")] Department department)
+        public ActionResult Edit([Bind(Include = "Id,Name")] Department department)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && User.Identity.IsAuthenticated)
             {
-                db.Entry(department).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (department.Id == 0)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Department dbDepartment = db.Departments.Find(department.Id);
+                if (dbDepartment == null)
+                {
+                    return HttpNotFound();
+                }
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (dbDepartment.Bosses.Contains(currentUser) || dbDepartment.Company.Admins.Contains(currentUser)) 
+                {
+                    dbDepartment.Name = department.Name;
+
+                    db.Entry(dbDepartment).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return RedirectToAction("Details", "Companies", new { id = department.Company.Id });
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
             }
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", department.CompanyId);
             return View(department);
         }
 
@@ -266,7 +304,21 @@ namespace Personalsystem.Controllers
             {
                 return HttpNotFound();
             }
-            return View(department);
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (department.Bosses.Contains(currentUser) || department.Company.Admins.Contains(currentUser))
+                {
+                    return View(department);
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
         }
 
         // POST: Departments/Delete/5
@@ -274,10 +326,31 @@ namespace Personalsystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Department department = db.Departments.Find(id);
-            db.Departments.Remove(department);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (department == null)
+            {
+                return HttpNotFound();
+            }
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (department.Bosses.Contains(currentUser) || department.Company.Admins.Contains(currentUser))
+                {
+                    db.Departments.Remove(department);
+                    db.SaveChanges();
+                    return RedirectToAction("Details", "Companies", new { id = department.Company.Id });
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
         }
 
         protected override void Dispose(bool disposing)
