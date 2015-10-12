@@ -83,6 +83,17 @@ namespace Personalsystem.Models
         [ForeignKey("Schedule")]
         public int ScheduleId { get; set; }
         public virtual Schedule Schedule { get; set; }
+
+        public ICollection<ScheduleDayOfWeek> WeekDays { get; set; }
+    }
+
+    //Seeded Monday-Sunday
+    public class ScheduleDayOfWeek
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Description { get; set; }
+        public ICollection<ScheduleItem> ScheduleItems { get; set; }
     }
 
     public class NewsItem
