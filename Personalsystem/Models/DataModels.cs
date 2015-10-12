@@ -135,6 +135,7 @@ namespace Personalsystem.Models
         [Display(Name="Personligt Brev")]
         public string Content { get; set; }
         [ForeignKey("Applicant")]
+        [Display(Name="Sökande")]
         public string ApplicantId { get; set; }
         public virtual ApplicationUser Applicant { get; set; }
         [ForeignKey("Vacancy")]

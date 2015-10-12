@@ -4,7 +4,7 @@
     ViewBag.Title = "Boka om";
 }
 
-<h2>Boka om @Model.Applications.Vacancy.Title</h2>
+<h2>Boka om intervjun med @Model.Applications.Applicant.Email</h2>
 
 
 @using (Html.BeginForm())
@@ -12,24 +12,16 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Intervju</h4>
+        <h4>Aktuell tjänst: @Model.Applications.Vacancy.Title</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
-
+        
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Applications.Applicant.Email, "ApplicantId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ApplicantId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Applications.Applicant.Email, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -56,3 +48,4 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+<script src="~/Scripts/dropDown.js"></script>
