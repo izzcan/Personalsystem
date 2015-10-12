@@ -13,7 +13,6 @@
         <dt>
             @Html.DisplayNameFor(model => model.Applicant.Email)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Applicant.Email)
         </dd>
@@ -21,7 +20,6 @@
         <dt>
             @Html.DisplayNameFor(model => model.Vacancy.Title)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Vacancy.Title)
         </dd>
@@ -29,11 +27,16 @@
         <dt>
             @Html.DisplayNameFor(model => model.Content)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.Content)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.CvPath)
+        </dt>
+        <dd>
+            <a href="~/CV/@Model.CvPath">@Model.CvPath</a>
+        </dd>
     </dl>
 </div>
 <p>

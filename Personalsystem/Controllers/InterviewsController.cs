@@ -91,8 +91,9 @@ namespace Personalsystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ApplicantId = new SelectList(db.Users, "Id", "Email", interview.Applications.ApplicantId);
+           ViewBag.ApplicantId = new SelectList(db.Users, "Id", "Email", interview.Applications.ApplicantId);
             ViewBag.InterviewerId = new SelectList(db.Users, "Id", "Email", interview.InterviewerId);
+            
             return View(interview);
         }
 
