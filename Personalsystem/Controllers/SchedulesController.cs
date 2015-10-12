@@ -60,8 +60,12 @@ namespace Personalsystem.Controllers
                 var currentUser = userManager.FindById(User.Identity.GetUserId());
                 if (department.Bosses.Contains(currentUser) || group.Department.Bosses.Contains(currentUser))
                 {
-                    ViewBag.DepartmentId = new SelectList(db.Departments.ToList().Where(q=>q.Bosses.Contains(currentUser)).ToList(), "Id","Name",departmentId);
-                    ViewBag.GroupId = new SelectList(db.DepartmentGroups.ToList().Where(q=>q.Department.Bosses.Contains(currentUser)).ToList(), "Id","Name",groupId);
+                    //ViewBag.DepartmentId = new SelectList(db.Departments.ToList().Where(q=>q.Bosses.Contains(currentUser)).ToList(), "Id","Name",departmentId);
+                    //ViewBag.GroupId = new SelectList(db.DepartmentGroups.ToList().Where(q=>q.Department.Bosses.Contains(currentUser)).ToList(), "Id","Name",groupId);
+                    ViewBag.DepartmentId = new SelectList(db.Departments.ToList().Where(q => q.Bosses.Contains(currentUser)).ToList(), "Id", "Name", departmentId);
+                    var groups = new SelectList(db.DepartmentGroups.ToList().Where(q => q.Department.Bosses.Contains(currentUser)).ToList(), "Id", "Name", groupId).ToList();
+                    groups.Insert(0,new SelectListItem() { Value = "", Text = "All" });
+                    ViewBag.GroupId = groups;
                     return View();
                 }
                 else
@@ -83,16 +87,38 @@ namespace Personalsystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,StartTime,EndTime,DepartmentId,GroupId")] Schedule schedule)
         {
-            if (ModelState.IsValid)
-            {
-                db.Schedules.Add(schedule);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var currentUser = userManager.FindById(User.Identity.GetUserId());
 
-            ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name", schedule.DepartmentId);
-            ViewBag.GroupId = new SelectList(db.DepartmentGroups, "Id", "Name", schedule.GroupId);
-            return View(schedule);
+            if (ModelState.IsValid && User.Identity.IsAuthenticated)
+            {
+                if (schedule.DepartmentId == 0 && schedule.GroupId == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Department department = db.Departments.Find(schedule.DepartmentId) ?? db.DepartmentGroups.Find(schedule.GroupId).Department;
+                if (department == null)
+                {
+                    return HttpNotFound();
+                }
+                if (department.Bosses.Contains(currentUser)) //Current logged in user must be boss for the department
+                {
+                    db.Schedules.Add(schedule);
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index", "Schedules", new { id = department.Id });
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+            }
+            ViewBag.DepartmentId = new SelectList(db.Departments.ToList().Where(q => q.Bosses.Contains(currentUser)).ToList(), "Id", "Name", schedule.DepartmentId);
+            var groups = new SelectList(db.DepartmentGroups.ToList().Where(q => q.Department.Bosses.Contains(currentUser)).ToList(), "Id", "Name", schedule.GroupId).ToList();
+            groups.Insert(0,new SelectListItem(){ Value = "", Text = "All"});
+            ViewBag.GroupId = groups;
+
+            return View(schedule);  
         }
 
         // GET: Schedules/Edit/5
