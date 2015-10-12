@@ -3,8 +3,11 @@
 @{
     ViewBag.Title = "Employees";
 }
-
-<h1>@Model.Name</h1>
+<div>
+    <h1>@Model.Name</h1>
+    <a class="btn btn-default" href="/Companies/Edit/@Model.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Edit</a>
+    <a class="btn btn-default" href="/Companies/Delete/@Model.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Delete</a>
+</div>
 <div>
     <h2>News</h2>
     <div class="company-box">
