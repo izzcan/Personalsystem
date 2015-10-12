@@ -22,8 +22,8 @@
             {
                 <div class="@(Model.NewsItems.Count >= 3 ? "col-md-4" : Model.NewsItems.Count == 2 ? "col-md-6" : "col-md-12")">
                     <div class="company-box company-box-secondary">
-                        <a class="btn btn-default todo" href="#" @(ViewBag.IsAdmin || ViewBag.IsCreatorFor[item.Id] == true ? "" : "disabled")>Edit</a>
-                        <a class="btn btn-default todo" href="#" @(ViewBag.IsAdmin || ViewBag.IsCreatorFor[item.Id] == true ? "" : "disabled")>Delete</a>
+                        <a class="btn btn-default" href="/NewsItems/Edit/@item.Id" @(ViewBag.IsAdmin || ViewBag.IsCreatorFor[item.Id] == true ? "" : "disabled")>Edit</a>
+                        <a class="btn btn-default" href="/NewsItems/Delete/@item.Id" @(ViewBag.IsAdmin || ViewBag.IsCreatorFor[item.Id] == true ? "" : "disabled")>Delete</a>
                         <h4>@Html.ActionLink(item.Title, "Details", "NewsItems", new { item.Id }, null)</h4>
                         <span>@item.Created - @item.CreatorName</span>
                         <p>@item.Content</p>
