@@ -1,4 +1,20 @@
+Sprint2
 Företagshantering:
   * Edit/delete funktioner
 Börja schemaläggning
 Färdigställa CV funktion/Personligt brev
+
+Sprint 3
+
+Startsida => Landningssidan
+	*Roll - Vy utifrån rättigheter
+
+Företagshantering:
+  
+	* Edit/delete funktioner
+	* Schemaläggning
+
+Rollhantering
+	*Vakanser
+	*Ansökningar
+	*Intervjuer
