@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Personalsystem.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Personalsystem.Controllers
 {
@@ -15,9 +17,14 @@ namespace Personalsystem.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Schedules
-        public ActionResult Index()
+        public ActionResult Index(int? departmentId, int? groupId)
         {
-            var schedules = db.Schedules.Include(s => s.Department).Include(s => s.Group);
+            var schedules = db.Schedules.Include(s => s.Department).Include(s => s.Group)
+                .Where(q => departmentId == null || q.DepartmentId == departmentId)
+                .Where(q => groupId == null || q.GroupId == groupId);
+
+            ViewBag.HrefValues = new { departmentId, groupId };
+
             return View(schedules.ToList());
         }
 
@@ -37,11 +44,36 @@ namespace Personalsystem.Controllers
         }
 
         // GET: Schedules/Create
-        public ActionResult Create()
+        public ActionResult Create(int? departmentId, int? groupId)
         {
-            ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name");
-            ViewBag.GroupId = new SelectList(db.DepartmentGroups, "Id", "Name");
-            return View();
+            Department department = db.Departments.Find(departmentId);
+            DepartmentGroup group = db.DepartmentGroups.Find(groupId);
+
+            if(department == null && group == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (department.Bosses.Contains(currentUser) || group.Department.Bosses.Contains(currentUser))
+                {
+                    ViewBag.DepartmentId = new SelectList(db.Departments.ToList().Where(q=>q.Bosses.Contains(currentUser)).ToList(), "Id","Name",departmentId);
+                    ViewBag.GroupId = new SelectList(db.DepartmentGroups.ToList().Where(q=>q.Department.Bosses.Contains(currentUser)).ToList(), "Id","Name",groupId);
+                    return View();
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
         }
 
         // POST: Schedules/Create
