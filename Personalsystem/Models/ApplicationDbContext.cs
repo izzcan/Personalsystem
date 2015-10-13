@@ -29,5 +29,7 @@ namespace Personalsystem.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<Personalsystem.Models.ScheduleItem> ScheduleItems { get; set; }
     }
 }

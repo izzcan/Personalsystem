@@ -169,6 +169,7 @@
     <Compile Include="Controllers\InterviewsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NewsItemsController.cs" />
+    <Compile Include="Controllers\ScheduleItemsController.cs" />
     <Compile Include="Controllers\SchedulesController.cs" />
     <Compile Include="Controllers\VacanciesController.cs" />
     <Compile Include="Diagrams\Applications.cs">
@@ -283,6 +284,7 @@
     <Compile Include="Models\DataModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ScheduleViewmodels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\GenericRepository.cs" />
     <Compile Include="Repositories\IGenericRepository.cs" />
@@ -414,6 +416,11 @@
     <Content Include="Views\DepartmentGroups\RemoveEmployee.cshtml" />
     <Content Include="Views\Companies\AddLeader.cshtml" />
     <Content Include="Views\Companies\RemoveLeader.cshtml" />
+    <Content Include="Views\ScheduleItems\Create.cshtml" />
+    <Content Include="Views\ScheduleItems\Delete.cshtml" />
+    <Content Include="Views\ScheduleItems\Details.cshtml" />
+    <Content Include="Views\ScheduleItems\Edit.cshtml" />
+    <Content Include="Views\ScheduleItems\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
