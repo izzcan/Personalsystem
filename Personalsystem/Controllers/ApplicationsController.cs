@@ -10,6 +10,7 @@ using Personalsystem.Models;
 using System.Threading.Tasks;
 using System.IO;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Personalsystem.Controllers
 {
@@ -18,9 +19,15 @@ namespace Personalsystem.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Applications
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
-            var applications = db.Applications.Include(a => a.Applicant).Include(a => a.Vacancy);
+            //Department department = db.Departments.Find(id);
+            //var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            //var currentUser = userManager.FindById(User.Identity.GetUserId());
+            //ViewBag.isBoss = department.Bosses.Contains(currentUser);
+            //ViewBag.DepartmentId = id;
+            string userId = User.Identity.GetUserId();
+            var applications = db.Applications.Include(a => a.Applicant).Include(a => a.Vacancy).Where(ap => ap.ApplicantId == userId);            
             return View(applications.ToList());
         }
 
@@ -40,6 +47,7 @@ namespace Personalsystem.Controllers
         }
 
         // GET: Applications/Create
+        [Authorize]
         public ActionResult Create(int? id)
         {
             ViewBag.ApplicantId = new SelectList(db.Users, "Id", "Email");

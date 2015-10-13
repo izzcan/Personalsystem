@@ -11,11 +11,11 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Company.Name)
+            @Html.DisplayNameFor(model => model.Department.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Company.Name)
+            @Html.DisplayFor(model => model.Department.Name)
         </dd>
 
 
@@ -54,6 +54,6 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index") |
+    @Html.ActionLink("Back to List", "Index", new {id = Model.DepartmentId }) |
     @Html.ActionLink("Ansök", "Create", "Applications", new { id = Model.Id }, null)
 </p>
