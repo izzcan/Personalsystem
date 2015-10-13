@@ -14,6 +14,7 @@ namespace Personalsystem.Models
         public DbSet<Department> Departments { get; set; }
         public DbSet<DepartmentGroup> DepartmentGroups { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
+        public DbSet<ScheduleDayOfWeek> ScheduleWeekDays {get;set;}
         public DbSet<NewsItem> NewsItems { get; set; }
         public DbSet<Vacancy> Vacancies { get; set; }
         public DbSet<Application> Applications { get; set; }
