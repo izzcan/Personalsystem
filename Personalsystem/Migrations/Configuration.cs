@@ -135,6 +135,43 @@ namespace Personalsystem.Migrations
             pr2.Employees.Add(userManager.FindByName("orjan@orjansson.se"));
             pr2.Employees.Add(userManager.FindByName("jan@jansson.se"));
             context.SaveChanges();
+
+
+            //Schedule week days
+            context.ScheduleWeekDays.AddOrUpdate(
+                q => q.Id,
+                new ScheduleDayOfWeek() { Id = 1, Description = "Monday" },
+                new ScheduleDayOfWeek() { Id = 2, Description = "Tuesday" },
+                new ScheduleDayOfWeek() { Id = 3, Description = "Wednesday" },
+                new ScheduleDayOfWeek() { Id = 4, Description = "Thursday" },
+                new ScheduleDayOfWeek() { Id = 5, Description = "Friday" },
+                new ScheduleDayOfWeek() { Id = 6, Description = "Saturday" },
+                new ScheduleDayOfWeek() { Id = 7, Description = "Sunday" }
+                );
+
+            ////Schedule
+            //var dbHr = context.Departments.First(q => q.CompanyId == company.Id && q.Name == "HR");
+
+            //if (dbHr.Schedules.Count == 0)
+            //{
+            //    var schedule1 = new Schedule() { StartTime = new DateTime(2015, 10, 19), EndTime = new DateTime(2015, 10, 23), ScheduleItems = new List<Personalsystem.Models.ScheduleItem>() };
+            //    dbHr.Schedules.Add(schedule1);
+            //    context.SaveChanges();
+            //}
+
+            //var dbHr2 = context.DepartmentGroups.First(q => q.DepartmentId == dbHr.Id && q.Name == "HR2");
+
+            //if (dbHr2.Schedules.Count == 0)
+            //{
+            //    var schedule2 = new Schedule() { StartTime = new DateTime(2015, 10, 26), EndTime = new DateTime(2015, 10, 30), ScheduleItems = new List<Personalsystem.Models.ScheduleItem>() };
+            //    schedule2.DepartmentId = dbHr2.DepartmentId;
+            //    dbHr2.Schedules.Add(schedule2);
+            //    context.SaveChanges();
+            //}
+
+
+
+
         }
 
         private void AddUser(Personalsystem.Models.ApplicationDbContext context, string username)
@@ -152,5 +189,6 @@ namespace Personalsystem.Migrations
             }
             context.SaveChanges();
         }
+
     }
 }
