@@ -145,14 +145,16 @@ namespace Personalsystem.Models
         [Display(Name = "Sista Ansökningsdatum")]
         [DataType(DataType.Date)]
         public DateTime Expired { get; set; }
-        [ForeignKey("Company")]
-        public int CompanyId { get; set; }
-        public virtual Company Company { get; set; }
+        [ForeignKey("Department")]
+        public int DepartmentId { get; set; }
+        public virtual Department Department { get; set; }
         [ForeignKey("Creator")]
         [Display(Name = "Kontaktperson")]
         public string CreatorId { get; set; }
         public virtual ApplicationUser Creator { get; set; }
         public virtual ICollection<Application> Applications { get; set; } 
+
+
     }
     public class Application
     {

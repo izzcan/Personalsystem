@@ -281,6 +281,10 @@
     <Compile Include="Migrations\201510140729580_scheduleitems2.Designer.cs">
       <DependentUpon>201510140729580_scheduleitems2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510121214335_VacancyUpdate.cs" />
+    <Compile Include="Migrations\201510121214335_VacancyUpdate.Designer.cs">
+      <DependentUpon>201510121214335_VacancyUpdate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -473,6 +477,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510120813095_ScheduleItem.resx">
       <DependentUpon>201510120813095_ScheduleItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510121214335_VacancyUpdate.resx">
+      <DependentUpon>201510121214335_VacancyUpdate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510140729580_scheduleitems2.resx">
       <DependentUpon>201510140729580_scheduleitems2.cs</DependentUpon>
