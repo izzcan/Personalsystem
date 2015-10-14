@@ -13,12 +13,23 @@ namespace Personalsystem.Models
 
         public int ScheduleId { get; set; }
 
-        public ICollection<ScheduleItemWeekday> WeekDays { get; set; }
+        public IList<ScheduleItemWeekday> WeekDays { get; set; }
+
+        public ScheduleItemEditViewmodel() { }
+        public ScheduleItemEditViewmodel(ScheduleItem that)
+        {
+            this.Id = that.Id;
+            this.StartTime = that.StartTime;
+            this.EndTime = that.EndTime;
+            this.ScheduleId = that.ScheduleId;
+            this.WeekDays = new List<ScheduleItemWeekday>();
+        }
     }
 
     public class ScheduleItemWeekday
     {
         public int Id { get; set; }
         public bool Checked { get; set; }
+        public string Name { get; set; }
     }
 }

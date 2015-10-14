@@ -69,12 +69,23 @@ namespace Personalsystem.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ScheduleItem scheduleItem = db.ScheduleItems.Find(id);
+            var model = new ScheduleItemEditViewmodel(scheduleItem);
+
+            //var test = db.Companies.Find(6);
+            var test = db.ScheduleItems.Find(1);
+
+            foreach (var weekDay in db.ScheduleWeekDays.ToList())
+            {
+                var test1 = scheduleItem.WeekDays;
+                var test2 = scheduleItem.WeekDays.Contains(weekDay);
+                model.WeekDays.Add(new ScheduleItemWeekday() { Id = weekDay.Id, Checked = scheduleItem.WeekDays != null && scheduleItem.WeekDays.Contains(weekDay), Name = weekDay.Description });
+            }
             if (scheduleItem == null)
             {
                 return HttpNotFound();
             }
             ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id", scheduleItem.ScheduleId);
-            return View(scheduleItem);
+            return View(model);
         }
 
         // POST: ScheduleItems/Edit/5
@@ -82,16 +93,30 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,StartTime,EndTime,ScheduleId")] ScheduleItem scheduleItem)
+        public ActionResult Edit([Bind(Include = "Id,StartTime,EndTime,ScheduleId")] ScheduleItemEditViewmodel model, int[] weekDays)
         {
             if (ModelState.IsValid)
             {
+                ScheduleItem scheduleItem = new ScheduleItem(model);
+                db.Entry(scheduleItem).State = EntityState.Modified;
+                db.SaveChanges();
+
+                db.Entry(scheduleItem).State = EntityState.Detached;
+                scheduleItem = db.ScheduleItems.Find(scheduleItem.Id);
+                scheduleItem.WeekDays.Clear();
+
+                scheduleItem.WeekDays = db.ScheduleWeekDays.Where(q => weekDays.Contains(q.Id)).ToList();
                 db.Entry(scheduleItem).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id", scheduleItem.ScheduleId);
-            return View(scheduleItem);
+            ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id", model.ScheduleId);
+            model.WeekDays = new List<ScheduleItemWeekday>();
+            foreach (var weekDay in db.ScheduleWeekDays)
+            {
+                model.WeekDays.Add(new ScheduleItemWeekday() { Id = weekDay.Id, Checked = weekDays.Contains(weekDay.Id), Name = weekDay.Description });
+            }
+            return View(model);
         }
 
         // GET: ScheduleItems/Delete/5

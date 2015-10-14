@@ -90,7 +90,19 @@ namespace Personalsystem.Models
         public int ScheduleId { get; set; }
         public virtual Schedule Schedule { get; set; }
 
-        public ICollection<ScheduleDayOfWeek> WeekDays { get; set; }
+        [InverseProperty("ScheduleItems")]
+        public virtual ICollection<ScheduleDayOfWeek> WeekDays { get; set; }
+
+        public ScheduleItem() { }
+
+        public ScheduleItem(ScheduleItemEditViewmodel that)
+        {
+            this.Id = that.Id;
+            this.StartTime = that.StartTime;
+            this.EndTime = that.EndTime;
+            this.ScheduleId = that.ScheduleId;
+            this.WeekDays = new List<ScheduleDayOfWeek>();
+        }
     }
 
     //Seeded Monday-Sunday
@@ -99,7 +111,9 @@ namespace Personalsystem.Models
         [Key]
         public int Id { get; set; }
         public string Description { get; set; }
-        public ICollection<ScheduleItem> ScheduleItems { get; set; }
+
+        [InverseProperty("WeekDays")]
+        public virtual ICollection<ScheduleItem> ScheduleItems { get; set; }
     }
 
     public class NewsItem
