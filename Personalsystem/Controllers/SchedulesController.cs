@@ -59,7 +59,7 @@ namespace Personalsystem.Controllers
             {
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
                 var currentUser = userManager.FindById(User.Identity.GetUserId());
-                if (department.Bosses.Contains(currentUser) || (group != null && group.Department.Bosses.Contains(currentUser)))
+                if (department != null && department.Bosses.Contains(currentUser) || (group != null && group.Department.Bosses.Contains(currentUser)))
                 {
                     //ViewBag.DepartmentId = new SelectList(db.Departments.ToList().Where(q=>q.Bosses.Contains(currentUser)).ToList(), "Id","Name",departmentId);
                     //ViewBag.GroupId = new SelectList(db.DepartmentGroups.ToList().Where(q=>q.Department.Bosses.Contains(currentUser)).ToList(), "Id","Name",groupId);
