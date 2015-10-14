@@ -169,6 +169,7 @@
     <Compile Include="Controllers\InterviewsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NewsItemsController.cs" />
+    <Compile Include="Controllers\ScheduleItemsController.cs" />
     <Compile Include="Controllers\SchedulesController.cs" />
     <Compile Include="Controllers\VacanciesController.cs" />
     <Compile Include="Diagrams\Applications.cs">
@@ -276,6 +277,22 @@
     <Compile Include="Migrations\201510120813095_ScheduleItem.Designer.cs">
       <DependentUpon>201510120813095_ScheduleItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510140729580_scheduleitems2.cs" />
+    <Compile Include="Migrations\201510140729580_scheduleitems2.Designer.cs">
+      <DependentUpon>201510140729580_scheduleitems2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510121214335_VacancyUpdate.cs" />
+    <Compile Include="Migrations\201510121214335_VacancyUpdate.Designer.cs">
+      <DependentUpon>201510121214335_VacancyUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510140754424_problems.cs" />
+    <Compile Include="Migrations\201510140754424_problems.Designer.cs">
+      <DependentUpon>201510140754424_problems.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510140755074_problems1.cs" />
+    <Compile Include="Migrations\201510140755074_problems1.Designer.cs">
+      <DependentUpon>201510140755074_problems1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -283,6 +300,7 @@
     <Compile Include="Models\DataModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ScheduleViewmodels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\GenericRepository.cs" />
     <Compile Include="Repositories\IGenericRepository.cs" />
@@ -414,6 +432,11 @@
     <Content Include="Views\DepartmentGroups\RemoveEmployee.cshtml" />
     <Content Include="Views\Companies\AddLeader.cshtml" />
     <Content Include="Views\Companies\RemoveLeader.cshtml" />
+    <Content Include="Views\ScheduleItems\Create.cshtml" />
+    <Content Include="Views\ScheduleItems\Delete.cshtml" />
+    <Content Include="Views\ScheduleItems\Details.cshtml" />
+    <Content Include="Views\ScheduleItems\Edit.cshtml" />
+    <Content Include="Views\ScheduleItems\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -462,6 +485,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510120813095_ScheduleItem.resx">
       <DependentUpon>201510120813095_ScheduleItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510121214335_VacancyUpdate.resx">
+      <DependentUpon>201510121214335_VacancyUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510140729580_scheduleitems2.resx">
+      <DependentUpon>201510140729580_scheduleitems2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510140754424_problems.resx">
+      <DependentUpon>201510140754424_problems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510140755074_problems1.resx">
+      <DependentUpon>201510140755074_problems1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

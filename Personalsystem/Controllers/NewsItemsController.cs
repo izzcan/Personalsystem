@@ -100,9 +100,25 @@ namespace Personalsystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", newsItem.CompanyId);
-            ViewBag.CreatorId = new SelectList(db.Users, "Id", "Email", newsItem.CreatorId);
-            return View(newsItem);
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (newsItem.Company.Admins.Contains(currentUser) || newsItem.Company.Bosses.Contains(currentUser))
+                {
+                    return View(newsItem);
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
         }
 
         // POST: NewsItems/Edit/5
@@ -110,16 +126,36 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Content,Created,CompanyId,CreatorId")] NewsItem newsItem)
+        public ActionResult Edit([Bind(Include = "Id,Title,Content")] NewsItem newsItem)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && User.Identity.IsAuthenticated)
             {
-                db.Entry(newsItem).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (newsItem.Id == 0)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                NewsItem dbNewsItem = db.NewsItems.Find(newsItem.Id);
+                if (dbNewsItem == null)
+                {
+                    return HttpNotFound();
+                }
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (dbNewsItem.Company.Bosses.Contains(currentUser) || dbNewsItem.Company.Admins.Contains(currentUser))
+                {
+                    dbNewsItem.Title = newsItem.Title;
+                    dbNewsItem.Content = newsItem.Content;
+
+                    db.Entry(dbNewsItem).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return RedirectToAction("Details", "Companies", new { id = dbNewsItem.Company.Id });
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
             }
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", newsItem.CompanyId);
-            ViewBag.CreatorId = new SelectList(db.Users, "Id", "Email", newsItem.CreatorId);
             return View(newsItem);
         }
 
@@ -135,7 +171,21 @@ namespace Personalsystem.Controllers
             {
                 return HttpNotFound();
             }
-            return View(newsItem);
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (newsItem.Company.Bosses.Contains(currentUser) || newsItem.Company.Admins.Contains(currentUser))
+                {
+                    return View(newsItem);
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
         }
 
         // POST: NewsItems/Delete/5
@@ -143,10 +193,32 @@ namespace Personalsystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             NewsItem newsItem = db.NewsItems.Find(id);
-            db.NewsItems.Remove(newsItem);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (newsItem == null)
+            {
+                return HttpNotFound();
+            }
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (newsItem.Company.Bosses.Contains(currentUser) || newsItem.Company.Admins.Contains(currentUser))
+                {
+                    var companyId = newsItem.Company.Id;
+                    db.NewsItems.Remove(newsItem);
+                    db.SaveChanges();
+                    return RedirectToAction("Details", "Companies", new { id = companyId });
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
         }
 
         protected override void Dispose(bool disposing)

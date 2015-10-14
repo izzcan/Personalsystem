@@ -54,7 +54,7 @@ namespace Personalsystem.Models
         public string Name { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }
         public virtual ICollection<ApplicationUser> Employees { get; set; }
-        
+
         [ForeignKey("Department")]
         public int DepartmentId { get; set; }
         public virtual Department Department { get; set; }
@@ -90,7 +90,19 @@ namespace Personalsystem.Models
         public int ScheduleId { get; set; }
         public virtual Schedule Schedule { get; set; }
 
-        public ICollection<ScheduleDayOfWeek> WeekDays { get; set; }
+        [InverseProperty("ScheduleItems")]
+        public virtual ICollection<ScheduleDayOfWeek> WeekDays { get; set; }
+
+        public ScheduleItem() { }
+
+        public ScheduleItem(ScheduleItemEditViewmodel that)
+        {
+            this.Id = that.Id;
+            this.StartTime = that.StartTime;
+            this.EndTime = that.EndTime;
+            this.ScheduleId = that.ScheduleId;
+            this.WeekDays = new List<ScheduleDayOfWeek>();
+        }
     }
 
     //Seeded Monday-Sunday
@@ -99,7 +111,9 @@ namespace Personalsystem.Models
         [Key]
         public int Id { get; set; }
         public string Description { get; set; }
-        public ICollection<ScheduleItem> ScheduleItems { get; set; }
+
+        [InverseProperty("WeekDays")]
+        public virtual ICollection<ScheduleItem> ScheduleItems { get; set; }
     }
 
     public class NewsItem
@@ -131,14 +145,16 @@ namespace Personalsystem.Models
         [Display(Name = "Sista Ansökningsdatum")]
         [DataType(DataType.Date)]
         public DateTime Expired { get; set; }
-        [ForeignKey("Company")]
-        public int CompanyId { get; set; }
-        public virtual Company Company { get; set; }
+        [ForeignKey("Department")]
+        public int DepartmentId { get; set; }
+        public virtual Department Department { get; set; }
         [ForeignKey("Creator")]
         [Display(Name = "Kontaktperson")]
         public string CreatorId { get; set; }
         public virtual ApplicationUser Creator { get; set; }
         public virtual ICollection<Application> Applications { get; set; } 
+
+
     }
     public class Application
     {

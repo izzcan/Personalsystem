@@ -1,21 +1,24 @@
-﻿@model IEnumerable<Personalsystem.Models.Application>
+﻿@model IEnumerable<Personalsystem.Models.ScheduleItem>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Ansökningar</h2>
+<h2>Index</h2>
 
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Applicant.Email)
+            @Html.DisplayNameFor(model => model.Schedule.Id)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Vacancy.Title)
+            @Html.DisplayNameFor(model => model.StartTime)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Content)
+            @Html.DisplayNameFor(model => model.EndTime)
         </th>
         <th></th>
     </tr>
@@ -23,13 +26,13 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Applicant.Email)
+            @Html.DisplayFor(modelItem => item.Schedule.Id)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Vacancy.Title)
+            @Html.DisplayFor(modelItem => item.StartTime)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Content)
+            @Html.DisplayFor(modelItem => item.EndTime)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

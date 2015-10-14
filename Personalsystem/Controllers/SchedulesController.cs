@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Personalsystem.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Personalsystem.Controllers
 {
@@ -15,9 +17,14 @@ namespace Personalsystem.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Schedules
-        public ActionResult Index()
+        public ActionResult Index(int? departmentId, int? groupId)
         {
-            var schedules = db.Schedules.Include(s => s.Department).Include(s => s.Group);
+            var schedules = db.Schedules.Include(s => s.Department).Include(s => s.Group)
+                .Where(q => departmentId == null || q.DepartmentId == departmentId)
+                .Where(q => groupId == null || q.GroupId == groupId);
+
+            ViewBag.HrefValues = new { departmentId, groupId };
+
             return View(schedules.ToList());
         }
 
@@ -37,11 +44,40 @@ namespace Personalsystem.Controllers
         }
 
         // GET: Schedules/Create
-        public ActionResult Create()
+        public ActionResult Create(int? departmentId, int? groupId)
         {
-            ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name");
-            ViewBag.GroupId = new SelectList(db.DepartmentGroups, "Id", "Name");
-            return View();
+            Department department = db.Departments.Find(departmentId);
+            DepartmentGroup group = db.DepartmentGroups.Find(groupId);
+
+            if(department == null && group == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (department.Bosses.Contains(currentUser) || group.Department.Bosses.Contains(currentUser))
+                {
+                    //ViewBag.DepartmentId = new SelectList(db.Departments.ToList().Where(q=>q.Bosses.Contains(currentUser)).ToList(), "Id","Name",departmentId);
+                    //ViewBag.GroupId = new SelectList(db.DepartmentGroups.ToList().Where(q=>q.Department.Bosses.Contains(currentUser)).ToList(), "Id","Name",groupId);
+                    ViewBag.DepartmentId = new SelectList(db.Departments.ToList().Where(q => q.Bosses.Contains(currentUser)).ToList(), "Id", "Name", departmentId);
+                    var groups = new SelectList(db.DepartmentGroups.ToList().Where(q => q.Department.Bosses.Contains(currentUser)).ToList(), "Id", "Name", groupId).ToList();
+                    groups.Insert(0,new SelectListItem() { Value = "", Text = "All" });
+                    ViewBag.GroupId = groups;
+                    return View();
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
         }
 
         // POST: Schedules/Create
@@ -51,16 +87,38 @@ namespace Personalsystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,StartTime,EndTime,DepartmentId,GroupId")] Schedule schedule)
         {
-            if (ModelState.IsValid)
-            {
-                db.Schedules.Add(schedule);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var currentUser = userManager.FindById(User.Identity.GetUserId());
 
-            ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name", schedule.DepartmentId);
-            ViewBag.GroupId = new SelectList(db.DepartmentGroups, "Id", "Name", schedule.GroupId);
-            return View(schedule);
+            if (ModelState.IsValid && User.Identity.IsAuthenticated)
+            {
+                if (schedule.DepartmentId == 0 && schedule.GroupId == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Department department = db.Departments.Find(schedule.DepartmentId) ?? db.DepartmentGroups.Find(schedule.GroupId).Department;
+                if (department == null)
+                {
+                    return HttpNotFound();
+                }
+                if (department.Bosses.Contains(currentUser)) //Current logged in user must be boss for the department
+                {
+                    db.Schedules.Add(schedule);
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index", "Schedules", new { id = department.Id });
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+            }
+            ViewBag.DepartmentId = new SelectList(db.Departments.ToList().Where(q => q.Bosses.Contains(currentUser)).ToList(), "Id", "Name", schedule.DepartmentId);
+            var groups = new SelectList(db.DepartmentGroups.ToList().Where(q => q.Department.Bosses.Contains(currentUser)).ToList(), "Id", "Name", schedule.GroupId).ToList();
+            groups.Insert(0,new SelectListItem(){ Value = "", Text = "All"});
+            ViewBag.GroupId = groups;
+
+            return View(schedule);  
         }
 
         // GET: Schedules/Edit/5
@@ -75,9 +133,30 @@ namespace Personalsystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name", schedule.DepartmentId);
-            ViewBag.GroupId = new SelectList(db.DepartmentGroups, "Id", "Name", schedule.GroupId);
-            return View(schedule);
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (schedule.Department.Bosses.Contains(currentUser) || (schedule.Group != null && schedule.Group.Department.Bosses.Contains(currentUser)))
+                {
+                    ViewBag.DepartmentId = new SelectList(db.Departments.ToList().Where(q => q.Bosses.Contains(currentUser)).ToList(), "Id", "Name", schedule.DepartmentId);
+                    var groups = new SelectList(db.DepartmentGroups.ToList().Where(q => q.Department.Bosses.Contains(currentUser)).ToList(), "Id", "Name", schedule.GroupId).ToList();
+                    groups.Insert(0, new SelectListItem() { Value = "", Text = "All" });
+                    ViewBag.GroupId = groups;
+
+                    return View(schedule);
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
         }
 
         // POST: Schedules/Edit/5
@@ -87,14 +166,39 @@ namespace Personalsystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,StartTime,EndTime,DepartmentId,GroupId")] Schedule schedule)
         {
-            if (ModelState.IsValid)
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var currentUser = userManager.FindById(User.Identity.GetUserId());
+            if (ModelState.IsValid && User.Identity.IsAuthenticated)
             {
-                db.Entry(schedule).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (schedule.Id == 0)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Schedule dbSchedule = db.Schedules.Find(schedule.Id);
+                if (dbSchedule == null)
+                {
+                    return HttpNotFound();
+                }
+                if (dbSchedule.Department.Bosses.Contains(currentUser) || (dbSchedule.Group != null && dbSchedule.Group.Department.Bosses.Contains(currentUser)))
+                {
+                    db.Entry(dbSchedule).State = EntityState.Detached;
+
+                    db.Entry(schedule).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index", "Schedules", new { id = schedule.DepartmentId });
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
             }
-            ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name", schedule.DepartmentId);
-            ViewBag.GroupId = new SelectList(db.DepartmentGroups, "Id", "Name", schedule.GroupId);
+
+            ViewBag.DepartmentId = new SelectList(db.Departments.ToList().Where(q => q.Bosses.Contains(currentUser)).ToList(), "Id", "Name", schedule.DepartmentId);
+            var groups = new SelectList(db.DepartmentGroups.ToList().Where(q => q.Department.Bosses.Contains(currentUser)).ToList(), "Id", "Name", schedule.GroupId).ToList();
+            groups.Insert(0, new SelectListItem() { Value = "", Text = "All" });
+            ViewBag.GroupId = groups;
+
             return View(schedule);
         }
 
@@ -110,7 +214,21 @@ namespace Personalsystem.Controllers
             {
                 return HttpNotFound();
             }
-            return View(schedule);
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (schedule.Department.Bosses.Contains(currentUser) || (schedule.Group != null && schedule.Group.Department.Bosses.Contains(currentUser)))
+                {
+                    return View(schedule);
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
         }
 
         // POST: Schedules/Delete/5
@@ -118,10 +236,32 @@ namespace Personalsystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Schedule schedule = db.Schedules.Find(id);
-            db.Schedules.Remove(schedule);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (schedule == null)
+            {
+                return HttpNotFound();
+            }
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (schedule.Department.Bosses.Contains(currentUser) || (schedule.Group != null && schedule.Group.Department.Bosses.Contains(currentUser)))
+                {
+                    var departmentId = schedule.DepartmentId;
+                    db.Schedules.Remove(schedule);
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "Schedules", new { id = departmentId });
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
         }
 
         protected override void Dispose(bool disposing)

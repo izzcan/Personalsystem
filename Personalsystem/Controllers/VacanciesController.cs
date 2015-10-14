@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Personalsystem.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Personalsystem.Controllers
 {
@@ -16,9 +17,14 @@ namespace Personalsystem.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Vacancies
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
-            var vacancies = db.Vacancies.Include(v => v.Company).Include(v => v.Creator);
+            Department department = db.Departments.Find(id);
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var currentUser = userManager.FindById(User.Identity.GetUserId());
+            ViewBag.isBoss = department.Bosses.Contains(currentUser);
+            ViewBag.DepartmentId = id;
+            var vacancies = db.Vacancies.Include(v => v.Department).Include(v => v.Creator).Where(d => d.DepartmentId == id || id == null);
             return View(vacancies.ToList());
         }
 
@@ -38,12 +44,23 @@ namespace Personalsystem.Controllers
         }
 
         // GET: Vacancies/Create
-        public ActionResult Create()
+        [Authorize]
+        public ActionResult Create(int? id)
         {
-            //Lägger till alla företag i en lista som läggs i Viewbaggen
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name");
-            //ViewBag.CreatorId = new SelectList(db.Users, "Id", "Email");
-            return View();
+            Department department = db.Departments.Find(id);
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (department == null || department.Bosses.Contains(currentUser))
+                {
+                    //Lägger till alla företag i en lista som läggs i Viewbaggen
+                    ViewBag.DepartmentId = id;
+                    //ViewBag.CreatorId = new SelectList(db.Users, "Id", "Email");
+                    return View();
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         // POST: Vacancies/Create
@@ -51,7 +68,7 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Content,Expired,CompanyId")] Vacancy vacancy)
+        public ActionResult Create([Bind(Include = "Id,Title,Content,Expired,DepartmentId")] Vacancy vacancy)
         {
             if (ModelState.IsValid)
             {
@@ -61,29 +78,41 @@ namespace Personalsystem.Controllers
                 //db.Entry(vacancy).Property("CompanyId").CurrentValue = db.Companies.Single(c => c. == User.Identity.GetUserId());
                 db.Vacancies.Add(vacancy);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = vacancy.DepartmentId });
             }
 
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", vacancy.CompanyId);
+            ViewBag.DepartmentId = new SelectList(db.Companies, "Id", "Name", vacancy.DepartmentId);
             //ViewBag.CreatorId = new SelectList(db.Users, "Id", "Email", vacancy.CreatorId);
             return View(vacancy);
         }
 
         // GET: Vacancies/Edit/5
-        public ActionResult Edit(int? id)
+        [Authorize]
+        public ActionResult Edit(int? id, int? depId)
         {
-            if (id == null)
+            Department department = db.Departments.Find(depId);
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (department == null || department.Bosses.Contains(currentUser))
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Vacancy vacancy = db.Vacancies.Find(id);
+                    if (vacancy == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    ViewBag.DepartmentId = vacancy.DepartmentId;
+                    ViewBag.DepartmentId = new SelectList(db.Companies, "Id", "Name", vacancy.DepartmentId);
+                    ViewBag.CreatorId = new SelectList(db.Users, "Id", "Email", vacancy.CreatorId);
+                    return View(vacancy);
+                }
             }
-            Vacancy vacancy = db.Vacancies.Find(id);
-            if (vacancy == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", vacancy.CompanyId);
-            ViewBag.CreatorId = new SelectList(db.Users, "Id", "Email", vacancy.CreatorId);
-            return View(vacancy);
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         // POST: Vacancies/Edit/5
@@ -91,7 +120,7 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Content,Created,CompanyId,CreatorId")] Vacancy vacancy)
+        public ActionResult Edit([Bind(Include = "Id,Title,Content,Created,DepartmentId,CreatorId")] Vacancy vacancy)
         {
             if (ModelState.IsValid)
             {
@@ -99,24 +128,34 @@ namespace Personalsystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name", vacancy.CompanyId);
+            ViewBag.DepartmentId = new SelectList(db.Companies, "Id", "Name", vacancy.DepartmentId);
             ViewBag.CreatorId = new SelectList(db.Users, "Id", "Email", vacancy.CreatorId);
             return View(vacancy);
         }
 
         // GET: Vacancies/Delete/5
-        public ActionResult Delete(int? id)
+        [Authorize]
+        public ActionResult Delete(int? id, int? depId)
         {
-            if (id == null)
+            Department department = db.Departments.Find(depId);
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (department == null || department.Bosses.Contains(currentUser))
+
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Vacancy vacancy = db.Vacancies.Find(id);
+                if (vacancy == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(vacancy);
             }
-            Vacancy vacancy = db.Vacancies.Find(id);
-            if (vacancy == null)
-            {
-                return HttpNotFound();
-            }
-            return View(vacancy);
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         // POST: Vacancies/Delete/5
