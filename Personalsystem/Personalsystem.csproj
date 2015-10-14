@@ -293,6 +293,10 @@
     <Compile Include="Migrations\201510140755074_problems1.Designer.cs">
       <DependentUpon>201510140755074_problems1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510140929214_scheduledescription.cs" />
+    <Compile Include="Migrations\201510140929214_scheduledescription.Designer.cs">
+      <DependentUpon>201510140929214_scheduledescription.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -434,7 +438,6 @@
     <Content Include="Views\Companies\RemoveLeader.cshtml" />
     <Content Include="Views\ScheduleItems\Create.cshtml" />
     <Content Include="Views\ScheduleItems\Delete.cshtml" />
-    <Content Include="Views\ScheduleItems\Details.cshtml" />
     <Content Include="Views\ScheduleItems\Edit.cshtml" />
     <Content Include="Views\ScheduleItems\Index.cshtml" />
   </ItemGroup>
@@ -497,6 +500,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510140755074_problems1.resx">
       <DependentUpon>201510140755074_problems1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510140929214_scheduledescription.resx">
+      <DependentUpon>201510140929214_scheduledescription.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -84,6 +84,7 @@ namespace Personalsystem.Models
         public int Id { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
+        public string Description { get; set; }
         
 
         [ForeignKey("Schedule")]
@@ -100,6 +101,7 @@ namespace Personalsystem.Models
             this.Id = that.Id;
             this.StartTime = that.StartTime;
             this.EndTime = that.EndTime;
+            this.Description = that.Description;
             this.ScheduleId = that.ScheduleId;
             this.WeekDays = new List<ScheduleDayOfWeek>();
         }

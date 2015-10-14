@@ -36,11 +36,12 @@ namespace Personalsystem.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Schedule schedule = db.Schedules.Find(id);
+            var model = new ScheduleDetailsViewmodel(schedule);
             if (schedule == null)
             {
                 return HttpNotFound();
             }
-            return View(schedule);
+            return View(model);
         }
 
         // GET: Schedules/Create

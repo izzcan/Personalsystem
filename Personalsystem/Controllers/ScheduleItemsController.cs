@@ -10,6 +10,7 @@ using Personalsystem.Models;
 
 namespace Personalsystem.Controllers
 {
+    [Authorize]
     public class ScheduleItemsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -17,24 +18,11 @@ namespace Personalsystem.Controllers
         // GET: ScheduleItems
         public ActionResult Index()
         {
-            var scheduleItems = db.ScheduleItems.Include(s => s.Schedule);
-            return View(scheduleItems.ToList());
+            var scheduleItems = db.ScheduleItems.Include(s => s.Schedule).ToList();
+            var model = scheduleItems.Select( q => new ScheduleItemListitemViewmodel(q));
+            return View(model.ToList());
         }
 
-        // GET: ScheduleItems/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ScheduleItem scheduleItem = db.ScheduleItems.Find(id);
-            if (scheduleItem == null)
-            {
-                return HttpNotFound();
-            }
-            return View(scheduleItem);
-        }
 
         // GET: ScheduleItems/Create
         public ActionResult Create()
@@ -93,7 +81,7 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,StartTime,EndTime,ScheduleId")] ScheduleItemEditViewmodel model, int[] weekDays)
+        public ActionResult Edit([Bind(Include = "Id,StartTime,EndTime,ScheduleId,Description")] ScheduleItemEditViewmodel model, int[] weekDays)
         {
             if (ModelState.IsValid)
             {
