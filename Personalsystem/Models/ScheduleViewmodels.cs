@@ -31,8 +31,8 @@ namespace Personalsystem.Models
             this.GroupId = that.GroupId;
             this.Group = that.Group == null ? null : that.Group.Name;
 
-            var weekDays = that.ScheduleItems.SelectMany(q => q.WeekDays).Distinct().ToList();
-            this.ScheduleItems = weekDays.Select(q => new ScheduleDetailsWeekDayViewmodel(q)).ToList();
+            var weekDays = that.ScheduleItems.ToList().SelectMany(q => q.WeekDays).Distinct().ToList();
+            this.ScheduleItems = weekDays.Select(q => new ScheduleDetailsWeekDayViewmodel(q, that.Id)).ToList();
 
         }
 
@@ -46,11 +46,11 @@ namespace Personalsystem.Models
 
         public ScheduleDetailsWeekDayViewmodel() { }
 
-        public ScheduleDetailsWeekDayViewmodel(ScheduleDayOfWeek that)
+        public ScheduleDetailsWeekDayViewmodel(ScheduleDayOfWeek that, int scheduleId)
         {
             this.Id = that.Id;
             this.Description = that.Description;
-            this.Items = that.ScheduleItems.Select(q => new ScheduleDetailsWeekDayItemViewmodel() { Id = q.Id, StartTime = q.StartTime, EndTime = q.EndTime, Description = q.Description }).ToList();
+            this.Items = that.ScheduleItems.Where(q => q.ScheduleId == scheduleId).Select(q => new ScheduleDetailsWeekDayItemViewmodel() { Id = q.Id, StartTime = q.StartTime, EndTime = q.EndTime, Description = q.Description }).ToList();
         }
 
     }

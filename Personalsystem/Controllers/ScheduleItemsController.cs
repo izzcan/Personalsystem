@@ -16,19 +16,28 @@ namespace Personalsystem.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: ScheduleItems
-        public ActionResult Index()
+        public ActionResult Index(int? scheduleId)
         {
-            var scheduleItems = db.ScheduleItems.Include(s => s.Schedule).ToList();
+            var scheduleItems = db.ScheduleItems.Include(s => s.Schedule).Where(q => scheduleId == null || q.ScheduleId == scheduleId).ToList();
             var model = scheduleItems.Select( q => new ScheduleItemListitemViewmodel(q));
+
+            ViewBag.ScheduleId = scheduleId;
             return View(model.ToList());
         }
 
 
         // GET: ScheduleItems/Create
-        public ActionResult Create()
+        public ActionResult Create(int? scheduleId)
         {
-            ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id");
-            return View();
+            var model = new ScheduleItemEditViewmodel();
+            model.WeekDays = new List<ScheduleItemWeekday>();
+            foreach (var weekDay in db.ScheduleWeekDays.ToList())
+            {
+                model.WeekDays.Add(new ScheduleItemWeekday() { Id = weekDay.Id, Checked = false, Name = weekDay.Description });
+            }
+
+            ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id",scheduleId);
+            return View(model);
         }
 
         // POST: ScheduleItems/Create
@@ -36,13 +45,14 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,StartTime,EndTime,ScheduleId")] ScheduleItem scheduleItem)
+        public ActionResult Create([Bind(Include = "Id,StartTime,EndTime,ScheduleId,Description")] ScheduleItem scheduleItem, int[] weekDays)
         {
             if (ModelState.IsValid)
             {
+                scheduleItem.WeekDays = db.ScheduleWeekDays.Where(q => weekDays.Contains(q.Id)).ToList();
                 db.ScheduleItems.Add(scheduleItem);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { scheduleItem.ScheduleId });
             }
 
             ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id", scheduleItem.ScheduleId);
@@ -57,21 +67,17 @@ namespace Personalsystem.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ScheduleItem scheduleItem = db.ScheduleItems.Find(id);
-            var model = new ScheduleItemEditViewmodel(scheduleItem);
-
-            //var test = db.Companies.Find(6);
-            var test = db.ScheduleItems.Find(1);
-
-            foreach (var weekDay in db.ScheduleWeekDays.ToList())
-            {
-                var test1 = scheduleItem.WeekDays;
-                var test2 = scheduleItem.WeekDays.Contains(weekDay);
-                model.WeekDays.Add(new ScheduleItemWeekday() { Id = weekDay.Id, Checked = scheduleItem.WeekDays != null && scheduleItem.WeekDays.Contains(weekDay), Name = weekDay.Description });
-            }
             if (scheduleItem == null)
             {
                 return HttpNotFound();
             }
+            var model = new ScheduleItemEditViewmodel(scheduleItem);
+
+            foreach (var weekDay in db.ScheduleWeekDays.ToList())
+            {
+                model.WeekDays.Add(new ScheduleItemWeekday() { Id = weekDay.Id, Checked = scheduleItem.WeekDays != null && scheduleItem.WeekDays.Contains(weekDay), Name = weekDay.Description });
+            }
+
             ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id", scheduleItem.ScheduleId);
             return View(model);
         }
@@ -96,7 +102,7 @@ namespace Personalsystem.Controllers
                 scheduleItem.WeekDays = db.ScheduleWeekDays.Where(q => weekDays.Contains(q.Id)).ToList();
                 db.Entry(scheduleItem).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { scheduleItem.ScheduleId });
             }
             ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id", model.ScheduleId);
             model.WeekDays = new List<ScheduleItemWeekday>();

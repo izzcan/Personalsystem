@@ -21,9 +21,11 @@ namespace Personalsystem.Controllers
         {
             var schedules = db.Schedules.Include(s => s.Department).Include(s => s.Group)
                 .Where(q => departmentId == null || q.DepartmentId == departmentId)
-                .Where(q => groupId == null || q.GroupId == groupId);
+                .Where(q => groupId == null || q.GroupId == groupId)
+                .OrderByDescending(q => q.StartTime);
 
-            ViewBag.HrefValues = new { departmentId, groupId };
+            ViewBag.DepartmentId = departmentId;
+            ViewBag.GroupId = groupId;
 
             return View(schedules.ToList());
         }
@@ -107,7 +109,7 @@ namespace Personalsystem.Controllers
                     db.Schedules.Add(schedule);
                     db.SaveChanges();
 
-                    return RedirectToAction("Index", "Schedules", new { id = department.Id });
+                    return RedirectToAction("Index", "Schedules", new { departmentId = schedule.DepartmentId, groupId = schedule.GroupId });
                 }
                 else
                 {
