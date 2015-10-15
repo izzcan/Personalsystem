@@ -35,7 +35,8 @@ namespace Personalsystem.Controllers
             {
                 return HttpNotFound();
             }
-            return View(department);
+            return RedirectToAction("Details", "Companies", new { id = department.CompanyId });
+            //return View(department);
         }
 
         // GET: Departments/Create

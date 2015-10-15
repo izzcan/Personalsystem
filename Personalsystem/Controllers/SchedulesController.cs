@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Personalsystem.Controllers
 {
+    [Authorize]
     public class SchedulesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -21,9 +22,11 @@ namespace Personalsystem.Controllers
         {
             var schedules = db.Schedules.Include(s => s.Department).Include(s => s.Group)
                 .Where(q => departmentId == null || q.DepartmentId == departmentId)
-                .Where(q => groupId == null || q.GroupId == groupId);
+                .Where(q => groupId == null || q.GroupId == groupId)
+                .OrderByDescending(q => q.StartTime);
 
-            ViewBag.HrefValues = new { departmentId, groupId };
+            ViewBag.DepartmentId = departmentId;
+            ViewBag.GroupId = groupId;
 
             return View(schedules.ToList());
         }
@@ -59,7 +62,7 @@ namespace Personalsystem.Controllers
             {
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
                 var currentUser = userManager.FindById(User.Identity.GetUserId());
-                if (department != null && department.Bosses.Contains(currentUser) || (group != null && group.Department.Bosses.Contains(currentUser)))
+                if ((department != null && department.Bosses.Contains(currentUser)) || (group != null && group.Department.Bosses.Contains(currentUser)))
                 {
                     //ViewBag.DepartmentId = new SelectList(db.Departments.ToList().Where(q=>q.Bosses.Contains(currentUser)).ToList(), "Id","Name",departmentId);
                     //ViewBag.GroupId = new SelectList(db.DepartmentGroups.ToList().Where(q=>q.Department.Bosses.Contains(currentUser)).ToList(), "Id","Name",groupId);
@@ -107,7 +110,7 @@ namespace Personalsystem.Controllers
                     db.Schedules.Add(schedule);
                     db.SaveChanges();
 
-                    return RedirectToAction("Index", "Schedules", new { id = department.Id });
+                    return RedirectToAction("Index", "Schedules", new { departmentId = schedule.DepartmentId, groupId = schedule.GroupId });
                 }
                 else
                 {

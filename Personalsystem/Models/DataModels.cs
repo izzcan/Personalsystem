@@ -65,7 +65,9 @@ namespace Personalsystem.Models
     {
         [Key]
         public int Id { get; set; }
+        [DataType(DataType.Date)]
         public DateTime StartTime { get; set; }
+        [DataType(DataType.Date)]
         public DateTime? EndTime{ get; set; }
 
         [ForeignKey("Department")]
@@ -83,7 +85,9 @@ namespace Personalsystem.Models
     {
         [Key]
         public int Id { get; set; }
+        [DataType(DataType.Time)]
         public TimeSpan StartTime { get; set; }
+        [DataType(DataType.Time)]
         public TimeSpan EndTime { get; set; }
         public string Description { get; set; }
         
