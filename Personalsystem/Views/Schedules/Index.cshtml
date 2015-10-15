@@ -29,16 +29,16 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Department.Name)
+            @(item.DepartmentId != null ? Html.ActionLink(item.Department.Name, "Index", new { departmentId = item.DepartmentId }):null)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Group.Name)
+        <td>            
+            @(item.GroupId != null ? Html.ActionLink(item.Group.Name, "Index", new { groupId = item.GroupId }):null)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.StartTime)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.EndTime)
+            @(item.EndTime != null ? Html.DisplayFor(modelItem => item.EndTime) : Html.Raw("Ongoing"))
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

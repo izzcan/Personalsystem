@@ -36,7 +36,13 @@ namespace Personalsystem.Controllers
                 model.WeekDays.Add(new ScheduleItemWeekday() { Id = weekDay.Id, Checked = false, Name = weekDay.Description });
             }
 
-            ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id",scheduleId);
+            //ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id",scheduleId);
+            ViewBag.ScheduleId = db.Schedules.ToList().Select(q => new SelectListItem()
+            {
+                Value = q.Id.ToString(),
+                Text = q.StartTime.ToShortDateString() + " : " + (q.EndTime == null ? "Ongoing" : q.EndTime.GetValueOrDefault().ToShortDateString()),
+                Selected = (q.Id == scheduleId)
+            });
             return View(model);
         }
 
@@ -55,7 +61,13 @@ namespace Personalsystem.Controllers
                 return RedirectToAction("Index", new { scheduleItem.ScheduleId });
             }
 
-            ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id", scheduleItem.ScheduleId);
+            //ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id", scheduleItem.ScheduleId);
+            ViewBag.ScheduleId = db.Schedules.ToList().Select(q => new SelectListItem()
+            {
+                Value = q.Id.ToString(),
+                Text = q.StartTime.ToShortDateString() + " : " + (q.EndTime == null ? "Ongoing" : q.EndTime.GetValueOrDefault().ToShortDateString()),
+                Selected = (q.Id == scheduleItem.ScheduleId)
+            });
             return View(scheduleItem);
         }
 
@@ -78,7 +90,11 @@ namespace Personalsystem.Controllers
                 model.WeekDays.Add(new ScheduleItemWeekday() { Id = weekDay.Id, Checked = scheduleItem.WeekDays != null && scheduleItem.WeekDays.Contains(weekDay), Name = weekDay.Description });
             }
 
-            ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id", scheduleItem.ScheduleId);
+            //ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id", scheduleItem.ScheduleId);
+            ViewBag.ScheduleId = db.Schedules.ToList().Select(q => new SelectListItem() { 
+                Value = q.Id.ToString(),
+                Text = q.StartTime.ToShortDateString() + " : " + (q.EndTime == null ? "Ongoing" : q.EndTime.GetValueOrDefault().ToShortDateString()),
+                Selected = (q.Id == scheduleItem.ScheduleId) });
             return View(model);
         }
 
@@ -104,7 +120,13 @@ namespace Personalsystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index", new { scheduleItem.ScheduleId });
             }
-            ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id", model.ScheduleId);
+            //ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id", model.ScheduleId);
+            ViewBag.ScheduleId = db.Schedules.ToList().Select(q => new SelectListItem()
+            {
+                Value = q.Id.ToString(),
+                Text = q.StartTime.ToShortDateString() + " : " + (q.EndTime == null ? "Ongoing" : q.EndTime.GetValueOrDefault().ToShortDateString()),
+                Selected = (q.Id == model.ScheduleId)
+            });
             model.WeekDays = new List<ScheduleItemWeekday>();
             foreach (var weekDay in db.ScheduleWeekDays)
             {

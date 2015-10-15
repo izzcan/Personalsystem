@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Personalsystem.Controllers
 {
+    [Authorize]
     public class SchedulesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
