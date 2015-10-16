@@ -25,7 +25,7 @@ namespace Personalsystem.Models
             this.Leadership = that.Leadership.Select(q => new UserListitemViewmodel() { Id = q.Id, Name = q.UserName }).ToList();
 
             this.Departments = that.Departments.Select(q => new CompanyDepartmentListitemViewmodel(q)).ToList();
-            this.NewsItems = that.NewsItems.OrderByDescending(q => q.Created).Take(6).Select(q => new NewsListitemViewmodel() { Id = q.Id, Title = q.Title, Content = q.Content, Created = q.Created, CreatorName = q.Creator.UserName }).ToList();
+            this.NewsItems = that.NewsItems.OrderByDescending(q => q.Created).Take(3).Select(q => new NewsListitemViewmodel() { Id = q.Id, Title = q.Title, Content = q.Content, Created = q.Created, CreatorName = q.Creator.UserName }).ToList();
         }
     }
 
