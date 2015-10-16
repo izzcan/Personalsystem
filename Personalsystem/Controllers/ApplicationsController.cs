@@ -21,14 +21,56 @@ namespace Personalsystem.Controllers
         // GET: Applications
         public ActionResult Index(int? id)
         {
-            //Department department = db.Departments.Find(id);
-            //var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-            //var currentUser = userManager.FindById(User.Identity.GetUserId());
-            //ViewBag.isBoss = department.Bosses.Contains(currentUser);
-            //ViewBag.DepartmentId = id;
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var currentUser = userManager.FindById(User.Identity.GetUserId());
             string userId = User.Identity.GetUserId();
-            var applications = db.Applications.Include(a => a.Applicant).Include(a => a.Vacancy).Where(ap => ap.ApplicantId == userId);            
-            return View(applications.ToList());
+            if (id == null)
+            {
+                var adminCompanies = currentUser.AdminForCompanies.Select(c => c.Id);
+                List<Application> applicationList = new List<Application>();
+                if (currentUser.BossForDepartments.Count > 0)
+                {
+                    ViewBag.isBoss = true;
+                    var bossesDepartments = currentUser.BossForDepartments.Select(d => d.Id);                   
+                    foreach (int dep in bossesDepartments)
+                    {
+                        var applicationsDepartments = db.Applications.Include(d => d.Vacancy).Where(d => d.Vacancy.DepartmentId == dep).ToList();
+                        applicationList.AddRange(applicationsDepartments);
+                    }
+                    return View(applicationList);
+                }
+                else if (currentUser.AdminForCompanies.Count > 0)
+                {
+                    foreach (int cmp in adminCompanies)
+                    {
+                        var allApplications = db.Applications.Include(v => v.Vacancy).Where(v => v.Vacancy.Department.CompanyId == cmp).ToList();
+                        applicationList.AddRange(allApplications);
+                    }
+                    return View(applicationList);
+                }
+                else
+                {
+                    ViewBag.isBoss = false;
+                    var applications = db.Applications.Include(a => a.Vacancy).Where(a => a.ApplicantId == userId);
+                    return View(applications.ToList());
+                }
+            }
+            else
+            {
+                Department department = db.Departments.Find(id);
+                ViewBag.isBoss = department.Bosses.Contains(currentUser);                
+                if (department.Bosses.Contains(currentUser))
+                {
+                    var applications = db.Applications.Include(v => v.Vacancy).Where(d => d.Vacancy.DepartmentId == id).ToList();
+                    return View(applications);
+                }
+                else
+                {
+                    ViewBag.isBoss = false;
+                    var applications = db.Applications.Include(a => a.Vacancy).Where(a => a.ApplicantId == userId);
+                    return View(applications.ToList());
+                }
+            }
         }
 
         // GET: Applications/Details/5

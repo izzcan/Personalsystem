@@ -1,4 +1,4 @@
-Sprint2
+jkSprint2
 Företagshantering:
   * Edit/delete funktioner
 Börja schemaläggning
@@ -22,3 +22,9 @@ Rollhantering
 	----
 	"Bättre en back i hallen - än ett hack i ballen" 
 	-- Okänd
+
+Slutsprint
+
+	*Startsida => Landningssidan
+	*Knyta ihop allt
+	*Gå igenom hela systemet
