@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Personalsystem.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Personalsystem.Controllers
 {
@@ -29,21 +31,48 @@ namespace Personalsystem.Controllers
         // GET: ScheduleItems/Create
         public ActionResult Create(int? scheduleId)
         {
-            var model = new ScheduleItemEditViewmodel();
-            model.WeekDays = new List<ScheduleItemWeekday>();
-            foreach (var weekDay in db.ScheduleWeekDays.ToList())
+            Schedule schedule = db.Schedules.Find(scheduleId);
+
+            if (schedule == null)
             {
-                model.WeekDays.Add(new ScheduleItemWeekday() { Id = weekDay.Id, Checked = false, Name = weekDay.Description });
+                return HttpNotFound();
             }
 
-            //ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id",scheduleId);
-            ViewBag.ScheduleId = db.Schedules.ToList().Select(q => new SelectListItem()
+            if (User.Identity.IsAuthenticated)
             {
-                Value = q.Id.ToString(),
-                Text = q.StartTime.ToShortDateString() + " : " + (q.EndTime == null ? "Ongoing" : q.EndTime.GetValueOrDefault().ToShortDateString()),
-                Selected = (q.Id == scheduleId)
-            });
-            return View(model);
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (schedule.Department.Bosses.Contains(currentUser))
+                {
+                    var model = new ScheduleItemEditViewmodel();
+                    model.WeekDays = new List<ScheduleItemWeekday>();
+                    foreach (var weekDay in db.ScheduleWeekDays.ToList())
+                    {
+                        model.WeekDays.Add(new ScheduleItemWeekday() { Id = weekDay.Id, Checked = false, Name = weekDay.Description });
+                    }
+
+                    //ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id",scheduleId);
+                    ViewBag.ScheduleId = db.Schedules.ToList().Select(q => new SelectListItem()
+                    {
+                        Value = q.Id.ToString(),
+                        Text = q.StartTime.ToShortDateString() + " : " + (q.EndTime == null ? "Ongoing" : q.EndTime.GetValueOrDefault().ToShortDateString()),
+                        Selected = (q.Id == scheduleId)
+                    });
+                    return View(model);
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
+
+
+
         }
 
         // POST: ScheduleItems/Create
@@ -53,12 +82,32 @@ namespace Personalsystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,StartTime,EndTime,ScheduleId,Description")] ScheduleItem scheduleItem, int[] weekDays)
         {
-            if (ModelState.IsValid)
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var currentUser = userManager.FindById(User.Identity.GetUserId());
+
+            if (ModelState.IsValid && User.Identity.IsAuthenticated)
             {
-                scheduleItem.WeekDays = db.ScheduleWeekDays.Where(q => weekDays.Contains(q.Id)).ToList();
-                db.ScheduleItems.Add(scheduleItem);
-                db.SaveChanges();
-                return RedirectToAction("Index", new { scheduleItem.ScheduleId });
+                if (scheduleItem.ScheduleId == 0)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Schedule schedule = db.Schedules.Find(scheduleItem.ScheduleId);
+                if (schedule == null)
+                {
+                    return HttpNotFound();
+                }
+                if (schedule.Department.Bosses.Contains(currentUser)) //Current logged in user must be boss for the department
+                {
+                    scheduleItem.WeekDays = db.ScheduleWeekDays.Where(q => weekDays.Contains(q.Id)).ToList();
+                    db.ScheduleItems.Add(scheduleItem);
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index", new { scheduleItem.ScheduleId });
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
             }
 
             //ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id", scheduleItem.ScheduleId);
@@ -83,19 +132,44 @@ namespace Personalsystem.Controllers
             {
                 return HttpNotFound();
             }
-            var model = new ScheduleItemEditViewmodel(scheduleItem);
 
-            foreach (var weekDay in db.ScheduleWeekDays.ToList())
+            if (User.Identity.IsAuthenticated)
             {
-                model.WeekDays.Add(new ScheduleItemWeekday() { Id = weekDay.Id, Checked = scheduleItem.WeekDays != null && scheduleItem.WeekDays.Contains(weekDay), Name = weekDay.Description });
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (scheduleItem.Schedule.Department.Bosses.Contains(currentUser))
+                {
+                    var model = new ScheduleItemEditViewmodel(scheduleItem);
+
+                    foreach (var weekDay in db.ScheduleWeekDays.ToList())
+                    {
+                        model.WeekDays.Add(new ScheduleItemWeekday() { Id = weekDay.Id, Checked = scheduleItem.WeekDays != null && scheduleItem.WeekDays.Contains(weekDay), Name = weekDay.Description });
+                    }
+
+                    //ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id", scheduleItem.ScheduleId);
+                    ViewBag.ScheduleId = db.Schedules.ToList().Select(q => new SelectListItem()
+                    {
+                        Value = q.Id.ToString(),
+                        Text = q.StartTime.ToShortDateString() + " : " + (q.EndTime == null ? "Ongoing" : q.EndTime.GetValueOrDefault().ToShortDateString()),
+                        Selected = (q.Id == scheduleItem.ScheduleId)
+                    });
+                    return View(model);
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
 
-            //ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id", scheduleItem.ScheduleId);
-            ViewBag.ScheduleId = db.Schedules.ToList().Select(q => new SelectListItem() { 
-                Value = q.Id.ToString(),
-                Text = q.StartTime.ToShortDateString() + " : " + (q.EndTime == null ? "Ongoing" : q.EndTime.GetValueOrDefault().ToShortDateString()),
-                Selected = (q.Id == scheduleItem.ScheduleId) });
-            return View(model);
+            //
+
+
+
         }
 
         // POST: ScheduleItems/Edit/5
@@ -105,21 +179,42 @@ namespace Personalsystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,StartTime,EndTime,ScheduleId,Description")] ScheduleItemEditViewmodel model, int[] weekDays)
         {
-            if (ModelState.IsValid)
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var currentUser = userManager.FindById(User.Identity.GetUserId());
+            if (ModelState.IsValid && User.Identity.IsAuthenticated)
             {
-                ScheduleItem scheduleItem = new ScheduleItem(model);
-                db.Entry(scheduleItem).State = EntityState.Modified;
-                db.SaveChanges();
+                if (model.Id == 0)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                ScheduleItem dbScheduleItem = db.ScheduleItems.Find(model.Id);
+                if (dbScheduleItem == null)
+                {
+                    return HttpNotFound();
+                }
+                if (dbScheduleItem.Schedule.Department.Bosses.Contains(currentUser))
+                {
+                    db.Entry(dbScheduleItem).State = EntityState.Detached;
 
-                db.Entry(scheduleItem).State = EntityState.Detached;
-                scheduleItem = db.ScheduleItems.Find(scheduleItem.Id);
-                scheduleItem.WeekDays.Clear();
+                    ScheduleItem scheduleItem = new ScheduleItem(model);
+                    db.Entry(scheduleItem).State = EntityState.Modified;
+                    db.SaveChanges();
 
-                scheduleItem.WeekDays = db.ScheduleWeekDays.Where(q => weekDays.Contains(q.Id)).ToList();
-                db.Entry(scheduleItem).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index", new { scheduleItem.ScheduleId });
+                    db.Entry(scheduleItem).State = EntityState.Detached;
+                    scheduleItem = db.ScheduleItems.Find(scheduleItem.Id);
+                    scheduleItem.WeekDays.Clear();
+
+                    scheduleItem.WeekDays = db.ScheduleWeekDays.Where(q => weekDays.Contains(q.Id)).ToList();
+                    db.Entry(scheduleItem).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index", new { scheduleItem.ScheduleId });
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
             }
+
             //ViewBag.ScheduleId = new SelectList(db.Schedules, "Id", "Id", model.ScheduleId);
             ViewBag.ScheduleId = db.Schedules.ToList().Select(q => new SelectListItem()
             {
@@ -147,7 +242,22 @@ namespace Personalsystem.Controllers
             {
                 return HttpNotFound();
             }
-            return View(scheduleItem);
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (scheduleItem.Schedule.Department.Bosses.Contains(currentUser))
+                {
+                    return View(scheduleItem);
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+
         }
 
         // POST: ScheduleItems/Delete/5
@@ -155,10 +265,32 @@ namespace Personalsystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             ScheduleItem scheduleItem = db.ScheduleItems.Find(id);
-            db.ScheduleItems.Remove(scheduleItem);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (scheduleItem == null)
+            {
+                return HttpNotFound();
+            }
+            if (User.Identity.IsAuthenticated)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if (scheduleItem.Schedule.Department.Bosses.Contains(currentUser))
+                {
+                    var scheduleId = scheduleItem.ScheduleId;
+                    db.ScheduleItems.Remove(scheduleItem);
+                    db.SaveChanges();
+                    return RedirectToAction("Index", new { scheduleId  });
+                }
+                else
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
         }
 
         protected override void Dispose(bool disposing)
