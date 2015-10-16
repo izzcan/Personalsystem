@@ -19,13 +19,65 @@ namespace Personalsystem.Controllers
         // GET: Vacancies
         public ActionResult Index(int? id)
         {
-            Department department = db.Departments.Find(id);
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
             var currentUser = userManager.FindById(User.Identity.GetUserId());
-            ViewBag.isBoss = department.Bosses.Contains(currentUser);
-            ViewBag.DepartmentId = id;
-            var vacancies = db.Vacancies.Include(v => v.Department).Include(v => v.Creator).Where(d => d.DepartmentId == id || id == null);
-            return View(vacancies.ToList());
+            string userId = User.Identity.GetUserId();
+            if (id == null)
+            {
+                var adminCompanies = currentUser.AdminForCompanies.Select(c => c.Id);
+                List<Vacancy> allVacanciesForAllCompanies = new List<Vacancy>();
+                if (currentUser.BossForDepartments.Count > 0)
+                {
+                    ViewBag.isBoss = true;
+                    var bossesDepartments = currentUser.BossForDepartments.Select(d => d.Id);
+                    List<Vacancy> allVacanciesForDepartments = new List<Vacancy>();
+                    foreach (int dep in bossesDepartments){
+                        var vacanciesDepartments = db.Vacancies.Include(d => d.Department).Where(d => d.Department.Id == dep).ToList();
+                        allVacanciesForDepartments.AddRange(vacanciesDepartments);
+                    }
+                    return View(allVacanciesForDepartments);
+                }
+                else if (currentUser.AdminForCompanies.Count > 0)
+                {
+                    foreach (int cmp in adminCompanies)
+                    {
+                        var allVacancies = db.Vacancies.Include(v => v.Department).Where(v => v.Department.CompanyId == cmp).ToList();
+                        allVacanciesForAllCompanies.AddRange(allVacancies);
+                    }
+                    return View(allVacanciesForAllCompanies);
+                }
+                else
+                {
+                    ViewBag.isBoss = false;
+                    var vacancies = db.Vacancies.Include(v => v.Department).Include(v => v.Creator);
+                    return View(vacancies.ToList());
+                }                
+            }
+            else
+            {
+                Department department = db.Departments.Find(id);                
+                ViewBag.isBoss = department.Bosses.Contains(currentUser);
+                //var adminCompanies = currentUser.AdminForCompanies.Select(c => c.Id);
+                //List<Vacancy> allVacanciesForAllCompanies = new List<Vacancy>();
+                if (department.Company.Admins.Contains(currentUser))
+                {
+                    //foreach (int cmp in adminCompanies)
+                    //{
+                    //    var allVacancies = db.Vacancies.Include(v => v.Department).Where(v => v.Department.CompanyId == cmp).ToList();
+                    //    allVacanciesForAllCompanies.AddRange(allVacancies);
+                    //}
+                    //return View(allVacanciesForAllCompanies);
+                } 
+
+                else if (department.Bosses.Contains(currentUser))                    
+                {
+                    var allVacancies = currentUser.BossForDepartments.SelectMany(v => v.Vacancies);
+                    
+                }
+                ViewBag.DepartmentId = id;
+                var vacancies = db.Vacancies.Include(v => v.Department).Include(v => v.Creator).Where(d => d.DepartmentId == id || id == null);
+                return View(vacancies.ToList());
+            }            
         }
 
         // GET: Vacancies/Details/5

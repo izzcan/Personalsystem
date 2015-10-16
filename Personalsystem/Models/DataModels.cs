@@ -42,6 +42,7 @@ namespace Personalsystem.Models
         public virtual ICollection<DepartmentGroup> Groups { get; set; }
         public virtual ICollection<ApplicationUser> Bosses { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }
+        public virtual ICollection<Vacancy> Vacancies { get; set; }
         [ForeignKey("Company")]
         public int CompanyId { get; set; }
         public virtual Company Company { get; set; }
