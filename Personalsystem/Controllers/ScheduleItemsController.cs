@@ -64,15 +64,11 @@ namespace Personalsystem.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
                 }
-
             }
             else
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
-
-
-
         }
 
         // POST: ScheduleItems/Create
@@ -166,10 +162,6 @@ namespace Personalsystem.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }
 
-            //
-
-
-
         }
 
         // POST: ScheduleItems/Edit/5
@@ -254,10 +246,8 @@ namespace Personalsystem.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
                 }
-
             }
             return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
-
         }
 
         // POST: ScheduleItems/Delete/5

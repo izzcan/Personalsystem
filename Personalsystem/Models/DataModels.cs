@@ -12,7 +12,7 @@ namespace Personalsystem.Models
     {
         [Key]
         public int Id { get; set; }
-        [Display(Name="Företag")]
+        [Display(Name = "Företag")]
         public string Name { get; set; }
         public virtual ICollection<Department> Departments { get; set; }
         public virtual ICollection<NewsItem> NewsItems { get; set; }
@@ -23,21 +23,28 @@ namespace Personalsystem.Models
         public virtual ICollection<ApplicationUser> Leadership { get; set; }
 
         [NotMapped]
-        public virtual ICollection<ApplicationUser> Bosses { 
-        get { 
-            var bosses = new List<ApplicationUser>();
-            foreach (var department in Departments)
+        public virtual ICollection<ApplicationUser> Bosses
+        {
+            get
             {
-                bosses.Concat(department.Bosses);
+                return Departments.SelectMany(q => q.Bosses).ToList();
             }
-            return bosses;
-        }}
+        }
+        [NotMapped]
+        public virtual ICollection<ApplicationUser> Employees
+        {
+            get
+            {
+                return Departments.SelectMany(q => q.Groups).SelectMany(q => q.Employees).Union(Bosses).Union(Admins).Union(Leadership).ToList();
+            }
+        }
+
     }
     public class Department
     {
         [Key]
         public int Id { get; set; }
-        [Display(Name="Avdelning")]
+        [Display(Name = "Avdelning")]
         public string Name { get; set; }
         public virtual ICollection<DepartmentGroup> Groups { get; set; }
         public virtual ICollection<ApplicationUser> Bosses { get; set; }
@@ -51,7 +58,7 @@ namespace Personalsystem.Models
     {
         [Key]
         public int Id { get; set; }
-        [Display(Name="Grupp")]
+        [Display(Name = "Grupp")]
         public string Name { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }
         public virtual ICollection<ApplicationUser> Employees { get; set; }
@@ -60,7 +67,7 @@ namespace Personalsystem.Models
         public int DepartmentId { get; set; }
         public virtual Department Department { get; set; }
 
-     }
+    }
     public class Schedule
     {
         [Key]
@@ -68,7 +75,7 @@ namespace Personalsystem.Models
         [DataType(DataType.Date)]
         public DateTime StartTime { get; set; }
         [DataType(DataType.Date)]
-        public DateTime? EndTime{ get; set; }
+        public DateTime? EndTime { get; set; }
 
         [ForeignKey("Department")]
         public int DepartmentId { get; set; }
@@ -90,7 +97,7 @@ namespace Personalsystem.Models
         [DataType(DataType.Time)]
         public TimeSpan EndTime { get; set; }
         public string Description { get; set; }
-        
+
 
         [ForeignKey("Schedule")]
         public int ScheduleId { get; set; }
@@ -159,7 +166,7 @@ namespace Personalsystem.Models
         [Display(Name = "Kontaktperson")]
         public string CreatorId { get; set; }
         public virtual ApplicationUser Creator { get; set; }
-        public virtual ICollection<Application> Applications { get; set; } 
+        public virtual ICollection<Application> Applications { get; set; }
 
 
     }
@@ -167,10 +174,10 @@ namespace Personalsystem.Models
     {
         [Key]
         public int Id { get; set; }
-        [Display(Name="Personligt Brev")]
+        [Display(Name = "Personligt Brev")]
         public string Content { get; set; }
         [ForeignKey("Applicant")]
-        [Display(Name="Sökande")]
+        [Display(Name = "Sökande")]
         public string ApplicantId { get; set; }
         public virtual ApplicationUser Applicant { get; set; }
         [ForeignKey("Vacancy")]
@@ -183,11 +190,11 @@ namespace Personalsystem.Models
     {
         [Key]
         public int Id { get; set; }
-        [Display(Name="Intervjudatum")]
+        [Display(Name = "Intervjudatum")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString= "{0:yyyy/MM/dd HH:mm}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime InterviewDate { get; set; } //Sätts
-        [Display(Name="Anteckningar")]
+        [Display(Name = "Anteckningar")]
         public string Description { get; set; } //Sätts
         [ForeignKey("Interviewer")]
         public string InterviewerId { get; set; } //Sätts automatiskt, inloggningsid

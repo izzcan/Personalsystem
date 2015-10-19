@@ -302,6 +302,7 @@
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\CompanyViewmodels.cs" />
     <Compile Include="Models\DataModels.cs" />
+    <Compile Include="Models\HomeViewmodels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ScheduleViewmodels.cs" />
