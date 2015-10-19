@@ -18,7 +18,6 @@ namespace Personalsystem.Models
         public virtual ICollection<Department> BossForDepartments { get; set; }
         public virtual ICollection<DepartmentGroup> EmployeeForGroups { get; set; }
 
-
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
