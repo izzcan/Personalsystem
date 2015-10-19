@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Personalsystem.Models;
 using Microsoft.AspNet.Identity;
+using System.Net.Mail;
 
 namespace Personalsystem.Controllers
 {
@@ -72,10 +73,26 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Description,Application_Id,InterviewDate")] Interview interview)
+        public ActionResult Create([Bind(Include = "Id,Description,Application_Id,InterviewDate")] Interview interview, string applicantEmail)
         {
             if (ModelState.IsValid)
-            {               
+            {
+                string title = db.Applications.Where(a => a.Id == interview.Application_Id).Single().Vacancy.Title;
+                MailMessage msg = new MailMessage();
+
+                msg.From = new MailAddress("testkurs@gavle.brynassupport.se");
+                msg.To.Add(applicantEmail);
+                msg.Subject = "Intervju";
+                msg.Body = "Hej. Du är kallad på intervju den "+interview.InterviewDate + " för tjänsten som " + title;
+                SmtpClient client = new SmtpClient();
+                client.UseDefaultCredentials = true;
+                client.Host = "smtp.gavle.brynassupport.se";
+                client.Port = 587;
+                client.EnableSsl = false;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.Credentials = new NetworkCredential("testkurs@gavle.brynassupport.se", "Abc12345");
+                client.Timeout = 20000;               
+                client.Send(msg);                  
                 db.Entry(interview).Property("InterviewerId").CurrentValue = User.Identity.GetUserId();
                 db.Interviews.Add(interview);
                 db.SaveChanges();
