@@ -56,8 +56,14 @@ namespace Personalsystem.Controllers
         }
 
         // GET: Interviews/Create
-        public ActionResult Create()
-        {            
+        public ActionResult Create(int? id)
+        {
+
+            ViewBag.Application_Id = id;
+            var vacancyTitle = db.Applications.Where(a => a.Id == id).Single().Vacancy.Title;
+            ViewBag.vacancyTitle = vacancyTitle;
+            var applicantEmail = db.Applications.Where(a => a.Id == id).Single().Applicant.Email;
+            ViewBag.applicantEmail = applicantEmail;
             return View();            
         }
 
