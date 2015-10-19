@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace Personalsystem.Models
 {
@@ -17,6 +18,26 @@ namespace Personalsystem.Models
         public virtual ICollection<Company> LeaderForCompanies { get; set; }
         public virtual ICollection<Department> BossForDepartments { get; set; }
         public virtual ICollection<DepartmentGroup> EmployeeForGroups { get; set; }
+        public virtual ICollection<Application> Applications { get; set; }
+
+        [NotMapped]
+        public virtual ICollection<Company> EmployeeForCompanies
+        {
+            get
+            {
+                var inGroups = EmployeeForGroups.Select(q => q.Department.Company);
+                var bossFor = BossForDepartments.Select(q => q.Company);
+                return AdminForCompanies.Union(LeaderForCompanies).Union(inGroups).Union(bossFor).ToList();
+            }
+        }
+        [NotMapped]
+        public virtual ICollection<Vacancy> ResponsibleBossForVacancies
+        {
+            get
+            {
+                return BossForDepartments.SelectMany(q => q.Vacancies).ToList();
+            }
+        }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
