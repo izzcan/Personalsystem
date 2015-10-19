@@ -27,13 +27,13 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.InterviewDate, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.InterviewDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.InterviewDate, new { htmlAttributes = new { @class = "form-control", placeholder = "YYYY-MM-DD HH:MM" } })
                     @Html.ValidationMessageFor(model => model.InterviewDate, "", new { @class = "text-danger" })
                 </div>
             </div>
             
             <input type="hidden" name="Application_Id" value="@ViewBag.Application_Id" />
-
+            <input type="hidden" name="applicantEmail" value="@ViewBag.applicantEmail" />
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" value="Skapa" class="btn btn-default" />

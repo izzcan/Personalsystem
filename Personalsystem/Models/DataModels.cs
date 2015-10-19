@@ -184,8 +184,6 @@ namespace Personalsystem.Models
         [Key]
         public int Id { get; set; }
         [Display(Name="Intervjudatum")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString="{0:yyyy/MM/dd HH:mm}", ApplyFormatInEditMode=true)]
         public DateTime InterviewDate { get; set; } //Sätts
         [Display(Name="Anteckningar")]
         public string Description { get; set; } //Sätts
