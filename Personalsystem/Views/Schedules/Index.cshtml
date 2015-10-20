@@ -52,5 +52,5 @@
 </table>
 
 <div>
-    @Html.ActionLink("Back to Company", "Details", "Departments", new { id = ViewBag.DepartmentId }, null)
+    @Html.ActionLink("Back to Company", "Details", "Departments", new { id = ViewBag.DepartmentId != null ? ViewBag.DepartmentId : ViewBag.GroupId }, null)
 </div>
