@@ -86,3 +86,10 @@ a.disabled, a[disabled] {
     color:red;
     font-size:10px;
 }
+
+.company-box-content{
+    background-color: white;
+    border-radius:5px;
+    margin:2px;
+    padding: 1px 3px 1px 3px;
+}

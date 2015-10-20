@@ -22,6 +22,7 @@ namespace Personalsystem.Models
 
     public class HomeIndexCompany
     {
+        public int Id { get; set; }
         public string Name {get;set;}
         public string Roles {get;set;} //"Admin", "Boss for HR", "Worker in HR :: HR1", "Leader" etc
         public ICollection<NewsListitemViewmodel> NewsItems { get; set; } //3 latest newsitems per company
@@ -29,6 +30,7 @@ namespace Personalsystem.Models
         public HomeIndexCompany(){}
         public HomeIndexCompany(Company that, ApplicationUser currentUser)
         {
+            this.Id = that.Id;
             this.Name = that.Name;
 
             var roles = new List<string>();
@@ -47,6 +49,7 @@ namespace Personalsystem.Models
     //For unemployed
     public class HomeIndexApplication
     {
+        public int Id { get; set; }
         public string CompanyName { get; set; }
         public string DepartmentName { get; set; }
         public string PositionName { get; set; }
@@ -55,6 +58,7 @@ namespace Personalsystem.Models
         public HomeIndexApplication() { }
         public HomeIndexApplication(Application that)
         {
+            this.Id = that.Id;
             this.CompanyName = that.Vacancy.Department.Company.Name;
             this.DepartmentName = that.Vacancy.Department.Name;
             this.PositionName = that.Vacancy.Title;
@@ -65,6 +69,7 @@ namespace Personalsystem.Models
     //For boss
     public class HomeIndexVacancy
     {
+        public int Id { get; set; }
         public string CompanyName { get; set; }
         public string DepartmentName { get; set; }
         public string PositionName { get; set; }
@@ -73,6 +78,7 @@ namespace Personalsystem.Models
         public HomeIndexVacancy() { }
         public HomeIndexVacancy(Vacancy that) 
         {
+            this.Id = that.Id;
             this.CompanyName = that.Department.Company.Name;
             this.DepartmentName = that.Department.Name;
             this.PositionName = that.Title;
