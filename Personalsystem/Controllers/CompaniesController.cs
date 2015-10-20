@@ -37,10 +37,14 @@ namespace Personalsystem.Controllers
             {
                 return HttpNotFound();
             }
-            var model = new CompanyDetailsViewmodel(company);
             //Disable unauthorized buttons
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
             var currentUser = userManager.FindById(User.Identity.GetUserId());
+
+            if (!company.Employees.Contains(currentUser))
+            {
+                return RedirectToAction("Overview", new { id = id });
+            }
 
             ViewBag.IsAdmin = company.Admins.Contains(currentUser);
             ViewBag.IsBoss = company.Bosses.Contains(currentUser);
@@ -60,6 +64,23 @@ namespace Personalsystem.Controllers
             }
             ViewBag.IsCreatorFor = isCreatorFor;
 
+            var model = new CompanyDetailsViewmodel(company);
+
+            return View(model);
+        }
+
+        public ActionResult Overview(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Company company = db.Companies.Find(id);
+            if (company == null)
+            {
+                return HttpNotFound();
+            }
+            var model = new CompanyOverviewViewmodel(company);
             return View(model);
         }
 

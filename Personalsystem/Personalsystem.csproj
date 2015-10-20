@@ -297,6 +297,10 @@
     <Compile Include="Migrations\201510140929214_scheduledescription.Designer.cs">
       <DependentUpon>201510140929214_scheduledescription.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510201111470_scheduleitemispublic.cs" />
+    <Compile Include="Migrations\201510201111470_scheduleitemispublic.Designer.cs">
+      <DependentUpon>201510201111470_scheduleitemispublic.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -442,6 +446,7 @@
     <Content Include="Views\ScheduleItems\Edit.cshtml" />
     <Content Include="Views\ScheduleItems\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Companies\Overview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -505,6 +510,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510140929214_scheduledescription.resx">
       <DependentUpon>201510140929214_scheduledescription.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510201111470_scheduleitemispublic.resx">
+      <DependentUpon>201510201111470_scheduleitemispublic.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

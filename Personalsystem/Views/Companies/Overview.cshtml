@@ -1,0 +1,29 @@
+﻿@model Personalsystem.Models.CompanyOverviewViewmodel
+@{
+    ViewBag.Title = "Overview";
+}
+
+<h2>@Model.Name</h2>
+
+
+<div>
+    <h2>News</h2>
+    <div class="company-box">
+        <div class="row">
+            @foreach (var item in Model.NewsItems)
+            {
+                <div class="@(Model.NewsItems.Count >= 3 ? "col-md-4" : Model.NewsItems.Count == 2 ? "col-md-6" : "col-md-12")">
+                    <div class="company-box company-box-secondary">
+                        <h4>@Html.ActionLink(item.Title, "Details", "NewsItems", new { item.Id }, null)</h4>
+                        <span class="company-box-content">@item.Created - @item.CreatorName</span>
+                        <p class="company-box-content">@item.Content</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<p>
+    @Html.ActionLink("Back to Index", "Index")
+</p>

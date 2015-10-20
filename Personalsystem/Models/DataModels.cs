@@ -137,7 +137,7 @@ namespace Personalsystem.Models
         public string Title { get; set; }
         public string Content { get; set; }
         public DateTime Created { get; set; }
-        //public bool IsPublic { get; set; }
+        public bool IsPublic { get; set; }
         [ForeignKey("Company")]
         public int CompanyId { get; set; }
         public virtual Company Company { get; set; }
