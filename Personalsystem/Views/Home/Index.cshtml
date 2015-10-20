@@ -1,31 +1,134 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@model Personalsystem.Models.HomeIndexViewmodel
+
+@{
+    ViewBag.Title = "Home";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+<h2>Home</h2>
+
+<div>
+    <hr />
+    <div>
+        <h2>Companies that you are part of</h2>
+        <hr />
+        <h3>
+            @(Model.Companies.Count == 0 ? "You are part of no companies" : "")
+        </h3>
+        @foreach (var company in Model.Companies)
+        {
+            <div class="company-box">
+                <h3>@Html.ActionLink(company.Name, "Details", "Companies", new { id = company.Id }, null)</h3>
+                <span class="company-box-content">@company.Roles</span>
+                <h4>@(company.NewsItems.Count() != 0 ? "News" : "No news")</h4>
+                @foreach (var newsItem in company.NewsItems)
+                {
+                    <div class="company-box company-box-secondary">
+                        <h4>@Html.ActionLink(newsItem.Title, "Details", "NewsItems", new { newsItem.Id }, null)</h4>
+                        <span class="company-box-content">@newsItem.Created - @newsItem.CreatorName</span>
+                        <p class="company-box-content">@newsItem.Content</p>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    <div>
+        <h2>Your applications</h2>
+        <hr />
+        <h3>
+            @(Model.Applications.Count == 0 ? "You have not made any applications" : "")
+        </h3>
+        <table class="table table-striped" style="@(Model.Applications.Count == 0 ? "display:none;" : "")">
+            <thead>
+                <tr>
+                    <td>
+                        Position
+                    </td>
+                    <td>
+                        Company
+                    </td>
+                    <td>
+                        Department
+                    </td>
+                    <td>
+                        NrOfInterviews
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var application in Model.Applications)
+                {
+                    <tr>
+                        <td>
+                            <a href="Applications/Details/@application.Id">
+                                @application.PositionName
+                            </a>
+                        </td>
+                        <td>
+                            @application.CompanyName
+                        </td>
+                        <td>
+                            @application.DepartmentName
+                        </td>
+                        <td>
+                            @application.NrOfInterviews
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+
+    <div>
+        <h2>Vacancies for your deparments</h2>
+        <hr />
+        <h3>
+            @(Model.Vacancies.Count == 0 ? "You are not responsible for any vacancies" : "")
+        </h3>
+        <table class="table table-striped" style="@(Model.Vacancies.Count == 0 ? "display:none;" : "")">
+            <thead>
+                <tr>
+                    <td>
+                        Position
+                    </td>
+                    <td>
+                        Company
+                    </td>
+                    <td>
+                        Department
+                    </td>
+                    <td>
+                        NrOfApplications
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var vacancy in Model.Vacancies)
+                {
+                    <tr>
+                        <td>
+                            <a href="Vacancies/Details/@vacancy.Id">
+                                @vacancy.PositionName
+                            </a>
+                        </td>
+                        <td>
+                            @vacancy.CompanyName
+                        </td>
+                        <td>
+                            @vacancy.DepartmentName
+                        </td>
+                        <td>
+                            @vacancy.NrOfApplications
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    <div style="@(Model.Vacancies.Count == 0 && Model.Applications.Count == 0 && Model.Companies.Count == 0 ? "" : "display:none;")">
+        <hr />
+        <h1 class="motivation">
+            @(Model.Vacancies.Count == 0 && Model.Applications.Count == 0 && Model.Companies.Count == 0 ? "You are completely and absolutely insignificant" : "")
+        </h1>
     </div>
 </div>

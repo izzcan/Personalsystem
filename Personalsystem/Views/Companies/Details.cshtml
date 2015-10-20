@@ -25,8 +25,8 @@
                         <a class="btn btn-default" href="/NewsItems/Edit/@item.Id" @(ViewBag.IsAdmin || ViewBag.IsCreatorFor[item.Id] == true ? "" : "disabled")>Edit</a>
                         <a class="btn btn-default" href="/NewsItems/Delete/@item.Id" @(ViewBag.IsAdmin || ViewBag.IsCreatorFor[item.Id] == true ? "" : "disabled")>Delete</a>
                         <h4>@Html.ActionLink(item.Title, "Details", "NewsItems", new { item.Id }, null)</h4>
-                        <span>@item.Created - @item.CreatorName</span>
-                        <p>@item.Content</p>
+                        <span class="company-box-content">@item.Created - @item.CreatorName</span>
+                        <p class="company-box-content">@item.Content</p>
                     </div>
                 </div>
             }
@@ -82,6 +82,8 @@
             {
                 <div class="@(Model.Departments.Count >= 3 ? "col-lg-4" : "col-lg-12") @(Model.Departments.Count >= 2 ? "col-md-6" : "col-md-12")">
                     <div class="company-box company-box-secondary">
+
+                        <a class="btn btn-default" href="/Vacancies/Index?id=@(item.Id)" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Vacancies</a>
                         <a class="btn btn-default" href="/Schedules/Index?departmentId=@(item.Id)" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Schedule</a>
                         <a class="btn btn-default" href="/Departments/Edit/@item.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Edit</a>
                         <a class="btn btn-default" href="/Departments/Delete/@item.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Delete</a>
