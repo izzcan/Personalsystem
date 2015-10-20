@@ -127,8 +127,8 @@
     </div>
     <div style="@(Model.Vacancies.Count == 0 && Model.Applications.Count == 0 && Model.Companies.Count == 0 ? "" : "display:none;")">
         <hr />
-        <h1>
-            @(Model.Vacancies.Count == 0 && Model.Applications.Count == 0 && Model.Companies.Count == 0 ? "You are completely insignificant" : "")
+        <h1 class="motivation">
+            @(Model.Vacancies.Count == 0 && Model.Applications.Count == 0 && Model.Companies.Count == 0 ? "You are completely and absolutely insignificant" : "")
         </h1>
     </div>
 </div>
