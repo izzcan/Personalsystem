@@ -39,12 +39,13 @@ namespace Personalsystem.Controllers
                 }
                 else if (currentUser.AdminForCompanies.Count > 0)
                 {
+                    ViewBag.isBoss = true;
                     foreach (int cmp in adminCompanies)
                     {
                         var allVacancies = db.Vacancies.Include(v => v.Department).Where(v => v.Department.CompanyId == cmp).ToList();
                         allVacanciesForAllCompanies.AddRange(allVacancies);
-                    }
-                    return View(allVacanciesForAllCompanies);
+                    }                   
+                        return View(allVacanciesForAllCompanies);                
                 }
                 else
                 {
