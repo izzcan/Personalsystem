@@ -78,12 +78,13 @@ namespace Personalsystem.Controllers
             if (ModelState.IsValid)
             {
                 string title = db.Applications.Where(a => a.Id == interview.Application_Id).Single().Vacancy.Title;
+                string company = db.Applications.Where(c => c.Id == interview.Application_Id).Single().Vacancy.Department.Company.Name;
                 MailMessage msg = new MailMessage();
 
                 msg.From = new MailAddress("testkurs@gavle.brynassupport.se");
                 msg.To.Add(applicantEmail);
                 msg.Subject = "Intervju";
-                msg.Body = "Hej. Du är kallad på intervju den "+interview.InterviewDate + " för tjänsten som " + title;
+                msg.Body = "Hej. Du är kallad på intervju den "+ interview.InterviewDate + " för tjänsten som " + title + "!\n" + "Plats: " + company;
                 SmtpClient client = new SmtpClient();
                 client.UseDefaultCredentials = true;
                 client.Host = "smtp.gavle.brynassupport.se";
