@@ -17,6 +17,7 @@ namespace Personalsystem.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Vacancies
+        [Authorize]
         public ActionResult Index(int? id)
         {
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));

@@ -29,6 +29,24 @@ namespace Personalsystem.Models
         }
     }
 
+    public class CompanyOverviewViewmodel
+    { 
+        public int Id { get; set; }
+        public string Name { get; set; }
+
+        public ICollection<NewsListitemViewmodel> NewsItems { get; set; }
+
+        public CompanyOverviewViewmodel() { }
+
+        public CompanyOverviewViewmodel(Company that)
+        {
+            this.Id = that.Id;
+            this.Name = that.Name;
+
+            this.NewsItems = that.NewsItems.Where(q => q.IsPublic).OrderByDescending(q => q.Created).Take(3).Select(q => new NewsListitemViewmodel() { Id = q.Id, Title = q.Title, Content = q.Content, Created = q.Created, CreatorName = q.Creator.UserName }).ToList();
+        }
+    }
+
     public class NewsListitemViewmodel
     {
         public int Id { get; set; }

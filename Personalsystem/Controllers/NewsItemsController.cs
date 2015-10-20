@@ -50,7 +50,7 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Content,CompanyId")] NewsItem newsItem)
+        public ActionResult Create([Bind(Include = "Id,Title,Content,CompanyId,IsPublic")] NewsItem newsItem)
         {
             if (ModelState.IsValid && User.Identity.IsAuthenticated)
             {
@@ -126,7 +126,7 @@ namespace Personalsystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Content")] NewsItem newsItem)
+        public ActionResult Edit([Bind(Include = "Id,Title,Content,IsPublic")] NewsItem newsItem)
         {
             if (ModelState.IsValid && User.Identity.IsAuthenticated)
             {
@@ -145,6 +145,7 @@ namespace Personalsystem.Controllers
                 {
                     dbNewsItem.Title = newsItem.Title;
                     dbNewsItem.Content = newsItem.Content;
+                    dbNewsItem.IsPublic = newsItem.IsPublic;
 
                     db.Entry(dbNewsItem).State = EntityState.Modified;
                     db.SaveChanges();

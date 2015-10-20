@@ -14,7 +14,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <a class="btn btn-default" href="/NewsItems/Create/" @(ViewBag.IsAdmin || ViewBag.IsBoss ? "" : "disabled")>Add News</a>
+                <a class="btn btn-default" href="/NewsItems/Create/@Model.Id" @(ViewBag.IsAdmin || ViewBag.IsBoss ? "" : "disabled")>Add News</a>
             </div>
         </div>
         <div class="row">
