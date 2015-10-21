@@ -53,6 +53,14 @@ namespace Personalsystem.Models
         [ForeignKey("Company")]
         public int CompanyId { get; set; }
         public virtual Company Company { get; set; }
+
+        [NotMapped]
+        public virtual ICollection<ApplicationUser> Employees //Does not include the bosses for the department
+        {
+            get {
+                return Groups.SelectMany(q => q.Employees).ToList();
+            }
+        }
     }
     public class DepartmentGroup
     {

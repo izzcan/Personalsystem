@@ -17,10 +17,23 @@ namespace Personalsystem.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: NewsItems
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
-            var newsItems = db.NewsItems.Include(n => n.Company).Include(n => n.Creator);
-            return View(newsItems.ToList());
+            List<NewsItem> newsItems;
+            if (id == null)
+            {
+                //Get all public news for all companies
+                newsItems = db.NewsItems.Where(q => q.IsPublic).Include(n => n.Company).Include(n => n.Creator).ToList();
+            }
+            else
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                //Get all news for a specific company if the user is part of that company, or get all news that are marked as public for that company if the user is not part of it.
+                newsItems = db.NewsItems.Include(n => n.Company).Include(n => n.Creator).ToList().Where(q => id == q.CompanyId && (q.IsPublic || q.Company.Employees.Contains(currentUser))).ToList();
+            }
+            ViewBag.CompanyId = id;
+            return View(newsItems);
         }
 
         // GET: NewsItems/Details/5
@@ -35,6 +48,16 @@ namespace Personalsystem.Controllers
             {
                 return HttpNotFound();
             }
+            if (!newsItem.IsPublic)
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                if(!newsItem.Company.Employees.Contains(currentUser))
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+                }
+            }
+
             return View(newsItem);
         }
         

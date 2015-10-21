@@ -20,8 +20,22 @@ namespace Personalsystem.Controllers
         // GET: ScheduleItems
         public ActionResult Index(int? scheduleId)
         {
+            Schedule schedule = db.Schedules.Find(scheduleId);
+            if (schedule == null)
+            {
+                return HttpNotFound();
+            }
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var currentUser = userManager.FindById(User.Identity.GetUserId());
+            //If user is not boss for the department and is not an employee in that department: Unauthorized
+            if (!((schedule.Department == null && schedule.Group.Department.Bosses.Contains(currentUser)) || schedule.Department.Bosses.Contains(currentUser)) &&
+                !((schedule.Department == null && schedule.Group.Department.Employees.Contains(currentUser)) || schedule.Department.Employees.Contains(currentUser)))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
+
             var scheduleItems = db.ScheduleItems.Include(s => s.Schedule).Where(q => scheduleId == null || q.ScheduleId == scheduleId).ToList();
-            var model = scheduleItems.Select( q => new ScheduleItemListitemViewmodel(q));
+            var model = scheduleItems.Select(q => new ScheduleItemListitemViewmodel(q));
 
             ViewBag.ScheduleId = scheduleId;
             return View(model.ToList());

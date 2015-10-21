@@ -20,6 +20,22 @@ namespace Personalsystem.Controllers
         // GET: Schedules
         public ActionResult Index(int? departmentId, int? groupId)
         {
+            Department department = db.Departments.Find(departmentId);
+            DepartmentGroup group = db.DepartmentGroups.Find(groupId);
+            if (department == null && group == null)
+            {
+                return HttpNotFound();
+            }
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var currentUser = userManager.FindById(User.Identity.GetUserId());
+            //If user is not boss for the department and is not an employee in that department: Unauthorized
+            if (!((department == null && group.Department.Bosses.Contains(currentUser)) || department.Bosses.Contains(currentUser)) &&
+                !((department == null && group.Department.Employees.Contains(currentUser)) || department.Employees.Contains(currentUser)))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
+
+
             var schedules = db.Schedules.Include(s => s.Department).Include(s => s.Group)
                 .Where(q => departmentId == null || q.DepartmentId == departmentId)
                 .Where(q => groupId == null || q.GroupId == groupId)
@@ -44,6 +60,14 @@ namespace Personalsystem.Controllers
             {
                 return HttpNotFound();
             }
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var currentUser = userManager.FindById(User.Identity.GetUserId());
+            //If user is not boss for the department and is not an employee in the group: Unauthorized
+            if (!((schedule.Group != null && schedule.Group.Employees.Contains(currentUser)) || (schedule.Department != null && schedule.Department.Bosses.Contains(currentUser))))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
+
             return View(model);
         }
 
