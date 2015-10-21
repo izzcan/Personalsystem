@@ -41,6 +41,7 @@ namespace Personalsystem.Controllers
                 }
                 else if (currentUser.AdminForCompanies.Count > 0)
                 {
+                    ViewBag.isBoss = true;
                     foreach (int cmp in adminCompanies)
                     {
                         var allApplications = db.Applications.Include(v => v.Vacancy).Where(v => v.Vacancy.Department.CompanyId == cmp).ToList();

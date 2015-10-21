@@ -29,8 +29,8 @@ namespace Personalsystem.Controllers
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
             var currentUser = userManager.FindById(User.Identity.GetUserId());
             //If user is not boss for the department and is not an employee in that department: Unauthorized
-            if (!((department == null && group.Department.Bosses.Contains(currentUser)) || department.Bosses.Contains(currentUser)) &&
-                !((department == null && group.Department.Employees.Contains(currentUser)) || department.Employees.Contains(currentUser)))
+            if (!((department == null && group.Department.Bosses.Contains(currentUser)) || !((department == null && group.Department.Employees.Contains(currentUser)) && 
+                department.Bosses.Contains(currentUser)) || department.Employees.Contains(currentUser)))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
             }

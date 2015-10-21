@@ -55,9 +55,9 @@
             @*@Html.ActionLink("Delete", "Delete", new { id = item.Id, depId = ViewBag.DepartmentId }) |*@
             @*@Html.ActionLink("Ansök", "Create", "Applications", new { id = item.Id }, null)*@
             
-            <a class="btn btn-info" href="/Vacancies/Details/@item.Id">Detaljer</a> |            
-            <a class="btn btn-primary" href="/Applications/Create/@item.Id">Ansök</a> |            
-            <a class="btn btn-default" href="/Vacancies/Edit/@item.Id?depId=@((int?)ViewBag.DepartmentId) " @(ViewBag.IsBoss ? "" : "disabled")>Ändra</a> |
+            <a class="btn btn-info" href="/Vacancies/Details/@item.Id">Detaljer</a>           
+            <a class="btn btn-primary" href="/Applications/Create/@item.Id">Ansök</a>           
+            <a class="btn btn-default" href="/Vacancies/Edit/@item.Id?depId=@((int?)ViewBag.DepartmentId) " @(ViewBag.IsBoss ? "" : "disabled")>Ändra</a>
             <a class="btn btn-danger" href="/Vacancies/Delete/@item.Id?depId@((int?)ViewBag.DepartmentId) " @(ViewBag.IsBoss ? "" : "disabled")>Ta bort</a>            
         </td>
     </tr>

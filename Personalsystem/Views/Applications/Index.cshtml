@@ -32,10 +32,15 @@
             @Html.DisplayFor(modelItem => item.Content)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id }) |
-            <a href="/Interviews/Create/@item.Id">Skapa intervju</a>
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id }) |*@
+
+            <a class="btn btn-info" href="/Applications/Details/@item.Id">Detaljer</a>       
+            <a class="btn btn-default" href="/Applications/Edit/@item.Id" @(ViewBag.IsBoss ? "" : "disabled")>Ändra</a>
+            <a class="btn btn-danger" href="/Applications/Delete/@item.Id" @(ViewBag.IsBoss ? "" : "disabled")>Ta bort</a>
+            <a class="btn btn-primary" href="/Interviews/Create/@item.Id" @(ViewBag.IsBoss ? "" : "disabled")>Skapa intervju</a>
+
         </td>
     </tr>
 }
