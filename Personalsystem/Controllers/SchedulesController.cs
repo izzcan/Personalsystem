@@ -43,7 +43,7 @@ namespace Personalsystem.Controllers
 
             ViewBag.DepartmentId = departmentId;
             ViewBag.GroupId = groupId;
-            ViewBag.SecretDepartmentId = group.DepartmentId; //Fulhack
+            ViewBag.SecretDepartmentId = group == null ? null : (int?)group.DepartmentId; //Fulhack
 
             return View(schedules.ToList());
         }
