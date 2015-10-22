@@ -6,7 +6,7 @@
 
 <h2>Applications</h2>
 
-<table class="table">
+<table class="table table-striped">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Applicant.Email)
@@ -20,29 +20,30 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Applicant.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Vacancy.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Content)
-        </td>
-        <td>
-            @*@Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id }) |*@
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Applicant.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vacancy.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id=item.Id }) |*@
 
-            <a class="btn btn-info" href="/Applications/Details/@item.Id">Detaljer</a>       
-            <a class="btn btn-default" href="/Applications/Edit/@item.Id" @(ViewBag.IsBoss ? "" : "disabled")>Change</a>
-            <a class="btn btn-danger" href="/Applications/Delete/@item.Id" @(ViewBag.IsBoss ? "" : "disabled")>Delete</a>
-            <a class="btn btn-primary" href="/Interviews/Create/@item.Id" @(ViewBag.IsBoss ? "" : "disabled")>Create interview</a>
+                <a class="btn btn-info" href="/Applications/Details/@item.Id">Detaljer</a>
+                <a class="btn btn-default" href="/Applications/Edit/@item.Id" @(ViewBag.IsBoss ? "" : "disabled")>Change</a>
+                <a class="btn btn-danger" href="/Applications/Delete/@item.Id" @(ViewBag.IsBoss ? "" : "disabled")>Delete</a>
+                <a class="btn btn-primary" href="/Interviews/Create/@item.Id" @(ViewBag.IsBoss ? "" : "disabled")>Create interview</a>
 
-        </td>
-    </tr>
-}
+            </td>
+        </tr>
+    }
 
 </table>

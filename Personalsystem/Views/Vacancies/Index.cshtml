@@ -6,9 +6,9 @@
 
 <h2>Vacancies</h2>
 
-<a class="btn btn-default" href="/Vacancies/Create/@((int?)ViewBag.DepartmentId)" @(ViewBag.IsBoss ? "" : "disabled")>Create new</a>
+<a class="btn btn-default" href="/Vacancies/Create/@((int?)ViewBag.DepartmentId)" @(ViewBag.IsBoss && ViewBag.DepartmentId !=null ? "" : "disabled")>Create new</a>
 
-<table class="table">
+<table class="table table-striped">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Title)
@@ -18,8 +18,8 @@
         </th>
 
         @*<@*th>
-            @Html.DisplayNameFor(model => model.Content)
-        </th>*@
+                @Html.DisplayNameFor(model => model.Content)
+            </th>*@
         <th>
             @Html.DisplayNameFor(model => model.Created)
         </th>
@@ -30,37 +30,38 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Department.Name)
-        </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.Content)
-        </td>*@
-        <td>
-            @Html.DisplayFor(modelItem => item.Created)
-        </td>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Department.Name)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Created)
+            </td>
 
-        <td>
-            @Html.DisplayFor(modelItem => item.Expired)
-        </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Expired)
+            </td>
 
-        <td>
-            @*@Html.ActionLink("Edit", "Edit", new { id = item.Id, depId = ViewBag.DepartmentId })|*@
-            @*@Html.ActionLink("Details", "Details", new { id=item.Id }) |*@
-            @*@Html.ActionLink("Delete", "Delete", new { id = item.Id, depId = ViewBag.DepartmentId }) |*@
-            @*@Html.ActionLink("Ansök", "Create", "Applications", new { id = item.Id }, null)*@
-            
-            <a class="btn btn-info" href="/Vacancies/Details/@item.Id">Details</a>           
-            <a class="btn btn-primary" href="/Applications/Create/@item.Id">Apply</a>           
-            <a class="btn btn-default" href="/Vacancies/Edit/@item.Id?depId=@((int?)ViewBag.DepartmentId) " @(ViewBag.IsBoss ? "" : "disabled")>Change</a>
-            <a class="btn btn-danger" href="/Vacancies/Delete/@item.Id?depId@((int?)ViewBag.DepartmentId) " @(ViewBag.IsBoss ? "" : "disabled")>Delete</a>            
-        </td>
-    </tr>
-}
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { id = item.Id, depId = ViewBag.DepartmentId })|*@
+                @*@Html.ActionLink("Details", "Details", new { id=item.Id }) |*@
+                @*@Html.ActionLink("Delete", "Delete", new { id = item.Id, depId = ViewBag.DepartmentId }) |*@
+                @*@Html.ActionLink("Ansök", "Create", "Applications", new { id = item.Id }, null)*@
+
+                <a class="btn btn-info" href="/Vacancies/Details/@item.Id">Details</a>
+                <a class="btn btn-primary" href="/Applications/Create/@item.Id">Apply</a>
+                <a class="btn btn-default" href="/Vacancies/Edit/@item.Id?depId=@((int?)ViewBag.DepartmentId) " @(ViewBag.IsBoss ? "" : "disabled")>Change</a>
+                <a class="btn btn-danger" href="/Vacancies/Delete/@item.Id?depId@((int?)ViewBag.DepartmentId) " @(ViewBag.IsBoss ? "" : "disabled")>Delete</a>
+            </td>
+        </tr>
+    }
 
 </table>

@@ -6,7 +6,7 @@
 
 <h2>Booked Interviews</h2>
 
-<table class="table">
+<table class="table table-striped">
     <tr>
         <th>
             <label>Applicant´s e-mail</label>
@@ -23,31 +23,32 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Applications.Applicant.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.InterviewDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Applications.Vacancy.Title)
-        </td>
-        <td>
-            @*@Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@  
-            <a class="btn btn-info" href="/Interviews/Details/@item.Id">Details</a>
-            <a class="btn btn-default" href="/Interviews/Edit/@item.Id">Edit</a>
-            <a class="btn btn-danger" href="/Interviews/Delete/@item.Id">Delete</a>
-            <a class="btn btn-primary" href="/Interviews/Create/@item.Id">Create</a>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Applications.Applicant.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InterviewDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Applications.Vacancy.Title)
+            </td>
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                <a class="btn btn-info" href="/Interviews/Details/@item.Id">Details</a>
+                <a class="btn btn-default" href="/Interviews/Edit/@item.Id">Edit</a>
+                <a class="btn btn-danger" href="/Interviews/Delete/@item.Id">Delete</a>
+                <a class="btn btn-primary" href="/Interviews/Create/@item.Id">Create</a>
 
-        </td>
-    </tr>
-}
+            </td>
+        </tr>
+    }
 
 </table>
