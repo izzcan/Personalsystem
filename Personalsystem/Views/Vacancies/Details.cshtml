@@ -1,10 +1,10 @@
 ﻿@model Personalsystem.Models.Vacancy
 
 @{
-    ViewBag.Title = "Detaljer " + (Model.Title);
+    ViewBag.Title = "Details " + (Model.Title);
 }
 
-<h2>Detaljer @Model.Title</h2>
+<h2>Details @Model.Title</h2>
 
 <div>
     <h4>Vacancy</h4>
@@ -55,5 +55,5 @@
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index", new {id = Model.DepartmentId }) |
-    @Html.ActionLink("Ansök", "Create", "Applications", new { id = Model.Id }, null)
+    @Html.ActionLink("Apply", "Create", "Applications", new { id = Model.Id }, null)
 </p>
