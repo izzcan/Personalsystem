@@ -69,7 +69,7 @@ namespace Personalsystem.Controllers
                     ViewBag.ScheduleId = db.Schedules.ToList().Select(q => new SelectListItem()
                     {
                         Value = q.Id.ToString(),
-                        Text = q.StartTime.ToShortDateString() + " : " + (q.EndTime == null ? "Ongoing" : q.EndTime.GetValueOrDefault().ToShortDateString()),
+                        Text = q.Department.Name + ((q.Group == null) ? "" : ":" + q.Group.Name) + " - " + q.StartTime.ToShortDateString() + " : " + (q.EndTime == null ? "Ongoing" : q.EndTime.GetValueOrDefault().ToShortDateString()),
                         Selected = (q.Id == scheduleId)
                     });
                     return View(model);
@@ -124,7 +124,7 @@ namespace Personalsystem.Controllers
             ViewBag.ScheduleId = db.Schedules.ToList().Select(q => new SelectListItem()
             {
                 Value = q.Id.ToString(),
-                Text = q.StartTime.ToShortDateString() + " : " + (q.EndTime == null ? "Ongoing" : q.EndTime.GetValueOrDefault().ToShortDateString()),
+                Text = q.Department.Name + ((q.Group == null)?"" : ":" + q.Group.Name ) + " - " + q.StartTime.ToShortDateString() + " : " + (q.EndTime == null ? "Ongoing" : q.EndTime.GetValueOrDefault().ToShortDateString()),
                 Selected = (q.Id == scheduleItem.ScheduleId)
             });
             return View(scheduleItem);
@@ -160,7 +160,8 @@ namespace Personalsystem.Controllers
                     ViewBag.ScheduleId = db.Schedules.ToList().Select(q => new SelectListItem()
                     {
                         Value = q.Id.ToString(),
-                        Text = q.StartTime.ToShortDateString() + " : " + (q.EndTime == null ? "Ongoing" : q.EndTime.GetValueOrDefault().ToShortDateString()),
+                        //Text = q.StartTime.ToShortDateString() + " : " + (q.EndTime == null ? "Ongoing" : q.EndTime.GetValueOrDefault().ToShortDateString()),
+                        Text = q.Department.Name + ((q.Group == null) ? "" : ":" + q.Group.Name) + " - " + q.StartTime.ToShortDateString() + " : " + (q.EndTime == null ? "Ongoing" : q.EndTime.GetValueOrDefault().ToShortDateString()),
                         Selected = (q.Id == scheduleItem.ScheduleId)
                     });
                     return View(model);
@@ -225,7 +226,8 @@ namespace Personalsystem.Controllers
             ViewBag.ScheduleId = db.Schedules.ToList().Select(q => new SelectListItem()
             {
                 Value = q.Id.ToString(),
-                Text = q.StartTime.ToShortDateString() + " : " + (q.EndTime == null ? "Ongoing" : q.EndTime.GetValueOrDefault().ToShortDateString()),
+                //Text = q.StartTime.ToShortDateString() + " : " + (q.EndTime == null ? "Ongoing" : q.EndTime.GetValueOrDefault().ToShortDateString()),
+                Text = q.Department.Name + ((q.Group == null) ? "" : ":" + q.Group.Name) + " - " + q.StartTime.ToShortDateString() + " : " + (q.EndTime == null ? "Ongoing" : q.EndTime.GetValueOrDefault().ToShortDateString()),
                 Selected = (q.Id == model.ScheduleId)
             });
             model.WeekDays = new List<ScheduleItemWeekday>();
