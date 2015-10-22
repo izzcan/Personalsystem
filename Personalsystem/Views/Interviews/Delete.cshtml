@@ -1,25 +1,24 @@
 ﻿@model Personalsystem.Models.Interview
 
 @{
-    ViewBag.Title = "Ta bort";
+    ViewBag.Title = "Cancel Interview";
 }
 
-<h2>Avboka</h2>
+<h2>Cancel Interview</h2>
 
-<h3>Är du säker på att du vill avboka intervju?</h3>
+<h3>Are you sure you want to cancel this interview?</h3>
 <div>
-    <h4>Intervju</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            Sökandes e-post
+            Applicant´s e-mail
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Applications.Applicant.Email)
         </dd>
 
         <dt>
-            Intervjuarens e-post
+            Interviewer's e-mail
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Interviewer.Email)
@@ -45,8 +44,9 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Ta bort" class="btn btn-default" /> |
-            @Html.ActionLink("Tillbaka till listan", "Index")
+            <input type="submit" value="Ta bort" class="btn btn-default" />
+            <a class="btn btn-info" href="/Interviews/Index/">Back to List</a>
+            @*@Html.ActionLink("Tillbaka till listan", "Index")*@
         </div>
     }
 </div>
