@@ -1,10 +1,10 @@
 ﻿@model Personalsystem.Models.Interview
 
 @{
-    ViewBag.Title = "Skapa ny";
+    ViewBag.Title = "Create an Interview";
 }
 
-<h2>Skapa intervju för @ViewBag.vacancyTitle</h2>
+<h2>Create an Interview for @ViewBag.vacancyTitle</h2>
 
 
     @using (Html.BeginForm())
@@ -12,7 +12,7 @@
         @Html.AntiForgeryToken()
 
         <div class="form-horizontal">
-            <h4>Ansökt av @ViewBag.applicantEmail</h4>
+            <h4>Applied by @ViewBag.applicantEmail</h4>
             <hr />
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -36,14 +36,15 @@
             <input type="hidden" name="applicantEmail" value="@ViewBag.applicantEmail" />
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Skapa" class="btn btn-default" />
+                    <input type="submit" value="Create Interview" class="btn btn-default" />
                 </div>
             </div>
         </div>
     }
 
     <div>
-        @Html.ActionLink("Tillbaka till listan", "Index")
+        <a class="btn btn-info" href="/Interviews/Index/">Back to List</a>
+        @*@Html.ActionLink("Tillbaka till listan", "Index")*@
     </div>
 
     @section Scripts {
