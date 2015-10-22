@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<Personalsystem.Models.Vacancy>
 
 @{
-    ViewBag.Title = "Vakanser";
+    ViewBag.Title = "Vacancies";
 }
 
-<h2>Vakanser</h2>
+<h2>Vacancies</h2>
 
-<a class="btn btn-default" href="/Vacancies/Create/@((int?)ViewBag.DepartmentId)" @(ViewBag.IsBoss ? "" : "disabled")>Skapa ny</a>
+<a class="btn btn-default" href="/Vacancies/Create/@((int?)ViewBag.DepartmentId)" @(ViewBag.IsBoss ? "" : "disabled")>Create new</a>
 
 <table class="table">
     <tr>
@@ -55,10 +55,10 @@
             @*@Html.ActionLink("Delete", "Delete", new { id = item.Id, depId = ViewBag.DepartmentId }) |*@
             @*@Html.ActionLink("Ansök", "Create", "Applications", new { id = item.Id }, null)*@
             
-            <a class="btn btn-info" href="/Vacancies/Details/@item.Id">Detaljer</a>           
-            <a class="btn btn-primary" href="/Applications/Create/@item.Id">Ansök</a>           
-            <a class="btn btn-default" href="/Vacancies/Edit/@item.Id?depId=@((int?)ViewBag.DepartmentId) " @(ViewBag.IsBoss ? "" : "disabled")>Ändra</a>
-            <a class="btn btn-danger" href="/Vacancies/Delete/@item.Id?depId@((int?)ViewBag.DepartmentId) " @(ViewBag.IsBoss ? "" : "disabled")>Ta bort</a>            
+            <a class="btn btn-info" href="/Vacancies/Details/@item.Id">Details</a>           
+            <a class="btn btn-primary" href="/Applications/Create/@item.Id">Apply</a>           
+            <a class="btn btn-default" href="/Vacancies/Edit/@item.Id?depId=@((int?)ViewBag.DepartmentId) " @(ViewBag.IsBoss ? "" : "disabled")>Change</a>
+            <a class="btn btn-danger" href="/Vacancies/Delete/@item.Id?depId@((int?)ViewBag.DepartmentId) " @(ViewBag.IsBoss ? "" : "disabled")>Delete</a>            
         </td>
     </tr>
 }
