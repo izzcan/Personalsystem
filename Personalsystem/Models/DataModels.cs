@@ -38,8 +38,8 @@ namespace Personalsystem.Models
                 return Departments.SelectMany(q => q.Groups).SelectMany(q => q.Employees).Union(Bosses).Union(Admins).Union(Leadership).ToList();
             }
         }
-
     }
+
     public class Department
     {
         [Key]
@@ -62,6 +62,7 @@ namespace Personalsystem.Models
             }
         }
     }
+
     public class DepartmentGroup
     {
         [Key]
@@ -74,8 +75,8 @@ namespace Personalsystem.Models
         [ForeignKey("Department")]
         public int DepartmentId { get; set; }
         public virtual Department Department { get; set; }
-
     }
+
     public class Schedule
     {
         [Key]
@@ -154,6 +155,7 @@ namespace Personalsystem.Models
         public string CreatorId { get; set; }
         public virtual ApplicationUser Creator { get; set; }
     }
+
     public class Vacancy
     {
         [Key]
@@ -175,9 +177,8 @@ namespace Personalsystem.Models
         public string CreatorId { get; set; }
         public virtual ApplicationUser Creator { get; set; }
         public virtual ICollection<Application> Applications { get; set; }
-
-
     }
+
     public class Application
     {
         [Key]
@@ -194,6 +195,7 @@ namespace Personalsystem.Models
         public virtual ICollection<Interview> Interviews { get; set; }
         public string CvPath { get; set; }
     }
+
     public class Interview
     {
         [Key]

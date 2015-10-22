@@ -10,7 +10,7 @@
     <hr />
     <div>
         <h2>Companies that you are part of</h2>
-        <hr />
+        
         <h3>
             @(Model.Companies.Count == 0 ? "You are part of no companies" : "")
         </h3>
@@ -30,10 +30,11 @@
                 }
             </div>
         }
+        <hr/>
     </div>
     <div>
         <h2>Your applications</h2>
-        <hr />
+       
         <h3>
             @(Model.Applications.Count == 0 ? "You have not made any applications" : "")
         </h3>
@@ -76,12 +77,13 @@
                 }
             </tbody>
         </table>
+        <hr/>
 </div>
 
 
     <div>
         <h2>Vacancies for your deparments</h2>
-        <hr />
+       
         <h3>
             @(Model.Vacancies.Count == 0 ? "You are not responsible for any vacancies" : "")
         </h3>
@@ -122,8 +124,10 @@
                         </td>
                     </tr>
                 }
+               
             </tbody>
         </table>
+       
     </div>
     <div style="@(Model.Vacancies.Count == 0 && Model.Applications.Count == 0 && Model.Companies.Count == 0 ? "" : "display:none;")">
         <hr />
