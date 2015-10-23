@@ -12,7 +12,7 @@ namespace Personalsystem.Models
     {
         [Key]
         public int Id { get; set; }
-        [Display(Name = "Företag")]
+        [Display(Name = "Company")]
         public string Name { get; set; }
         public virtual ICollection<Department> Departments { get; set; }
         public virtual ICollection<NewsItem> NewsItems { get; set; }
