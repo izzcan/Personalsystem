@@ -1,12 +1,16 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background-image: url('../Images/background-gruen.jpg');
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    background-image: url('../Images/background-faded.jpg');
+    border-radius: 30px;
+    margin-top: 50px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -67,7 +71,7 @@ a.disabled, a[disabled] {
     padding: 1px 3px 1px 3px;
 }
 
-.company-box a.btn.btn-default 
+.company-box a.btn 
 {
     float:right;
 }
@@ -101,4 +105,17 @@ a.disabled, a[disabled] {
   color:transparent;
   -webkit-background-clip: text;
   background-clip: text;
+}
+
+.table-striped > tbody > tr:nth-child(even) > td,
+.table-striped > tbody > tr:nth-child(even) > th {
+  background-color: #efbeef;
+}
+.navbar {
+    /*background-color: pinkgreen;*/
+     /*background: -webkit-linear-gradient(pink, green);
+  background: -o-linear-gradient(pink, green); 
+  background: -moz-linear-gradient(pink, green); 
+  background: linear-gradient(pink, green); */
+      background-color:purple;
 }

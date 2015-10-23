@@ -14,6 +14,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Personalsystem.Controllers
 {
+    [Authorize]
     public class ApplicationsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

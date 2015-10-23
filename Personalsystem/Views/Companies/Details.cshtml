@@ -6,7 +6,7 @@
 <div>
     <h1>@Model.Name</h1>
     <a class="btn btn-default" href="/Companies/Edit/@Model.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Edit</a>
-    <a class="btn btn-default" href="/Companies/Delete/@Model.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Delete</a>
+    <a class="btn btn-danger" href="/Companies/Delete/@Model.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Delete</a>
 </div>
 <div>
     <h2>News</h2>
@@ -14,8 +14,8 @@
 
         <div class="row">
             <div class="col-md-12">
-                <a class="btn btn-default" href="/NewsItems/Create/@Model.Id" @(ViewBag.IsAdmin || ViewBag.IsBoss ? "" : "disabled")>Add News</a>
-                <a class="btn btn-default" href="/NewsItems/Index/@Model.Id">Show Older</a>
+                <a class="btn btn-primary" href="/NewsItems/Create/@Model.Id" @(ViewBag.IsAdmin || ViewBag.IsBoss ? "" : "disabled")>Add News</a>
+                <a class="btn btn-info" href="/NewsItems/Index/@Model.Id">Show Older</a>
             </div>
         </div>
         <div class="row">
@@ -24,7 +24,7 @@
                 <div class="@(Model.NewsItems.Count >= 3 ? "col-md-4" : Model.NewsItems.Count == 2 ? "col-md-6" : "col-md-12")">
                     <div class="company-box company-box-secondary">
                         <a class="btn btn-default" href="/NewsItems/Edit/@item.Id" @(ViewBag.IsAdmin || ViewBag.IsCreatorFor[item.Id] == true ? "" : "disabled")>Edit</a>
-                        <a class="btn btn-default" href="/NewsItems/Delete/@item.Id" @(ViewBag.IsAdmin || ViewBag.IsCreatorFor[item.Id] == true ? "" : "disabled")>Delete</a>
+                        <a class="btn btn-danger" href="/NewsItems/Delete/@item.Id" @(ViewBag.IsAdmin || ViewBag.IsCreatorFor[item.Id] == true ? "" : "disabled")>Delete</a>
                         <h4>@Html.ActionLink(item.Title, "Details", "NewsItems", new { item.Id }, null)</h4>
                         <span class="company-box-content">@item.Created - @item.CreatorName</span>
                         <p class="company-box-content">@item.Content</p>
@@ -40,7 +40,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="company-box company-box-secondary">
-                <a class="btn btn-default"href="/Companies/AddLeader/@Model.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Leader</a>
+                <a class="btn btn-primary"href="/Companies/AddLeader/@Model.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Leader</a>
                 <h3>Leadership</h3>
 
                 <ul>
@@ -56,7 +56,7 @@
         </div>
         <div class="col-md-6">
             <div class="company-box company-box-secondary">
-                <a class="btn btn-default" href="/Companies/AddAdmin/@Model.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Admin</a>
+                <a class="btn btn-primary" href="/Companies/AddAdmin/@Model.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Admin</a>
                 <h3>Administrators</h3>
 
                 <ul>
@@ -74,7 +74,7 @@
     <div class="company-box">
         <div class="row">
             <div class="col-md-12">
-                <a class="btn btn-default" href="/Departments/Create/@Model.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Department</a>
+                <a class="btn btn-primary" href="/Departments/Create/@Model.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Department</a>
                 <h3>Departments</h3>
             </div>
         </div>
@@ -84,13 +84,13 @@
                 <div class="@(Model.Departments.Count >= 3 ? "col-lg-4" : "col-lg-12") @(Model.Departments.Count >= 2 ? "col-md-6" : "col-md-12")">
                     <div class="company-box company-box-secondary">
 
-                        <a class="btn btn-default" href="/Vacancies/Index?id=@(item.Id)" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Vacancies</a>
-                        <a class="btn btn-default" href="/Schedules/Index?departmentId=@(item.Id)" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Schedule</a>
+                        <a class="btn btn-info" href="/Vacancies/Index?id=@(item.Id)" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Vacancies</a>
+                        <a class="btn btn-info" href="/Schedules/Index?departmentId=@(item.Id)" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Schedule</a>
                         <a class="btn btn-default" href="/Departments/Edit/@item.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Edit</a>
-                        <a class="btn btn-default" href="/Departments/Delete/@item.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Delete</a>
+                        <a class="btn btn-danger" href="/Departments/Delete/@item.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Delete</a>
                         <h4>@item.Name</h4>
                         <div class="company-box">
-                            <a class="btn btn-default" href="/Departments/AddBoss/@item.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Boss</a>
+                            <a class="btn btn-primary" href="/Departments/AddBoss/@item.Id" @(ViewBag.IsAdmin ? "" : "disabled")>Add Boss</a>
                             <h4>Bosses</h4>
                             <ul>
                                 @foreach (var boss in item.Bosses)
@@ -103,17 +103,17 @@
                             </ul>
                         </div>
                         <div class="company-box">
-                            <a class="btn btn-default" href="/DepartmentGroups/Create/@item.Id" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Add Group</a>
+                            <a class="btn btn-primary" href="/DepartmentGroups/Create/@item.Id" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Add Group</a>
                             <h4>Groups</h4>
                             @foreach (var group in item.Groups)
                             {
                                 <div class="company-box company-box-secondary">
-                                    <a class="btn btn-default" href="/Schedules/Index?groupId=@(group.Id)" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Schedule</a>
+                                    <a class="btn btn-info" href="/Schedules/Index?groupId=@(group.Id)" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Schedule</a>
                                     <a class="btn btn-default" href="/DepartmentGroups/Edit/@group.Id" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Edit</a>
-                                    <a class="btn btn-default" href="/DepartmentGroups/Delete/@group.Id" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Delete</a>
+                                    <a class="btn btn-danger" href="/DepartmentGroups/Delete/@group.Id" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Delete</a>
                                     <h4>@group.Name</h4>
                                     <div class="company-box">
-                                        <a class="btn btn-default" href="/DepartmentGroups/AddEmployee/@group.Id" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Add Employee</a>
+                                        <a class="btn btn-primary" href="/DepartmentGroups/AddEmployee/@group.Id" @(ViewBag.IsAdmin || ViewBag.IsBossFor[item.Id] == true ? "" : "disabled")>Add Employee</a>
                                         <h4>Employees</h4>
                                         <ul>
                                             @foreach (var employee in group.Employees)
