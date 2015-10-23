@@ -53,7 +53,11 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index", new {id = Model.DepartmentId }) |
-    @Html.ActionLink("Apply", "Create", "Applications", new { id = Model.Id }, null)
+    <a class="btn btn-default" href="/Vacancies/Edit/@Model.Id">Edit</a>
+    <a class="btn btn-info" href="/Vacancies/Index/">Back to List</a>
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index", new {id = Model.DepartmentId }) |*@
+    @*@Html.ActionLink("Apply", "Create", "Applications", new { id = Model.Id }, null)*@
+    @Html.ActionLink("Apply", "Create", "Applications", new { id = Model.Id }, new { @class = "btn btn-primary" })
+   
 </p>
